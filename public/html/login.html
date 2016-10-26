@@ -1,0 +1,53 @@
+<html ng-app="signup">
+	<head>
+		<link rel="stylesheet" href="../css/superhero-style.css">
+		<link rel="stylesheet" href="../css/login-style.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="login-box">
+				<h1>Login</h1>
+				
+				<div class="divider"></div>
+				
+				<form class="form-register" method="post" name="login" novalidate>
+				
+					<p class="alert alert-danger" ng-show="loginError">Invalid username or password!</p>
+				
+					<div class="inputdiv">
+						<input id="username" class="form-control" name="username" class="form-control" type="text" placeholder="username"
+						ng-model="username" maxlength="16" required />
+					</div>
+					
+					<div class="divider"></div>
+									
+					<div class="inputdiv">
+						<input type="password" id="password" class="form-control" name="password" placeholder="password"
+						ng-model="password" required />
+					</div>
+					
+					<div class="divider"></div>
+					
+					<div class="space-top text-center">
+						<button ng-disabled="login.$invalid" class="waves-effect waves-light btn done" ng-click="loginAcc()">
+						Login
+						</button>
+						</button>
+					</div>
+				</form>
+
+				<div class="form-divider"></div>
+			
+				<p style="color: white">or login with</p>
+				
+				<div class="social-div">
+					<button class="btn loginBtn loginBtn--google">Google+</button>
+					<div class="btn-divider"></div>
+					<button class="btn loginBtn loginBtn--facebook">Facebook</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
