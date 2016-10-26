@@ -88,7 +88,8 @@ index.controller("dashboard-controller", function($scope, $timeout) {
 			side: 'right',
 			interactive: true,
 			arrow: false,
-			animation: 'swing'
+			animation: 'swing',
+			contentCloning: true
 		});
 	});
 });
