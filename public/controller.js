@@ -100,7 +100,15 @@ index.controller("dashboard-controller", function($scope, $timeout) {
 index.controller("signup-controller", function($scope, $location) {
 	
 	$scope.signUp = function() {
-	//	$location.url("/setup");
+		var user = {
+			username: $scope.username,
+			email: $scope.email,
+			password: $scope.password
+		};
+		console.log(user.username);
+		console.log(user.email);
+		console.log(user.password);
+		
 	}
 });
 
