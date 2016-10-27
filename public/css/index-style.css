@@ -1,0 +1,54 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 90px;
+}
+a {
+  cursor: pointer;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background-color: #002145;
+  padding-top: 11px;
+}
+
+.navbarbuttonhover{
+  cursor:pointer;
+}
+.navbar-right li {
+  float: right;
+}
+.navbar-right li:hover,
+.navbar-right li:focus{
+  color: black;
+  background-color: white;
+}
+
+.custom-button :hover,
+.custom-button :focus{
+  color: black;
+  background-color: white;
+}
+
+.navbar-fixed-left {
+    width: 120px;
+    position: fixed;
+    border-radius: 0;
+    height: 100%;
+    background-color: #A7A8AC;
+}
+.navbar-fixed-left .navbar-nav > li {
+    float: none;  /* Cancel default li float: left */
+    width: 120px;
+}
+
+.navbar-fixed-left + .container {
+    padding-left: 160px;
+}
+
+

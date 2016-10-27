@@ -1,7 +1,5 @@
 var index = angular.module("index", ["ngRoute"]);
 
-//Branch Comment
-//Branch Comment
 index.config(function($routeProvider) {
 	$routeProvider
 	.when("/", {
@@ -50,6 +48,10 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 		return 0;
 	}
 	};
+	$scope.goHome = function(){
+		$location.url("/home");
+		console.log("goHome");
+	}
 
 }]);
 
