@@ -1,7 +1,8 @@
 var index = angular.module("index", ["ngRoute"]);
 
 
-//Branch
+//Branch 
+//merge comment split
 index.config(function($routeProvider) {
 	$routeProvider
 	.when("/", {
