@@ -97,17 +97,41 @@ index.controller("dashboard-controller", function($scope, $timeout) {
 ///////////////////////////////////////////////////////
 // SIGNUP CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("signup-controller", function($scope, $location) {
+index.controller("signup-controller", function($scope, $location, $http) {
 	
+	$scope.signupError = false;
+	$scope.authenticated = false;
+	$scope.userIDs;
+		
 	$scope.signUp = function() {
 		var user = {
 			username: $scope.username,
 			email: $scope.email,
 			password: $scope.password
 		};
-		console.log(user.username);
-		console.log(user.email);
-		console.log(user.password);
+		
+		$http.post("/auth/signup", user).success(function(req) {
+			if(req.state === "success") {
+				console.log(req);
+				$scope.userIDs = {
+					user_id: req._id,
+					movie_id: req.movieProfile
+				};
+				$scope.authenticated = true;
+				$scope.id = user._id;
+			}
+			else {
+				console.log(req);
+			}
+		});
+		
+		if(!$scope.authenticated) {
+			$scope.signupError = true;
+		}
+		else {
+			console.log(req.username);
+			console.log(req.email);
+		}
 		
 	}
 });
@@ -121,11 +145,11 @@ index.controller("login-controller", function($scope, $location) {
 	var validUser = false;
 	
 	$scope.loginAcc = function() {
-		if($scope.username == "test" && $scope.password == "123456") {
-			$location.url("/dashboard");
+		if($scope.username == "errortest") {
+			$scope.loginError = true;
 		}
 		else {
-			$scope.loginError = true;
+			$location.url("/dashboard");
 		}
 	}
 });
