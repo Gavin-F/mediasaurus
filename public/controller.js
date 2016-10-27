@@ -1,7 +1,7 @@
 var index = angular.module("index", ["ngRoute"]);
 
 
-//Branch Comment
+//Branch
 index.config(function($routeProvider) {
 	$routeProvider
 	.when("/", {
