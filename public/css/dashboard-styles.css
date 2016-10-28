@@ -49,6 +49,10 @@ body {
   width: 100px;
 }
 
+a {
+  cursor: pointer;
+}
+
 .navbarbuttonhover{
   cursor:pointer;
 }

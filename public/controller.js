@@ -33,6 +33,10 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/login.html",
 		controller: "login-controller"
 	})
+	.when("/movie", {
+		templateUrl: "/html/movie.html",
+		controller: "movie-controller"
+	})
 	.otherwise({redirectTo:'/'});
 }); 
 
@@ -78,12 +82,15 @@ index.controller("home-controller", function($scope, $location) {
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("dashboard-controller", function($scope, $timeout) {
+index.controller("dashboard-controller", function($scope,$location ,$timeout) {
 	
 	$scope.message = "hello";
 	
 	$scope.setText = function() {
 		$scope.test = "Hello world!";
+	}
+	$scope.gotoMovie = function(){
+		$location.url("/movie");
 	}
 
 	$(document).ready(function() {
@@ -162,7 +169,12 @@ index.controller("password-controller", function($scope,$location) {
 		$location.url("/password");
 	}
 });
+///////////////////////////////////////////////////////
+// Movie CONTROLLER
+///////////////////////////////////////////////////////
+index.controller("movie-controller", function($scope,$location) {
 
+});
 ///////////////////////////////////////////////////////
 // Account CONTROLLER
 ///////////////////////////////////////////////////////
