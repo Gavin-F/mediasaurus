@@ -38,7 +38,7 @@ function getGenreID(genre) {
 // discoverTrendingMovies returns a JSON object containing the currently trending movies
 // fn callback is run 
 function discoverTrendingMovies(callback) {
-    consAPI_URL = API_BASE + API_DISCOVER1 + APIKEY+ API_DISCOVER2;
+    consAPI_URL = API_BASE + API_DISCOVER1 + APIKEY + API_DISCOVER2;
 
     httpGetAsync(consAPI_URL, callback);
 }
@@ -52,13 +52,70 @@ function discoverTrendingMovies(callback) {
 function discoverMovies(year,keywordArray,genreArray,notGenreArray,castArray,callback) {
     // body...
     // TODO: implement
+    var year_url = "";
+    var keyword_url = "";
+    var genre_url = "";
+    var not_genre_url = "";
+    var cast_url = "";
+
+    // If year != null
+    // Add the year API
+    if (year != null) {
+        year_url = "&primary_release_date.gte=" + year + "-01-01";
+    }
+
+    // If KeywordArray != null
+    // Add each keyword to the keyword_api
+    if (keywordArray != null) {
+        keyword_url = "&with_keywords=";
+        for (var i = keywordArray.length - 1; i >= 0; i--) {
+            keyword_url += keywordArray[i];
+            if (i !== 0) {
+                keyword_url += ",";
+            }
+        }
+
+    }
+
+    if (genreArray != null) {
+        genre_url = "&with_genres=";
+        for (var i = genreArray.length - 1; i >= 0; i--) {
+            genre_url += getGenreID(genreArray[i]);
+            if (i !== 0) {
+                genre_url += ",";
+            }
+        }
+    }
+
+    if (notGenreArray != null) {
+        not_genre_url = "&with_genres=";
+        for (var i = notGenreArray.length - 1; i >= 0; i--) {
+            not_genre_url += getGenreID(notGenreArray[i]);
+            if (i !== 0) {
+                not_genre_url += ",";
+            }
+        }
+    }
+
+    if (castArray != null) {
+        cast_url = "&with_genres=";
+        for (var i = castArray.length - 1; i >= 0; i--) {
+            cast_url += castArray[i];
+            if (i !== 0) {
+                cast_url += ",";
+            }
+        }
+    }
+   
+    consAPI_URL = API_BASE + API_DISCOVER1 + APIKEY + API_DISCOVER2 + year_url + keyword_url + genre_url + not_genre_url + cast_url;
+
+    httpGetAsync(consAPI_URL, callback);
 }
 
 // Function inspiration taken from StackOverflow
 // http://stackoverflow.com/questions/247483/http-get-request-in-javascript
 
-function httpGetAsync(theUrl, callback)
-{
+function httpGetAsync(theUrl, callback) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
@@ -73,8 +130,12 @@ function printThis(value) {
   console.log(value);
 }
 
+
+
 // <<TEST BANK>> 
 
 // discoverMovieswithGenre("action", printThis);
+
+// discoverMovies("2017", null, null, null, null, printThis);
 
 // <<END TEST BANK>>
