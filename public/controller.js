@@ -1,5 +1,6 @@
 var index = angular.module("index", 
 	["ngRoute", 
+	"ngCookies",
 	"index.signup"]);
 
 index.config(function($routeProvider) {
@@ -99,7 +100,7 @@ index.controller("dashboard-controller", function($scope, $timeout) {
 ///////////////////////////////////////////////////////
 // SIGNUP CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("signup-controller", function($scope, $location, $http) {
+index.controller("signup-controller", function($scope, $location, $http, $cookieStore) {
 	
 	$scope.signupError = false;
 	$scope.userIDs;
@@ -117,6 +118,7 @@ index.controller("signup-controller", function($scope, $location, $http) {
 	// if sign up was successful, update ids and send to new page
 	$scope.$on("updateIDs", function(event, userIDs) {
 		$scope.userIDs = userIDs;
+		$cookies.put("userID", userIDs.user_id);
 		$location.url("/dashboard");
 	});
 	
