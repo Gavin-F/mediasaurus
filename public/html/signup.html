@@ -2,19 +2,19 @@
 	<head>
 		<link rel="stylesheet" href="../css/superhero-style.css">
 		<link rel="stylesheet" href="../css/signup-style.css">
-
+		
 	</head>
 
 	<body>
-		<div class="container">
-			<div class="signup-box">
+		<div class="container" ng-controller="signup">
+			<div class="signup-box" ng-controller="signup-controller">
 				<h1>Create your account</h1>
 				
 				<div class="divider"></div>
 				
 				<form class="form-register" method="post" name="register" novalidate>
 				
-					<p class="alert alert-danger" ng-show="signupError">Username already taken!</p>
+					<p class="alert-top alert-danger" ng-show="signupError">Username already taken!</p>
 					
 					<div class="inputdiv" ng-class="{'has-error': register.username.$invalid && register.username.$dirty, 'has-success': !register.username.$invalid}">
 						<input id="username" class="form-control" name="username" class="form-control" type="text" placeholder="username"
@@ -72,5 +72,9 @@
 			</div>
 		</div>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+		
+		<script src="../controllers/signup-controller.js"></script>
+		<script src="../controller.js"></script>
+
 	</body>
 </html>

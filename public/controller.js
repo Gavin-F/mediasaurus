@@ -1,4 +1,6 @@
-var index = angular.module("index", ["ngRoute"]);
+var index = angular.module("index", 
+	["ngRoute", 
+	"index.signup"]);
 
 index.config(function($routeProvider) {
 	$routeProvider
@@ -100,40 +102,28 @@ index.controller("dashboard-controller", function($scope, $timeout) {
 index.controller("signup-controller", function($scope, $location, $http) {
 	
 	$scope.signupError = false;
-	$scope.authenticated = false;
 	$scope.userIDs;
-		
+	
 	$scope.signUp = function() {
+		// get form info
 		var user = {
 			username: $scope.username,
 			email: $scope.email,
 			password: $scope.password
 		};
-		
-		$http.post("/auth/signup", user).success(function(req) {
-			if(req.state === "success") {
-				console.log(req);
-				$scope.userIDs = {
-					user_id: req._id,
-					movie_id: req.movieProfile
-				};
-				$scope.authenticated = true;
-				$scope.id = user._id;
-			}
-			else {
-				console.log(req);
-			}
-		});
-		
-		if(!$scope.authenticated) {
-			$scope.signupError = true;
-		}
-		else {
-			console.log(req.username);
-			console.log(req.email);
-		}
-		
+		// send to parent controller
+		$scope.$emit("signupEvent", user);
 	}
+	// if sign up was successful, update ids and send to new page
+	$scope.$on("updateIDs", function(event, userIDs) {
+		$scope.userIDs = userIDs;
+		$location.url("/dashboard");
+	});
+	
+	// if sign up failed, update page
+	$scope.$on("updateError", function(event, error) {
+		$scope.signupError = error;
+	});
 });
 
 ///////////////////////////////////////////////////////
