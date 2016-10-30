@@ -1,0 +1,38 @@
+.movie_poster {
+	width: 300px;
+	margin: 50px 50px 0px 50px;
+	padding:1px;
+	border:2px solid #021a40;
+	background-color:#FFFFFF;
+	float: left;
+}
+
+.movie_title {
+	font-size:30px;
+	text-align: center;
+	margin-top: 20px;
+}
+
+.background {
+	background-color: #E3E2DD;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-bottom:100px;
+	float: right;
+}
+
+.movie_description, .movie_cast, .movie_director{
+	margin-top: 50px;
+	margin-right: 50px;
+}
+
+.like_button {
+	margin: 5px 0px 50px 110px;
+}
+
+.like {
+}
+
+.clear {
+	clear:both;
+}
