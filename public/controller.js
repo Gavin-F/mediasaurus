@@ -1,7 +1,8 @@
 var index = angular.module("index", 
 	["ngRoute", 
-	"ngCookies",
-	"index.signup"]);
+	//"ngCookies",
+	"index.signup",
+	"index.login"]);
 
 index.config(function($routeProvider) {
 	$routeProvider
@@ -100,7 +101,7 @@ index.controller("dashboard-controller", function($scope, $timeout) {
 ///////////////////////////////////////////////////////
 // SIGNUP CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("signup-controller", function($scope, $location, $http, $cookieStore) {
+index.controller("signup-controller", function($scope, $location, $http) {
 	
 	$scope.signupError = false;
 	$scope.userIDs;
@@ -116,14 +117,14 @@ index.controller("signup-controller", function($scope, $location, $http, $cookie
 		$scope.$emit("signupEvent", user);
 	}
 	// if sign up was successful, update ids and send to new page
-	$scope.$on("updateIDs", function(event, userIDs) {
+	$scope.$on("signupUpdate", function(event, userIDs) {
 		$scope.userIDs = userIDs;
-		$cookies.put("userID", userIDs.user_id);
+		//$cookies.put("userID", userIDs.user_id);
 		$location.url("/dashboard");
 	});
 	
 	// if sign up failed, update page
-	$scope.$on("updateError", function(event, error) {
+	$scope.$on("signupError", function(event, error) {
 		$scope.signupError = error;
 	});
 });
@@ -131,19 +132,30 @@ index.controller("signup-controller", function($scope, $location, $http, $cookie
 ///////////////////////////////////////////////////////
 // LOGIN CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("login-controller", function($scope, $location) {
+index.controller("login-controller", function($scope, $location, $http) {
 	
 	$scope.loginError = false;
-	var validUser = false;
+	$scope.userIDs;
 	
 	$scope.loginAcc = function() {
-		if($scope.username == "errortest") {
-			$scope.loginError = true;
-		}
-		else {
-			$location.url("/dashboard");
-		}
+		var user = {
+			username: $scope.username,
+			password: $scope.password
+		};
+		
+		$scope.$emit("loginEvent", user);
 	}
+	// if login was successful, update ids and send to new page
+	$scope.$on("loginUpdate", function(event, userIDs) {
+		$scope.userIDs = userIDs;
+		//$cookies.put("userID", userIDs.user_id);
+		$location.url("/dashboard");
+	});
+	
+	// if login failed, update page
+	$scope.$on("loginError", function(event, error) {
+		$scope.loginError = error;
+	});
 });
 
 ///////////////////////////////////////////////////////
