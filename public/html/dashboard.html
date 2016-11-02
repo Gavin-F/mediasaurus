@@ -5,8 +5,12 @@
 
 <body>
 	<div class="container" ng-controller="dashboard-controller">
+
+		{{userID}}
+		<button class="btn done" ng-click="reset()">Reset storage</button>
+
 		<h3>Dashboard</h3>
-		
+
 		<div class="form-group">
 			<label class="control-label">Search</label>
 			<div class="input-group">
@@ -26,7 +30,7 @@
 			&emsp;&emsp;
 			<img src="../images/GotG2.png" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo" />
 			<hr/>
-			
+
 			<p><a class="btn btn-primary btn-sm">More Recommended For You..</a></p>
 		</div>
 
@@ -65,4 +69,3 @@
 </body>
 
 </html>
-

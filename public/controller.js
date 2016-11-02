@@ -1,5 +1,6 @@
-var index = angular.module("index", 
-	["ngRoute", 
+var index = angular.module("index",
+	["ngRoute",
+	"ngStorage",
 	//"ngCookies",
 	"index.signup",
 	"index.login"]);
@@ -35,19 +36,19 @@ index.config(function($routeProvider) {
 		controller: "login-controller"
 	})
 	.otherwise({redirectTo:'/'});
-}); 
+});
 
 ///////////////////////////////////////////////////////
 // INDEX CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("index-controller", ["$scope", "$http", "$location", "$window", function($scope, $http, $location, $window) {
-	$scope.isActive = function (viewLocation) { 
+	$scope.isActive = function (viewLocation) {
 		return viewLocation === $location.path();
 	};
 	$scope.isActive2 = function() {
     if(($location.path()=='/account')||($location.path()=='/password')){
     	return 1;
-	}	
+	}
 	else{
 		return 0;
 	}
@@ -58,18 +59,23 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 ///////////////////////////////////////////////////////
 // HOME CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("home-controller", function($scope, $location) {
+index.controller("home-controller", function($scope, $location, $localStorage) {
+
+	if($localStorage.userID !== undefined) {
+		console.log($localStorage.userID);
+		$location.url("/dashboard");
+	}
 
 	// sign up
 	$scope.toSignUp = function(){
 		$location.url("/signup");
 	}
-	
+
 	// login
 	$scope.toLogin = function(){
 		$location.url("/login");
 	}
-	
+
 	// continue without logging in
 	$scope.continue = function(){
 		$location.url("http://google.com");
@@ -79,12 +85,12 @@ index.controller("home-controller", function($scope, $location) {
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("dashboard-controller", function($scope, $timeout) {
-	
-	$scope.message = "hello";
-	
-	$scope.setText = function() {
-		$scope.test = "Hello world!";
+index.controller("dashboard-controller", function($scope, $timeout, $localStorage) {
+
+	$scope.userID = $localStorage.userID;
+
+	$scope.reset = function() {
+		delete $localStorage.userID;
 	}
 
 	$(document).ready(function() {
@@ -98,14 +104,15 @@ index.controller("dashboard-controller", function($scope, $timeout) {
 });
 
 
+
+
 ///////////////////////////////////////////////////////
 // SIGNUP CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("signup-controller", function($scope, $location, $http) {
-	
+index.controller("signup-controller", function($scope, $location, $http, $localStorage) {
+
 	$scope.signupError = false;
-	$scope.userIDs;
-	
+
 	$scope.signUp = function() {
 		// get form info
 		var user = {
@@ -116,42 +123,42 @@ index.controller("signup-controller", function($scope, $location, $http) {
 		// send to parent controller
 		$scope.$emit("signupEvent", user);
 	}
-	// if sign up was successful, update ids and send to new page
-	$scope.$on("signupUpdate", function(event, userIDs) {
-		$scope.userIDs = userIDs;
-		//$cookies.put("userID", userIDs.user_id);
+
+	// if sign up was successful, update id and send to new page
+	$scope.$on("signupUpdate", function(event, userID) {
+		$localStorage.userID = userID;
 		$location.url("/dashboard");
 	});
-	
+
 	// if sign up failed, update page
 	$scope.$on("signupError", function(event, error) {
 		$scope.signupError = error;
 	});
 });
 
+
+
 ///////////////////////////////////////////////////////
 // LOGIN CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("login-controller", function($scope, $location, $http) {
-	
+index.controller("login-controller", function($scope, $location, $http, $localStorage) {
+
 	$scope.loginError = false;
-	$scope.userIDs;
-	
+
 	$scope.loginAcc = function() {
 		var user = {
 			username: $scope.username,
 			password: $scope.password
 		};
-		
+
 		$scope.$emit("loginEvent", user);
 	}
-	// if login was successful, update ids and send to new page
-	$scope.$on("loginUpdate", function(event, userIDs) {
-		$scope.userIDs = userIDs;
-		//$cookies.put("userID", userIDs.user_id);
+	// if login was successful, update id and send to new page
+	$scope.$on("loginUpdate", function(event, userID) {
+		$localStorage.userID = userID;
 		$location.url("/dashboard");
 	});
-	
+
 	// if login failed, update page
 	$scope.$on("loginError", function(event, error) {
 		$scope.loginError = error;
@@ -162,12 +169,12 @@ index.controller("login-controller", function($scope, $location, $http) {
 // TEST CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("testpage-controller", function($scope,$location) {
-	
+
 	$scope.message = "hello";
-	
+
 	$scope.setText = function() {
 		$scope.test = "Hello world!";
-	} 
+	}
 	// adding comment to make sure merge went as planned.
 	$scope.goHome = function(){
 		$location.url("/");
@@ -178,12 +185,12 @@ index.controller("testpage-controller", function($scope,$location) {
 // Reset Controller CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("password-controller", function($scope,$location) {
-	
+
 	$scope.message = "hello";
-	
+
 	$scope.setText = function() {
 		$scope.test = "Hello world!";
-	} 
+	}
 	$scope.goDashboard = function(){
 		$location.url("/dashboard");
 	}
@@ -199,10 +206,10 @@ index.controller("password-controller", function($scope,$location) {
 // Account CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("account-controller", function($scope,$location) {
-	
+
 	$scope.message = "hello";
-	
+
 	$scope.setText = function() {
 		$scope.test = "Hello world!";
-	} 
+	}
 });

@@ -2,7 +2,7 @@
 
 <html ng-app="index">
 
-<head>	
+<head>
 	<link rel="stylesheet" href="/css/superhero-style.css">
 	<link rel="stylesheet" href="/css/custom_styles.css">
 	<link rel="stylesheet" href="css/tooltips-style.css">
@@ -23,15 +23,15 @@
 				<ul class="dropdown-menu">
 					<li><a href="#/account">Account Settings</a></li>
 					<li><a href="#/">User Preferences</a></li>
-					<li><a href="#/">Logout</a></li> 
+					<li><a href="#/">Logout</a></li>
 				</ul>
 			</li>
 		</ul>
 	</div>
 </nav>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 
-	<body> 
+
+	<body>
 		<div ng-controller="index-controller">
 			<div class="navbar navbar-inverse navbar-fixed-left" ng-show="isActive2()">
 				<a class="navbar-brand" href="#"></a>
@@ -45,7 +45,11 @@
 
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
-		<!--script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5/8/angular-cookies.js"></script-->
+		<!-- ngStorage CDNs -->
+		<script src="https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js"></script>
+		<!--script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/ngstorage/0.3.6/ngStorage.min.js"></script>
+		<!-------------------->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -67,6 +71,3 @@
 
 
 </html>
-
-	
-	

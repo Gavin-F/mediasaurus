@@ -22,7 +22,7 @@
 #headdiv {
 	margin-top: 100px;
 	text-align: center;
-		
+
     animation-name: fadeInDown;
     animation-duration: 1.5s;
 }
@@ -30,7 +30,7 @@
 #mrediv {
 	margin-top: 15px;
 	text-align: center;
-	
+
     animation-name: fadeInDown;
 	opacity: 0;
 	animation-delay: 0.5s;
@@ -45,29 +45,29 @@
 #descript {
 	margin-top: 15px;
 	text-align: center;
-	
+
     animation-name: fadeInDown;
 	opacity: 0;
 	animation-delay: 1s;
     animation-duration: 1.5s;
 	animation-fill-mode: forwards;
-	
+
 }
 
 #btndiv {
 	margin-top: 25px;
 	text-align: center;
-	
-    animation-name: fadeIn;
+
+  animation-name: fadeIn;
 	opacity: 0;
-	animation-delay: 2.5s;
-    animation-duration: 2.5s;
+	animation-delay: 2.0s;
+  animation-duration: 1.5s;
 	animation-fill-mode: forwards;
 
 }
 .btn {
 	height:75px;
-    width:400px;
+  width:400px;
 	font-size: 25px;
 	box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19);
 	border-radius: 3px;
@@ -83,7 +83,7 @@
 #contdiv {
 	margin-top: 20px;
 	text-align: center;
-	
+
 	animation-name: fadeIn;
 	opacity: 0;
 	animation-delay: 2.5s;
