@@ -87,7 +87,14 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 ///////////////////////////////////////////////////////
 index.controller("dashboard-controller", function($scope, $timeout, $localStorage) {
 
-	$scope.userID = $localStorage.userID;
+	if($localStorage.userID !== undefined) {
+		$scope.userID = "Logged in!";
+		$scope.loggedin = true;
+	}
+	else {
+		$scope.userID = "Not logged in!";
+		$scope.loggedin = false;
+	}
 
 	$scope.reset = function() {
 		delete $localStorage.userID;

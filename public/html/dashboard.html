@@ -7,7 +7,7 @@
 	<div class="container" ng-controller="dashboard-controller">
 
 		{{userID}}
-		<button class="btn done" ng-click="reset()">Reset storage</button>
+		<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
 
 		<h3>Dashboard</h3>
 
