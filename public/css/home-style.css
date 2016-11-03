@@ -23,18 +23,18 @@
 	margin-top: 100px;
 	text-align: center;
 
-    animation-name: fadeInDown;
-    animation-duration: 1.5s;
+  animation-name: fadeInDown;
+  animation-duration: 1.5s;
 }
 
 #mrediv {
 	margin-top: 15px;
 	text-align: center;
 
-    animation-name: fadeInDown;
+  animation-name: fadeInDown;
 	opacity: 0;
 	animation-delay: 0.5s;
-    animation-duration: 1.5s;
+  animation-duration: 1.5s;
 	animation-fill-mode: forwards;
 }
 #header {

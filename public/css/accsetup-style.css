@@ -1,0 +1,55 @@
+/*@keyframes fadeInOutDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -25%, 0);
+    transform: translate3d(0, -25%, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}*/
+
+@-webkit-keyframes fadeInOutDown {
+  0%   { opacity:0; }
+  50%  { opacity:1; }
+  100% { opacity:0; }
+}
+
+@-webkit-keyframes fadeIn {
+  0%   { opacity:0; }
+  100% { opacity:1; }
+}
+
+.message-one {
+  margin-top: 100px;
+  text-align: center;
+  opacity: 0;
+  animation: fadeInOutDown 4s;
+}
+
+.message-two {
+  margin-top: 0px;
+  text-align: center;
+  opacity: 0;
+  animation: fadeInOutDown 4s;
+  animation-delay: 3s;
+}
+
+.selection-box {
+  position: relative;
+  margin: -250px auto auto auto;
+  height: 500px;
+  width: 75%;
+  background-color: white;
+
+  opacity: 0;
+  animation: fadeIn 3s forwards;
+  animation-delay: 7s;
+}
+
+h1 {
+  font-size: 100px;
+	color: #004693;
+}

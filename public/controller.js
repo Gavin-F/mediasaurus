@@ -33,6 +33,10 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/signup.html",
 		controller: "signup-controller"
 	})
+	.when("/setup", {
+		templateUrl:"/html/accsetup.html",
+		controller: "accsetup-controller"
+	})
 	.when("/login", {
 		templateUrl: "/html/login.html",
 		controller: "login-controller"
@@ -84,6 +88,8 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 	}
 });
 
+
+
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
@@ -112,7 +118,6 @@ index.controller("dashboard-controller", function($scope, $timeout, $localStorag
 		});
 	});
 });
-
 
 
 
@@ -149,6 +154,16 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 
 
 ///////////////////////////////////////////////////////
+// ACCOUNT SETUP CONTROLLER
+///////////////////////////////////////////////////////
+index.controller("accsetup-controller", function($scope, $location, $http, $localStorage) {
+
+	$scope.message = "hello world";
+
+});
+
+
+///////////////////////////////////////////////////////
 // LOGIN CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("login-controller", function($scope, $location, $http, $localStorage) {
@@ -175,6 +190,8 @@ index.controller("login-controller", function($scope, $location, $http, $localSt
 	});
 });
 
+
+
 ///////////////////////////////////////////////////////
 // TEST CONTROLLER
 ///////////////////////////////////////////////////////
@@ -190,6 +207,8 @@ index.controller("testpage-controller", function($scope,$location) {
 		$location.url("/");
 	}
 });
+
+
 
 ///////////////////////////////////////////////////////
 // Reset Controller CONTROLLER
@@ -211,6 +230,8 @@ index.controller("password-controller", function($scope,$location) {
 		$location.url("/password");
 	}
 });
+
+
 
 ///////////////////////////////////////////////////////
 // Account CONTROLLER
