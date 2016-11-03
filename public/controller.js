@@ -5,6 +5,8 @@ var index = angular.module("index",
 	"index.signup",
 	"index.login"]);
 
+
+//Branch Comment
 index.config(function($routeProvider) {
 	$routeProvider
 	.when("/", {
@@ -105,7 +107,8 @@ index.controller("dashboard-controller", function($scope, $timeout, $localStorag
 			side: 'right',
 			interactive: true,
 			arrow: false,
-			animation: 'swing'
+			animation: 'swing',
+			contentCloning: true
 		});
 	});
 });

@@ -1,6 +1,9 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .my-cloak {
   display: none !important;
 }
+.tooltip_templates {
+  display:none;
+}
 html {
   position: relative;
   min-height: 100%;
