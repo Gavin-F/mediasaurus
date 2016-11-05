@@ -19,3 +19,20 @@
 	margin-top: -50px;
 	margin-left: 140px;
 }*/
+
+.right{
+	 float: left;
+    margin-left: 200px;
+}
+
+.horizonal-line{
+	color: grey;
+}
+
+.edit-icon{
+	color: #002145;
+}
+.edit-icon: hover,
+.edit-icon: focus{
+	color: white;
+}

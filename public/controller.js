@@ -62,6 +62,10 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 		return 0;
 	}
 	};
+	$scope.goHome = function(){
+		$location.url("/home");
+		console.log("goHome");
+	}
 
 }]);
 
