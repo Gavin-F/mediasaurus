@@ -10,7 +10,6 @@
       - Weigh categories on point scale
       - Use API to return relevant movies
       - Return top 20 scoring movies
-
     -
 */
 
@@ -18,17 +17,16 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var MovieProfile = mongoose.model('MovieProfile');
 var express = require('express');
-var tmdb_api = require('/api/tmdb_api')
+var tmdb_api = require('/api/tmdb_api');
 // require tmdb APIs
 
 function calc(user) {
   var profile = user.movieProfile;
   var newSuggestedMovies;
-  //discoverMovieswithGenre(); // Returns movies of preferred genre
+  // discoverMovieswithGenre(); // Returns movies of preferred genre
   // Sort list of rating
   // Store list in suggestedMovies
   user.update({ suggestedMovies: newSuggestedMovies}, function(err, numAffected){
     if(err)return res.send(509,err);
   })
-
 }
