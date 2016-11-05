@@ -93,7 +93,7 @@ module.exports = {
     
         // If KeywordArray != null
         // Add each keyword to the keyword_api
-        if (keywordArray != null) {
+        if (keywordArray !== null) {
             keyword_url = "&with_keywords=";
             for (var i = keywordArray.length - 1; i >= 0; i--) {
                 keyword_url += this.getKeywordID(keywordArray[i]);
