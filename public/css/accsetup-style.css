@@ -22,6 +22,20 @@
   100% { opacity:1; }
 }
 
+#skipModal {
+    top: 25%;
+}
+
+.modal-body {
+  background-color: #002145;
+  color: white;
+  font-size: 20px;
+}
+
+.modal-footer {
+  background-color: #001730;
+}
+
 .message-one {
   margin-top: 100px;
   text-align: center;
@@ -46,6 +60,7 @@
   background-color: #002145;
   color: white;
   text-align: center;
+	border-radius: 3px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19);
 
   opacity: 0;
@@ -120,9 +135,15 @@ td {
   height: 0px;
 }
 
-#next {
+#next, #skip {
   color: white;
   background-color: #0270e8;
+  width: 100px;
+}
+
+#close {
+  color: black;
+  background-color: white;
   width: 100px;
 }
 

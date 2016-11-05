@@ -75,7 +75,6 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 index.controller("home-controller", function($scope, $location, $localStorage) {
 
 	if($localStorage.userID !== undefined) {
-		console.log($localStorage.userID);
 		$location.url("/dashboard");
 	}
 
@@ -187,6 +186,15 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		console.log($scope.genres.toString());
 		$scope.$emit("setupEvent", $scope.genres);
 	}
+
+	$scope.skip = function() {
+		$location.url("/dashboard");
+	}
+
+	// if sign up was successful, update id and send to new page
+	$scope.$on("setupUpdate", function(event, setup) {
+		$location.url("/dashboard");
+	});
 
 	// Helper function to update the scope variables
 	function updateGenre(genre) {
