@@ -1,10 +1,14 @@
 .movie_poster {
 	width: 300px;
-	margin: 50px 50px 0px 50px;
+	margin: 10px 50px 0px 50px;
 	padding:1px;
 	border:2px solid #021a40;
 	background-color:#FFFFFF;
+}
+
+#left {
 	float: left;
+	display: inline-block;
 }
 
 .movie_title {
@@ -18,19 +22,38 @@
 	margin-left: 20px;
 	margin-right: 20px;
 	margin-bottom:100px;
-	float: right;
+	float: left;
 }
 
-.movie_description, .movie_cast, .movie_director{
-	margin-top: 50px;
+.movie_details {
 	margin-right: 50px;
+	margin-left: 400px;
+	margin-bottom: 50px;
+}
+
+.movie_description {
+	margin-top: 80px;
+}
+
+.movie_cast, .movie_director, .movie_genres, .movie_duration{
+	margin-top: 30px;
 }
 
 .like_button {
-	margin: 5px 0px 50px 110px;
+	margin: 5px 0px 50px 108px;
 }
 
-.like {
+#rateYo {
+	margin: 50px 0px 0px 70px;
+	display: inline-block;
+}
+
+#rating_text {
+	display: inline-block;
+}
+
+#slash_10 {
+	display: inline-block;
 }
 
 .clear {

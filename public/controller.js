@@ -198,7 +198,12 @@ index.controller("movie-controller", function($scope,$location) {
     		readOnly: true,
     		rating: "88%"
     	});
-    })
+    });
+
+    var $rateYo = $("#rateYo").rateYo();
+    var rating = $rateYo.rateYo("rating");
+    rating = rating/10;
+    document.getElementById("rating_text").innerHTML = rating;
 
 });
 ///////////////////////////////////////////////////////
