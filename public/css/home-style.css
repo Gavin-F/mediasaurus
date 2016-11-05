@@ -83,14 +83,17 @@
 #contdiv {
 	margin-top: 20px;
 	text-align: center;
-
 	animation-name: fadeIn;
 	opacity: 0;
 	animation-delay: 2.5s;
     animation-duration: 2.5s;
 	animation-fill-mode: forwards;
 }
-
+#link {
+	color: black;
+	text-align: center;
+	cursor: pointer;
+}
 
 
 .divider{

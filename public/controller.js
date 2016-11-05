@@ -150,7 +150,7 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 	// if sign up was successful, update id and send to new page
 	$scope.$on("signupUpdate", function(event, userID) {
 		$localStorage.userID = userID;
-		$location.url("/dashboard");
+		$location.url("/setup");
 	});
 
 	// if sign up failed, update page
