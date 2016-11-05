@@ -26,6 +26,15 @@ function isAuthenticated (req, res, next) {
 };
 
 router.route('/preferences/movies')
+	
+	/*
+	 * Responds with a list of the user's movie likes/dislikes.
+	 *
+	 * Request: 
+	 *		_id: string; same _id of user that is given at login/signup
+	 * Response:
+	 *		list of user's movie likes/dislikes
+	 */
 	.post(function(req, res) {
 		User.findById(req.body._id)
 		.populate('movieProfile')
@@ -35,6 +44,15 @@ router.route('/preferences/movies')
 		});
 	})
 	
+	/*
+	 * Adds a user movie rating on movie with title movieTitle.
+	 *
+	 * Request:
+	 *		_id: string; same _id of user that is given at login/signup
+	 *		movieTitle: string; name of movie
+	 *		liked: boolean; liked or disliked
+	 * Response: TBD
+	 */
 	.put(function(req, res){
 		if(req.body.movieTitle === null)
 			return res.send(506, 'nothing to set');
@@ -53,6 +71,14 @@ router.route('/preferences/movies')
 		});
 	})
 	
+	/*
+	 * Removes the user's ratings on movie with title movieTitle.
+	 *
+	 * Request:
+	 *		_id: string; same _id of user that is given at login/signup
+	 *		movieTitle: string; name of movie
+	 * Response: TBD
+	 */
 	.delete(function(req, res) {
 		User.findById(req.body._id)
 		.populate('movieProfile')
@@ -74,10 +100,24 @@ router.route('/preferences/movies')
 
 router.route('/movies/:id')
 	.get(function(req, res){
-		//TODO CALL APIs
+		//TODO CALL search by id from tmdb
 		return res.send({movieID: req.params.id});
 	});
-
+	
+router.route('/movies/search')
+	/*
+	 * Return 20 search results from TMDB
+	 *
+	 * Request:
+	 *		query: string; query to send to TMDB api
+	 *
+	 * Response:
+	 * 	
+	 */
+	.post(function(req, res){
+		//TODO call search from TMDB
+		return res.send(req.body.query);
+	});
 //Register the authentication middleware
 //router.use('/posts', isAuthenticated);
 
