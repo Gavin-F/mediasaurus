@@ -19,13 +19,24 @@ var MovieProfile = mongoose.model('MovieProfile');
 var express = require('express');
 var tmdb_api = require('../api/tmdb_api');
 
-// movieProfile:
-function findSuggestedMovies(movieProfile, callback) {
-  var newSuggestedMovies;
-  // discoverMovieswithGenre(); // Returns movies of
-  // Sort list of rating
-  // Store list in suggestedMovies
-  user.update({ suggestedMovies: newSuggestedMovies}, function(err, numAffected){
-    if(err)return res.send(509,err);
+// movieProfile: User's movieProfile
+function findSuggestedMovies(movieProfile, callback)   {
+  var suggestedMovies = [];
+
+  // Get 5 most recently-liked movies from movieProfile
+  var preferredMovies = movieProfile.preferences;
+  preferredMovies = preferredMovies.slice(Math.max(preferredMovies.length-5, 1));
+
+  // Call API to get recommended movies for each recently-liked movie
+  preferredGenres.forEach(function(entry){
+    suggestedMovies.push(getRecommendedMovies(entry /*callback*/)); // tmdb api....
   });
+
+  // Return 10 recommended movies each and add to suggestedMovies
+  // Weigh each movie based on genre, rating, etc on a point scale
+  // Cut-off to top 10-20 movies
+
+
+  // Return suggestedMovies list to callback
+  callback(suggestedMovies);
 }
