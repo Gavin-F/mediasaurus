@@ -17,7 +17,7 @@ h1 {
 	background-color: #002145;
 /* 	border-style: solid;
 	border-color: black; */
-	border-radius: 3px;  
+	border-radius: 3px;
 	width: 500px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -140,36 +140,28 @@ h1 {
 
 /* Facebook */
 .loginBtn--facebook {
-	background-color: white;
+	background-color: #3b5998;
 	/*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
-	color: black;
 }
 .loginBtn--facebook:before {
 	border-right: white 1px solid;
-	-webkit-filter: invert(100%);
 	background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_facebook.png') 6px 6px no-repeat;
-/*	background: url('http://simpleicon.com/wp-content/uploads/facebook.png') no-repeat; */
 }
 .loginBtn--facebook:hover,
 .loginBtn--facebook:focus {
-	background-color: #CDCDCD;
-	color: black;
+	background-color: #36528c;
 }
-
 
 /* Google */
 .loginBtn--google {
 	/*font-family: "Roboto", Roboto, arial, sans-serif;*/
-	background: white;
-	color: black;
+	background: #d34836;
 }
 .loginBtn--google:before {
 	border-right: white 1px solid;
-	-webkit-filter:invert(100%);
 	background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png') 6px 6px no-repeat;
 }
 .loginBtn--google:hover,
 .loginBtn--google:focus {
-	background: #CDCDCD;
-	color: black;
+	background: #ba4030;
 }

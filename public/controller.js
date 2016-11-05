@@ -1,12 +1,11 @@
 var index = angular.module("index",
 	["ngRoute",
 	"ngStorage",
-	//"ngCookies",
 	"index.signup",
-	"index.login"]);
+	"index.login",
+	"index.accsetup"
+	]);
 
-
-//Branch Comment
 index.config(function($routeProvider) {
 	$routeProvider
 	.when("/", {
@@ -125,7 +124,6 @@ index.controller("dashboard-controller", function($scope, $timeout, $localStorag
 // SIGNUP CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("signup-controller", function($scope, $location, $http, $localStorage) {
-
 	$scope.signupError = false;
 
 	$scope.signUp = function() {
@@ -157,8 +155,55 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 // ACCOUNT SETUP CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("accsetup-controller", function($scope, $location, $http, $localStorage) {
+	// if the user isn't signed in, send them back to signup splash
+	if($localStorage.userID === undefined) {
+		$location.url("/");
+	}
 
-	$scope.message = "hello world";
+	$scope.genres = []; // array to pass to server, contains all the genres the user has selected
+	$scope.genreClick = function(genre) {
+		var index = $scope.genres.indexOf(genre);
+		if(index > -1) {// array contains the genre
+			$scope.genres.splice(index, 1);
+		}
+		else { // else remove genre from array
+			$scope.genres.push(genre);
+		}
+		updateGenre(genre);
+	};
+
+	$scope.next = function() {
+		console.log($scope.genres.toString());
+		$scope.$emit("setupEvent", $scope.genres);
+	}
+
+	// Helper function to update the scope variables
+	function updateGenre(genre) {
+		switch(genre) {
+			case "action": $scope.actionState = !$scope.actionState ; break;
+			case "adventure": $scope.adventureState = !$scope.adventureState; break;
+			case "animation": $scope.animationState = !$scope.animationState; break;
+			case "biography": $scope.biographyState = !$scope.biographyState; break;
+			case "comedy": $scope.comedyState = !$scope.comedyState; break;
+			case "crime": $scope.crimeState = !$scope.crimeState; break;
+			case "drama": $scope.dramaState = !$scope.dramaState; break;
+			case "family": $scope.familyState = !$scope.familyState; break;
+			case "fantasy": $scope.fantasyState = !$scope.fantasyState; break;
+			case "filmnoir": $scope.filmnoirState = !$scope.filmnoirState; break;
+			case "history": $scope.historyState = !$scope.historyState; break;
+			case "horror": $scope.horrorState = !$scope.horrorState; break;
+			case "music": $scope.musicState = !$scope.musicState; break;
+			case "musical": $scope.musicalState = !$scope.musicalState; break;
+			case "mystery": $scope.mysteryState = !$scope.mysteryState; break;
+			case "romance": $scope.romanceState = !$scope.romanceState; break;
+			case "scifi": $scope.scifiState	= !$scope.scifiState; break;
+			case "sport": $scope.sportState = !$scope.sportState; break;
+			case "thriller": $scope.thrillerState = !$scope.thrillerState; break;
+			case "war": $scope.warState = !$scope.warState; break;
+			case "western": $scope.westernState = !$scope.westernState; break;
+			default: break;
+		}
+	};
 
 });
 
@@ -167,7 +212,6 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 // LOGIN CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("login-controller", function($scope, $location, $http, $localStorage) {
-
 	$scope.loginError = false;
 
 	$scope.loginAcc = function() {
