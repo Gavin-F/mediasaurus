@@ -12,6 +12,9 @@ APIKEY = "8f9caf52038412780f3c4037b2b114ca";
 var API_BASE = "https://api.themoviedb.org/3/";
 var API_DISCOVER1 = "discover/movie?api_key=";
 var API_DISCOVER2 = "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=1";
+var API_SEARCH = "search/movie?api_key=" + APIKEY;
+var API_MOVIEDETAILS = 'movie/';
+
 
 // https://api.themoviedb.org/3/movie/405?api_key=8f9caf52038412780f3c4037b2b114ca&language=en-US
 
@@ -53,6 +56,7 @@ module.exports = {
     // This function consumes a String of a name of a Genre
     // Returns the GenreID of the given string from the mongodb server
     getGenreID: function (genre) {
+        // STUB
         // https://api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
         // consAPI_URL = API_BASE +
 
@@ -97,7 +101,6 @@ module.exports = {
                     keyword_url += ",";
                 }
             }
-
         }
 
         if (genreArray !== null) {
@@ -135,6 +138,27 @@ module.exports = {
         this.httpGetAsync(consAPI_URL, callback);
     },
 
+    searchMovies: function (query, callback) {
+      consAPI_URL = API_BASE + API_SEARCH + "&query=" + query;
+
+      this.httpGetAsync(consAPI_URL, callback);
+    },
+
+	 getMovieDetails: function(id, callback) {
+		consAPI_URL = API_BASE + 'movie/' + id + '?api_key=' + APIKEY;
+		this.httpGetAsync(consAPI_URL, callback);
+	 },
+
+	 getMovieRecommendations: function(id, callback){
+		consAPI_URL = API_BASE + 'movie/' + id + 'recommendations?api_key=' + APIKEY;
+		this.httpGetAsync(consAPI_URL, callback);
+	 },
+
+	 getSimilarMovies: function(id, callback){
+		consAPI_URL = API_BASE + 'movie/' + id + 'similar?api_key=' + APIKEY;
+		this.httpGetAsync(consAPI_URL, callback);
+	 },
+
     // Function inspiration taken from StackOverflow
     // http://stackoverflow.com/questions/247483/http-get-request-in-javascript
 
@@ -144,7 +168,7 @@ module.exports = {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                 callback(xmlHttp.responseText);
-        }
+        };
         xmlHttp.open("GET", theUrl, true); // true for asynchronous
         xmlHttp.send(null);
     },
@@ -154,7 +178,7 @@ module.exports = {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                 return xmlHttp.responseText;
-        }
+        };
         xmlHttp.open("GET", theUrl, true); // true for asynchronous
         xmlHttp.send(null);
     },
@@ -164,11 +188,12 @@ module.exports = {
       console.log(value);
     }
 
-}
+};
+
 
 // <<TEST BANK>>
 
-// discoverMovieswithGenre("action", printThis);
+// dis;coverMovieswithGenre("action", printThis);
 
 // discoverMovies("2017", null, null, null, null, printThis);
 
