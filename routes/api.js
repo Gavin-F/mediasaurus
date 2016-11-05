@@ -11,7 +11,7 @@ var tmdb = require('../api/tmdb_api');
 
 //Used for routes that must be authenticated.
 function isAuthenticated (req, res, next) {
-    // if user is authenticated in the session, call the next() to call the next request handler 
+    // if user is authenticated in the session, call the next() to call the next request handler
     // Passport adds this method to request object. A middleware is allowed to add properties to
     // request and response objects
 
@@ -28,11 +28,11 @@ function isAuthenticated (req, res, next) {
 };
 
 router.route('/preferences/movies')
-	
+
 	/*
 	 * Responds with a list of the user's movie likes/dislikes.
 	 *
-	 * Request: 
+	 * Request:
 	 *		_id: string; same _id of user that is given at login/signup
 	 * Response:
 	 *		list of user's movie likes/dislikes
@@ -45,7 +45,7 @@ router.route('/preferences/movies')
 			return res.send(user.movieProfile.prefs);
 		});
 	})
-	
+
 	/*
 	 * Adds a user movie rating on movie with title movieTitle.
 	 *
@@ -64,7 +64,7 @@ router.route('/preferences/movies')
 			if(err) {
 				return res.send(505, err);
 			}
-			var prefItem = {movie: req.body.movieTitle, liked: req.body.liked}
+			var prefItem = {movie: req.body.movieTitle, liked: req.body.liked};
 			user.movieProfile.prefs.push(prefItem);
 			user.movieProfile.save(function(err){
 				if(err) return res.send(506, err);
@@ -72,7 +72,7 @@ router.route('/preferences/movies')
 			return res.send(user);
 		});
 	})
-	
+
 	/*
 	 * Removes the user's ratings on movie with title movieTitle.
 	 *
@@ -86,17 +86,18 @@ router.route('/preferences/movies')
 		.populate('movieProfile')
 		.exec(function(err, user){
 			if(err) return res.send(507, err);
-			
+
 			// remove all movies with movieTitle from preferences
 			var prefsArr = user.movieProfile.prefs;
 			for(var i = user.movieProfile.prefs.length-1; i>=0; i--)
 				if(prefsArr[i].movie === req.body.movieTitle)
 					prefsArr.splice(i, 1);
-			
+
 			user.movieProfile.save(function(err){
 				if(err)return res.send(508,err);
 				return res.send(user.movieProfile.prefs);
 			});
+
 		});
 	});
 
@@ -107,7 +108,7 @@ router.route('/movies/:id')
 			return res.send(jsonDetails.status_code ? null : jsonDetails);
 		});
 	});
-	
+
 router.route('/movies/search')
 	/*
 	 * Return 20 search results from TMDB
@@ -116,7 +117,7 @@ router.route('/movies/search')
 	 *		query: string; query to send to TMDB api
 	 *
 	 * Response:
-	 * 	
+	 *
 	 */
 	.post(function(req, res){
 		//TODO call search from TMDB
