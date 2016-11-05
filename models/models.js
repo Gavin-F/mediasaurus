@@ -5,10 +5,10 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
     username: String,
     password: String, //hash created from password
-	  email: String,
+	email: String,
     //created_at: {type: Date, default: Date.now}
-	  movieProfile: {type: Schema.ObjectId, ref: 'MovieProfile'},
-    suggestedMovies: [{movie: String}]
+	movieProfile: {type: Schema.ObjectId, ref: 'MovieProfile'}
+    
     // suggestedMovies: {
     //   type: [{movie: String}],
     //   validate: [arrayLimit, '{PATH} exceeds the limit of 20']
@@ -27,14 +27,14 @@ var postSchema = new Schema({
 });
 
 var movieProfileSchema = new Schema({
-	genres: [{genre: String}],
-	actors: [{actor: String}],
-	directors: [{director: String}],
+	genres: {type: [{genre_id: String, weight: Number}], 
+	default: },
 	rating: Number,
 	length: Number,
 
-	prefs: [{movie: String, liked: Boolean}]
-});
+	preferences: [{movie_id: String, liked: Boolean}],
+	suggested: [{movie_id: String}]
+}); 
 
 mongoose.model('User', userSchema);
 mongoose.model('Post', postSchema);
