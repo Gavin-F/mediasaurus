@@ -48,14 +48,11 @@ module.exports = {
         jsonObj = this.httpGetRequest(consAPI_URL);
 
         // return ;
-    }
+    },
 
     // This function consumes a String of a name of a Genre
     // Returns the GenreID of the given string from the mongodb server
-    // TODO: Implementation
-
     getGenreID: function (genre) {
-        // STUB
         // https://api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
         // consAPI_URL = API_BASE +
 
@@ -77,25 +74,24 @@ module.exports = {
     // notGenreArray is an array of String containing the genre tags to filter out
     // castArray is an array of String containing the actors names
     discoverMovies: function (year,keywordArray,genreArray,notGenreArray,castArray,callback) {
-        // body...
-        // TODO: implement
         var year_url = "";
         var keyword_url = "";
         var genre_url = "";
         var not_genre_url = "";
         var cast_url = "";
+        var i;
 
         // If year != null
         // Add the year API
-        if (year != null) {
+        if (year !== null) {
             year_url = "&primary_release_date.gte=" + year + "-01-01";
         }
 
         // If KeywordArray != null
         // Add each keyword to the keyword_api
-        if (keywordArray != null) {
+        if (keywordArray !== null) {
             keyword_url = "&with_keywords=";
-            for (var i = keywordArray.length - 1; i >= 0; i--) {
+            for (i = keywordArray.length - 1; i >= 0; i--) {
                 keyword_url += this.getKeywordID(keywordArray[i]);
                 if (i !== 0) {
                     keyword_url += ",";
@@ -104,9 +100,9 @@ module.exports = {
 
         }
 
-        if (genreArray != null) {
+        if (genreArray !== null) {
             genre_url = "&with_genres=";
-            for (var i = genreArray.length - 1; i >= 0; i--) {
+            for (i = genreArray.length - 1; i >= 0; i--) {
                 genre_url += this.getGenreID(genreArray[i]);
                 if (i !== 0) {
                     genre_url += ",";
@@ -114,9 +110,9 @@ module.exports = {
             }
         }
 
-        if (notGenreArray != null) {
+        if (notGenreArray !== null) {
             not_genre_url = "&without_genres=";
-            for (var i = notGenreArray.length - 1; i >= 0; i--) {
+            for (i = notGenreArray.length - 1; i >= 0; i--) {
                 not_genre_url += this.getGenreID(notGenreArray[i]);
                 if (i !== 0) {
                     not_genre_url += ",";
@@ -124,9 +120,9 @@ module.exports = {
             }
         }
 
-        if (castArray != null) {
+        if (castArray !== null) {
             cast_url = "&with_genres=";
-            for (var i = castArray.length - 1; i >= 0; i--) {
+            for (i = castArray.length - 1; i >= 0; i--) {
                 cast_url += castArray[i];
                 if (i !== 0) {
                     cast_url += ",";

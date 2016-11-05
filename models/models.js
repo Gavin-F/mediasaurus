@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-
 var Schema = mongoose.Schema;
+var allGenres = require(('./genres.json'));
 
 var userSchema = new Schema({
     username: String,
@@ -8,7 +8,7 @@ var userSchema = new Schema({
 	email: String,
     //created_at: {type: Date, default: Date.now}
 	movieProfile: {type: Schema.ObjectId, ref: 'MovieProfile'}
-    
+
     // suggestedMovies: {
     //   type: [{movie: String}],
     //   validate: [arrayLimit, '{PATH} exceeds the limit of 20']
@@ -27,14 +27,25 @@ var postSchema = new Schema({
 });
 
 var movieProfileSchema = new Schema({
-	genres: {type: [{genre_id: String, weight: Number}], 
-	default: },
+	genres: {type: [{genre_id: String, weight: Number}], default: generateDefaultGenres()},
 	rating: Number,
 	length: Number,
 
 	preferences: [{movie_id: String, liked: Boolean}],
 	suggested: [{movie_id: String}]
-}); 
+});
+
+
+function generateDefaultGenres(){
+  var defaultList = [];
+
+  allGenres.forEach(function(entry){
+    var g = {id: entry.id, weight: 1};
+    defaultList.push(g);
+  });
+
+  return defaultList;
+}
 
 mongoose.model('User', userSchema);
 mongoose.model('Post', postSchema);

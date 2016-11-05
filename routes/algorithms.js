@@ -5,7 +5,7 @@
     - getSuggestedMovies
       - Get a stored list of 20 movie ids from user profile
       - calcSuggestedMovies if null
-    - calcSuggestedMovies
+    - findSuggestedMovies
       - Grab categories from user profile (genre, cast, rating)
       - Weigh categories on point scale
       - Use API to return relevant movies
@@ -17,16 +17,15 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var MovieProfile = mongoose.model('MovieProfile');
 var express = require('express');
-var tmdb_api = require('/api/tmdb_api');
-// require tmdb APIs
+var tmdb_api = require('../api/tmdb_api');
 
-function calc(user) {
-  var profile = user.movieProfile;
+// movieProfile:
+function findSuggestedMovies(movieProfile, callback) {
   var newSuggestedMovies;
-  // discoverMovieswithGenre(); // Returns movies of preferred genre
+  // discoverMovieswithGenre(); // Returns movies of
   // Sort list of rating
   // Store list in suggestedMovies
   user.update({ suggestedMovies: newSuggestedMovies}, function(err, numAffected){
     if(err)return res.send(509,err);
-  })
+  });
 }
