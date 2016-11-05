@@ -7,6 +7,8 @@ var express = require('express');
 var router = express.Router();
 var Post = mongoose.model('Post');
 
+var tmdb = require('../api/tmdb_api');
+
 //Used for routes that must be authenticated.
 function isAuthenticated (req, res, next) {
     // if user is authenticated in the session, call the next() to call the next request handler 
@@ -100,8 +102,10 @@ router.route('/preferences/movies')
 
 router.route('/movies/:id')
 	.get(function(req, res){
-		//TODO CALL search by id from tmdb
-		return res.send({movieID: req.params.id});
+		tmdb.getMovieDetails(req.params.id, function(details){
+			jsonDetails = JSON.parse(details);
+			return res.send(jsonDetails.status_code ? null : jsonDetails);
+		});
 	});
 	
 router.route('/movies/search')
@@ -116,7 +120,9 @@ router.route('/movies/search')
 	 */
 	.post(function(req, res){
 		//TODO call search from TMDB
-		return res.send(req.body.query);
+		tmdb.searchMovies(req.body.query, function(results){
+			return res.send(JSON.parse(results));
+		});
 	});
 //Register the authentication middleware
 //router.use('/posts', isAuthenticated);
