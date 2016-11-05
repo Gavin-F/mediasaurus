@@ -1,13 +1,12 @@
-<html ng-app="signup">
+<html ng-app="login">
 	<head>
 		<link rel="stylesheet" href="../css/superhero-style.css">
 		<link rel="stylesheet" href="../css/login-style.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 	</head>
 
 	<body>
-		<div class="container">
-			<div class="login-box">
+		<div class="container" ng-controller="login">
+			<div class="login-box" ng-controller="login-controller">
 				<h1>Login</h1>
 				
 				<div class="divider"></div>
@@ -37,7 +36,7 @@
 						</button>
 					</div>
 				</form>
-
+				
 				<div class="form-divider"></div>
 			
 				<p style="color: white">or login with</p>
@@ -49,5 +48,6 @@
 				</div>
 			</div>
 		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 	</body>
 </html>

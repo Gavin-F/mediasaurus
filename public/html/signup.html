@@ -2,57 +2,66 @@
 	<head>
 		<link rel="stylesheet" href="../css/superhero-style.css">
 		<link rel="stylesheet" href="../css/signup-style.css">
-
 	</head>
 
 	<body>
-		<div class="container">
-			<div class="signup-box">
+		<div class="container" ng-controller="signup">
+			<div class="signup-box" ng-controller="signup-controller">
 				<h1>Create your account</h1>
-				
+
 				<div class="divider"></div>
-				
+
 				<form class="form-register" method="post" name="register" novalidate>
-				
+
+					<p class="alert-top alert-danger" ng-show="signupError">Username already taken!</p>
+
 					<div class="inputdiv" ng-class="{'has-error': register.username.$invalid && register.username.$dirty, 'has-success': !register.username.$invalid}">
 						<input id="username" class="form-control" name="username" class="form-control" type="text" placeholder="username"
 						ng-model="username" ng-focus="userFocus=true" ng-blur="userFocus=false" maxlength="16" ng-minlength='4' required />
 					</div>
-					
+
 					<p class="alert alert-danger" ng-show="form-register.username.$error.minlength && !userFocus">Username too short (mininum 4 characters).</p>
-					
+
 					<div class="divider"></div>
-					
+
 					<div class="inputdiv" ng-class="{'has-error': register.email.$invalid && register.email.$dirty, 'has-success': !register.email.$invalid}" >
-						<input type="email" class="form-control" name="email" placeholder="email" 
+						<input type="email" class="form-control" name="email" placeholder="email"
 						ng-model="email" ng-focus="emailFocus=true" ng-blur="emailFocus=false" required/>
 					</div>
-					
+
 					<p class="alert alert-danger" ng-show="form-register.email.$error.email && !emailFocus">Your email is invalid.</p>
-					
+
 					<div class="divider"></div>
-									
+
 					<div class="inputdiv" ng-class="{'has-error': register.password.$error.minlength && register.password.$dirty, 'has-success': !register.password.$error.minlength && register.password.$dirty}">
 						<input type="password" id="password" class="form-control" name="password" placeholder="password"
 						ng-model="password" ng-focus="pwFocus=true" ng-blur="pwFocus=false" ng-minlength='6' required />
 					</div>
-					
+
 					<p class="alert alert-danger" ng-show="(form-register.password.$error.minlength || form.password.$invalid) && !pwFocus">Your password must be at least 6 characters.</p>
-					
+
 					<div class="divider"></div>
-					
+
+					<div class="inputdiv" ng-class="{'has-error': confirmpassword != password && register.confirmpassword.$dirty, 'has-success': confirmpassword == password && register.confirmpassword.$dirty}">
+						<input type="password" id="confirmpassword" class="form-control" name="confirmpassword" placeholder="confirm password"
+						ng-model="confirmpassword" ng-focus="cpwFocus=true" ng-blur="cpwFocus=false" pw-check required />
+					</div>
+
+					<p class="alert alert-danger" ng-show="confirmpassword != password && register.confirmpassword.$dirty && !cpwFocus">Your passwords must match.</p>
+
+					<div class="divider"></div>
+
 					<div class="space-top text-center">
-						<button ng-disabled="form-register.$invalid" class="waves-effect waves-light btn done" ng-click="signUp()">
+						<button ng-disabled="register.$invalid || confirmpassword != password || !register.confirmpassword.$dirty" class="waves-effect waves-light btn done" ng-click="signUp()">
 						Sign Up
-						</button>
 						</button>
 					</div>
 				</form>
 
 				<div class="form-divider"></div>
-				
+
 				<p style="color: white">or sign up with</p>
-				
+
 				<div class="social-div">
 					<button class="btn loginBtn loginBtn--google">Google+</button>
 					<div class="btn-divider"></div>

@@ -1,4 +1,9 @@
-var index = angular.module("index", ["ngRoute"]);
+var index = angular.module("index",
+	["ngRoute",
+	"ngStorage",
+	//"ngCookies",
+	"index.signup",
+	"index.login"]);
 
 
 //Branch 
@@ -29,6 +34,10 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/signup.html",
 		controller: "signup-controller"
 	})
+	.when("/setup", {
+		templateUrl:"/html/accsetup.html",
+		controller: "accsetup-controller"
+	})
 	.when("/login", {
 		templateUrl: "/html/login.html",
 		controller: "login-controller"
@@ -38,19 +47,19 @@ index.config(function($routeProvider) {
 		controller: "movie-controller"
 	})
 	.otherwise({redirectTo:'/'});
-}); 
+});
 
 ///////////////////////////////////////////////////////
 // INDEX CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("index-controller", ["$scope", "$http", "$location", "$window", function($scope, $http, $location, $window) {
-	$scope.isActive = function (viewLocation) { 
+	$scope.isActive = function (viewLocation) {
 		return viewLocation === $location.path();
 	};
 	$scope.isActive2 = function() {
     if(($location.path()=='/account')||($location.path()=='/password')){
     	return 1;
-	}	
+	}
 	else{
 		return 0;
 	}
@@ -61,33 +70,47 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 ///////////////////////////////////////////////////////
 // HOME CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("home-controller", function($scope, $location) {
+index.controller("home-controller", function($scope, $location, $localStorage) {
+
+	if($localStorage.userID !== undefined) {
+		console.log($localStorage.userID);
+		$location.url("/dashboard");
+	}
 
 	// sign up
 	$scope.toSignUp = function(){
 		$location.url("/signup");
 	}
-	
+
 	// login
 	$scope.toLogin = function(){
 		$location.url("/login");
 	}
-	
+
 	// continue without logging in
 	$scope.continue = function(){
 		$location.url("http://google.com");
 	}
 });
 
+
+
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("dashboard-controller", function($scope,$location ,$timeout) {
-	
-	$scope.message = "hello";
-	
-	$scope.setText = function() {
-		$scope.test = "Hello world!";
+index.controller("dashboard-controller", function($scope,$location, $timeout, $localStorage) {
+
+	if($localStorage.userID !== undefined) {
+		$scope.userID = "Logged in!";
+		$scope.loggedin = true;
+	}
+	else {
+		$scope.userID = "Not logged in!";
+		$scope.loggedin = false;
+	}
+
+	$scope.reset = function() {
+		delete $localStorage.userID;
 	}
 	$scope.gotoMovie = function(){
 		$location.url("/movie");
@@ -105,60 +128,106 @@ index.controller("dashboard-controller", function($scope,$location ,$timeout) {
 });
 
 
+
 ///////////////////////////////////////////////////////
 // SIGNUP CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("signup-controller", function($scope, $location) {
-	
+index.controller("signup-controller", function($scope, $location, $http, $localStorage) {
+
+	$scope.signupError = false;
+
 	$scope.signUp = function() {
-	//	$location.url("/setup");
+		// get form info
+		var user = {
+			username: $scope.username,
+			email: $scope.email,
+			password: $scope.password
+		};
+		// send to parent controller
+		$scope.$emit("signupEvent", user);
 	}
+
+	// if sign up was successful, update id and send to new page
+	$scope.$on("signupUpdate", function(event, userID) {
+		$localStorage.userID = userID;
+		$location.url("/dashboard");
+	});
+
+	// if sign up failed, update page
+	$scope.$on("signupError", function(event, error) {
+		$scope.signupError = error;
+	});
 });
+
+
+
+///////////////////////////////////////////////////////
+// ACCOUNT SETUP CONTROLLER
+///////////////////////////////////////////////////////
+index.controller("accsetup-controller", function($scope, $location, $http, $localStorage) {
+
+	$scope.message = "hello world";
+
+});
+
 
 ///////////////////////////////////////////////////////
 // LOGIN CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("login-controller", function($scope, $location) {
-	
+index.controller("login-controller", function($scope, $location, $http, $localStorage) {
+
 	$scope.loginError = false;
-	var validUser = false;
-	
+
 	$scope.loginAcc = function() {
-		if($scope.username == "test" && $scope.password == "123456") {
-			$location.url("/dashboard");
-		}
-		else {
-			$scope.loginError = true;
-		}
+		var user = {
+			username: $scope.username,
+			password: $scope.password
+		};
+
+		$scope.$emit("loginEvent", user);
 	}
+	// if login was successful, update id and send to new page
+	$scope.$on("loginUpdate", function(event, userID) {
+		$localStorage.userID = userID;
+		$location.url("/dashboard");
+	});
+
+	// if login failed, update page
+	$scope.$on("loginError", function(event, error) {
+		$scope.loginError = error;
+	});
 });
+
+
 
 ///////////////////////////////////////////////////////
 // TEST CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("testpage-controller", function($scope,$location) {
-	
+
 	$scope.message = "hello";
-	
+
 	$scope.setText = function() {
 		$scope.test = "Hello world!";
-	} 
+	}
 	// adding comment to make sure merge went as planned.
 	$scope.goHome = function(){
 		$location.url("/");
 	}
 });
 
+
+
 ///////////////////////////////////////////////////////
 // Reset Controller CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("password-controller", function($scope,$location) {
-	
+
 	$scope.message = "hello";
-	
+
 	$scope.setText = function() {
 		$scope.test = "Hello world!";
-	} 
+	}
 	$scope.goDashboard = function(){
 		$location.url("/dashboard");
 	}
@@ -206,14 +275,15 @@ index.controller("movie-controller", function($scope,$location) {
     document.getElementById("rating_text").innerHTML = rating;
 
 });
+
 ///////////////////////////////////////////////////////
 // Account CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("account-controller", function($scope,$location) {
-	
+
 	$scope.message = "hello";
-	
+
 	$scope.setText = function() {
 		$scope.test = "Hello world!";
-	} 
+	}
 });

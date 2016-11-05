@@ -74,6 +74,17 @@ h1 {
 	width: 70%;
 }
 
+.alert-top{
+	padding: 10px;
+	margin: 0px auto 20px auto;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	border-color: #e85a71;
+	background-color: #e85a71;
+	color: white;
+	width: 70%;
+}
+
 .divider {
 	margin-top: 30px;
 }

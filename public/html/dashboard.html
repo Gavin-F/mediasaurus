@@ -9,8 +9,12 @@
 
 <body>
 	<div class="container" ng-controller="dashboard-controller">
+
+		{{userID}}
+		<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
+
 		<h3>Dashboard</h3>
-		
+
 		<div class="form-group">
 			<label class="control-label">Search</label>
 			<div class="input-group">
@@ -73,4 +77,3 @@
 </body>
 
 </html>
-
