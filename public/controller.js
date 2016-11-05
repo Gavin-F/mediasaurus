@@ -40,6 +40,10 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/login.html",
 		controller: "login-controller"
 	})
+	.when("/movie", {
+		templateUrl: "/html/movie.html",
+		controller: "movie-controller"
+	})
 	.otherwise({redirectTo:'/'});
 });
 
@@ -92,7 +96,7 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("dashboard-controller", function($scope, $timeout, $localStorage) {
+index.controller("dashboard-controller", function($scope,$location, $timeout, $localStorage) {
 
 	if($localStorage.userID !== undefined) {
 		$scope.userID = "Logged in!";
@@ -105,6 +109,9 @@ index.controller("dashboard-controller", function($scope, $timeout, $localStorag
 
 	$scope.reset = function() {
 		delete $localStorage.userID;
+	}
+	$scope.gotoMovie = function(){
+		$location.url("/movie");
 	}
 
 	$(document).ready(function() {
@@ -274,8 +281,43 @@ index.controller("password-controller", function($scope,$location) {
 		$location.url("/password");
 	}
 });
+///////////////////////////////////////////////////////
+// Movie CONTROLLER
+///////////////////////////////////////////////////////
+index.controller("movie-controller", function($scope,$location) {
 
+    $('.rating').likeDislike({
+        initialValue: 0,
+        click: function (value, l, d, event) {
+            var likes = $(this.element).find('.likes');
+            var dislikes = $(this.element).find('.dislikes');
 
+            likes.text(parseInt(likes.text()) + l);
+            dislikes.text(parseInt(dislikes.text()) + d);
+
+            // $.ajax({
+            //     url: 'url',
+            //     type: 'post',
+            //     data: 'value=' + value,
+            // });
+        }
+    });
+
+    $(function () {
+    	$("#rateYo").rateYo({
+    		starWidth: "20px",
+    		numStars: 10,
+    		readOnly: true,
+    		rating: "88%"
+    	});
+    });
+
+    var $rateYo = $("#rateYo").rateYo();
+    var rating = $rateYo.rateYo("rating");
+    rating = rating/10;
+    document.getElementById("rating_text").innerHTML = rating;
+
+});
 
 ///////////////////////////////////////////////////////
 // Account CONTROLLER
