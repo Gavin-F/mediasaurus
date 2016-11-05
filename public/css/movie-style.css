@@ -59,3 +59,7 @@
 .clear {
 	clear:both;
 }
+
+.horizontal_scroll {
+	overflow-x: scroll;
+}

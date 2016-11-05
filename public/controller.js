@@ -3,7 +3,8 @@ var index = angular.module("index",
 	"ngStorage",
 	"index.signup",
 	"index.login",
-	"index.accsetup"
+	"index.accsetup",
+	"index.moviepage"
 	]);
 
 index.config(function($routeProvider) {
@@ -290,6 +291,14 @@ index.controller("password-controller", function($scope,$location) {
 ///////////////////////////////////////////////////////
 index.controller("movie-controller", function($scope,$location) {
 
+	$scope.movie = {
+		description: "test",
+		director: "test2",
+		poster: "https://image.tmdb.org/t/p/w500/jIjdFXKUNtdf1bwqMrhearpyjMj.jpg"
+	};
+
+	$scope.$emit("movieEvent", "movie_id");
+
     $('.rating').likeDislike({
         initialValue: 0,
         click: function (value, l, d, event) {
@@ -298,12 +307,6 @@ index.controller("movie-controller", function($scope,$location) {
 
             likes.text(parseInt(likes.text()) + l);
             dislikes.text(parseInt(dislikes.text()) + d);
-
-            // $.ajax({
-            //     url: 'url',
-            //     type: 'post',
-            //     data: 'value=' + value,
-            // });
         }
     });
 
@@ -316,10 +319,28 @@ index.controller("movie-controller", function($scope,$location) {
     	});
     });
 
+    $(function() {
+		$('.tooltip-custom').tooltipster({
+			side: 'right',
+			interactive: true,
+			arrow: false,
+			animation: 'swing',
+			contentCloning: true
+		});
+	});
+
     var $rateYo = $("#rateYo").rateYo();
     var rating = $rateYo.rateYo("rating");
     rating = rating/10;
     document.getElementById("rating_text").innerHTML = rating;
+
+	$scope.$on("movieUpdate", function(event, movie) {
+		$scope.movie = movie;
+	});
+
+	$scope.$on("movieError", function(event, error) {
+
+	});
 
 });
 
