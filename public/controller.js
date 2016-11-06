@@ -102,8 +102,9 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("dashboard-controller", function($scope,$location, $timeout, $localStorage) {
+index.controller("dashboard-controller", function($scope, $location, $http, $localStorage) {
 
+	// logout user for debugging only!!
 	if($localStorage.userID !== undefined) {
 		$scope.userID = "Logged in!";
 		$scope.loggedin = true;
@@ -112,13 +113,36 @@ index.controller("dashboard-controller", function($scope,$location, $timeout, $l
 		$scope.userID = "Not logged in!";
 		$scope.loggedin = false;
 	}
-
 	$scope.reset = function() {
 		delete $localStorage.userID;
 	}
-	$scope.gotoMovie = function(){
-		$location.url("/movies/" + "8966");
+
+	$scope.movies = [];
+
+	$scope.gotoMovie = function(id){
+		//$location.url("/movie");
+		$location.url("/movies/" + id);
 	}
+
+	$http.get("/api/movies/popular/" + 1).success(function(req) {
+		for(i = 0; i < 5; i++) {
+			console.log(req[i]);
+			var movie = {
+				id: req[i].id,
+				title: req[i].title,
+				poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
+				rating: req[i].vote_average
+			};
+			$scope.movies.push(movie);
+		}
+		// $scope.m0 =  {
+		// 	id: req[0].id,
+		// 	title: req[0].title,
+		// 	poster: "https://image.tmdb.org/t/p/w500" + req[0].poster_path,
+		// 	rating: req[0].vote_average
+		// };
+		console.log($scope.movies);
+	});
 
 	$(document).ready(function() {
 		$('.tooltip-custom').tooltipster({

@@ -45,5 +45,9 @@ h2 {
 }
 
 .moviePoster {
-  width: 100px;
+  width: 170px;
+}
+
+.tooltip_templates {
+  display: none;
 }
