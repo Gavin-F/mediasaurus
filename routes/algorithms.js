@@ -30,14 +30,13 @@ module.exports = {
 	  preferredMovies = preferredMovies.slice(-5);
 
     var moviesProcessed = 0;
-    // Return suggestedMovies list to callback
 
 	  // Call API to get recommended movies for each recently-liked movie
 	  for (var i = 0; i < preferredMovies.length; i++){
   		tmdb.getMovieRecommendations(preferredMovies[i].movie_id, function (recommendations){
             // Return 10 recommended movies each and add to suggestedMovies
             var results = JSON.parse(recommendations).results;
-            for (var m = 0; m < 10 && m < results.length; m++){
+            for (var j = 0; j < 10 && j < results.length; j++){
               var entry = {movie_id: results[m].id,
                            title: results[m].title,
                            poster_path: results[m].poster_path };
@@ -45,12 +44,12 @@ module.exports = {
             }
 
             moviesProcessed++;
+            // Return suggestedMovies list to callback
             if (moviesProcessed == preferredMovies.length) {
+              // TODO: Weigh each movie based on genre, rating, etc on a point scale
               callback(suggestedMovies);
             }
         });
     }
-
-    // TODO: Weigh each movie based on genre, rating, etc on a point scale
   }
 };
