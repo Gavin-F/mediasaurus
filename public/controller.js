@@ -122,10 +122,11 @@ index.controller("dashboard-controller", function($scope,$location, $timeout, $l
 
 	$(document).ready(function() {
 		$('.tooltip-custom').tooltipster({
-			side: 'right',
-			interactive: true,
+			side: 'bottom',
+			interactive: false,
 			arrow: false,
-			animation: 'swing',
+			theme: 'tooltipster-borderless',
+			//animation: 'fall',
 			contentCloning: true
 		});
 	});
@@ -334,7 +335,7 @@ index.controller("movie-controller", function($scope,$location) {
 		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie.poster_path;
 		$scope.date = obj_movie.release_date;
 
-		for (i = 0; i < obj_movie.genres.length; i++) { 
+		for (i = 0; i < obj_movie.genres.length; i++) {
 			if ((i+1) == obj_movie.genres.length) {
 				obj_genres += obj_movie.genres[i].name;
 			}
