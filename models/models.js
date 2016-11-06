@@ -27,12 +27,12 @@ var postSchema = new Schema({
 });
 
 var movieProfileSchema = new Schema({
-	genres: {type: [{genre_id: String, weight: Number}], default: generateDefaultGenres()},
+	genres: {type: [{genre_id: Number, weight: Number}], default: generateDefaultGenres()},
 	rating: Number,
 	length: Number,
 
-	preferences: [{movie_id: String, liked: Boolean}],
-	suggested: [{movie_id: String}]
+	preferences: [{movie_id: Number, liked: Boolean}],
+	suggestions: [{movie_id: Number}]
 });
 
 
@@ -40,7 +40,7 @@ function generateDefaultGenres(){
   var defaultList = [];
 
   allGenres.forEach(function(entry){
-    var g = {id: entry.id, weight: 1};
+    var g = {genre_id: entry.id, weight: 1};
     defaultList.push(g);
   });
 

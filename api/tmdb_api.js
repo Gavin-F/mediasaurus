@@ -150,12 +150,12 @@ module.exports = {
 	 },
 
 	 getMovieRecommendations: function(id, callback){
-		consAPI_URL = API_BASE + 'movie/' + id + 'recommendations?api_key=' + APIKEY;
+		consAPI_URL = API_BASE + 'movie/' + id + '/recommendations?api_key=' + APIKEY;
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
 
 	 getSimilarMovies: function(id, callback){
-		consAPI_URL = API_BASE + 'movie/' + id + 'similar?api_key=' + APIKEY;
+		consAPI_URL = API_BASE + 'movie/' + id + '/similar?api_key=' + APIKEY;
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
 

@@ -19,26 +19,36 @@ var MovieProfile = mongoose.model('MovieProfile');
 var express = require('express');
 var tmdb = require('../api/tmdb_api');
 
-// movieProfile: User's movieProfile
-function findSuggestedMovies(movieProfile, callback)   {
-  var suggestedMovies = [];
 
-  // Get 5 most recently-liked movies from movieProfile
-  var preferredMovies = movieProfile.preferences;
-  preferredMovies = preferredMovies.slice(Math.max(preferredMovies.length-5, 1));
+module.exports = {
+	// movieProfile: User's movieProfile
+	findSuggestedMovies: function(movieProfile, callback)   {
+	  var suggestedMovies = [];
 
-  // Call API to get recommended movies for each recently-liked movie
-  preferredGenres.forEach(function(entry){
-    getRecommendedMovies(entry, function(results){
-      // Return 10 recommended movies each and add to suggestedMovies
-      for (var i = 0; i < 10 && i < results.length; i++ ){
-        suggestedMovies.push(results[i]);
-      }
-    });
-  });
+	  // Get 5 most recently-liked movies from movieProfile
+	  var preferredMovies = movieProfile.preferences;
+	  preferredMovies = preferredMovies.slice(Math.max(preferredMovies.length-5, 1));
 
-  // TODO: Weigh each movie based on genre, rating, etc on a point scale
+	  console.log("preferredMovies" + preferredMovies);
+	  
+	  // Call API to get recommended movies for each recently-liked movie
+	  preferredMovies.forEach(function(entry){
+		  console.log("entry" + entry);
+		tmdb.getMovieRecommendations(entry, function(recommendations){
+		console.log("recommendations" + recommendations);
+		 // Return 10 recommended movies each and add to suggestedMovies
+		  var results = JSON.parse(recommendations).results;
+		 
+		  for (var i = 0; i < 10 && i < results.length; i++ ){
+			suggestedMovies.push(results[i].id);
+		  }
+		});
+	});
 
-  // Return suggestedMovies list to callback
-  callback(suggestedMovies);
-}
+	  // TODO: Weigh each movie based on genre, rating, etc on a point scale
+
+	  // Return suggestedMovies list to callback
+	  //console.log(suggestedMovies);
+	  callback(suggestedMovies);
+	}
+};
