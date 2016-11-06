@@ -101,7 +101,7 @@ router.route('/movies/preferences')
 
 		});
 	});
-	
+
 router.route('/movies/suggestions')
 	.post(function(req, res){
 		User.findById(req.body._id)
@@ -112,7 +112,7 @@ router.route('/movies/suggestions')
 			}
 			algorithms.findSuggestedMovies(user.movieProfile, function(updatedSuggestions){
 				user.movieProfile.suggestions = updatedSuggestions;
-				user.movieProfile.save(function(err){
+        user.movieProfile.save(function(err){
 					if(err) return res.send(509, err);
 					return res.send(user);
 				});
