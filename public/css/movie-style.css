@@ -65,3 +65,17 @@
 .horizontal_scroll {
 	overflow-x: scroll;
 }
+.tooltip_templates {
+  display:none;
+}
+
+body {
+  margin-bottom: 90px;
+}
+.padded {
+  padding-top: 30px
+}
+
+.moviePoster {
+  width: 100px;
+}
