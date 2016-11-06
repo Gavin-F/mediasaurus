@@ -100,6 +100,20 @@ router.route('/preferences/movies')
 		});
 	});
 
+router.route('/movies/popular/:page')
+	.get(function(req, res){
+		tmdb.getPopularMovies(req.params.page, function(results){
+			return res.send(JSON.parse(results).results);
+		});
+	});
+
+router.route('/movies/now_playing/:page')
+	.get(function(req, res){
+		tmdb.getNowPlayingMovies(req.params.page, function(results){
+			return res.send(JSON.parse(results).results);
+		});
+	});
+	
 router.route('/movies/:id')
 	.get(function(req, res){
 		console.log(req.params.id);

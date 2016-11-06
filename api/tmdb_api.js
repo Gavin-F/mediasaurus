@@ -13,7 +13,6 @@ var API_BASE = "https://api.themoviedb.org/3/";
 var API_DISCOVER1 = "discover/movie?api_key=";
 var API_DISCOVER2 = "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=1";
 var API_SEARCH = "search/movie?api_key=" + APIKEY;
-var API_MOVIEDETAILS = 'movie/';
 
 // https://api.themoviedb.org/3/movie/405?api_key=8f9caf52038412780f3c4037b2b114ca&language=en-US
 
@@ -162,6 +161,15 @@ module.exports = {
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
 
+	 getPopularMovies: function(page, callback) {
+		consAPI_URL = API_BASE + 'movie/popular?api_key=' + APIKEY + '&page=' + page;
+		this.httpGetAsync(consAPI_URL, callback);
+	 },
+	 
+	 getNowPlayingMovies: function(page, callback) {
+		consAPI_URL = API_BASE + 'movie/now_playing?api_key=' + APIKEY + '&page=' + page;
+		this.httpGetAsync(consAPI_URL, callback);
+	 },
     // Function inspiration taken from StackOverflow
     // http://stackoverflow.com/questions/247483/http-get-request-in-javascript
 
