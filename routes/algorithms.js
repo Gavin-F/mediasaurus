@@ -27,28 +27,30 @@ module.exports = {
 
 	  // Get 5 most recently-liked movies from movieProfile
 	  var preferredMovies = movieProfile.preferences;
-	  preferredMovies = preferredMovies.slice(Math.max(preferredMovies.length-5, 1));
+	  preferredMovies = preferredMovies.slice(-5);
 
-	  console.log("preferredMovies" + preferredMovies);
-	  
+    var moviesProcessed = 0;
+    // Return suggestedMovies list to callback
+
 	  // Call API to get recommended movies for each recently-liked movie
-	  preferredMovies.forEach(function(entry){
-		  console.log("entry" + entry);
-		tmdb.getMovieRecommendations(entry, function(recommendations){
-		console.log("recommendations" + recommendations);
-		 // Return 10 recommended movies each and add to suggestedMovies
-		  var results = JSON.parse(recommendations).results;
-		 
-		  for (var i = 0; i < 10 && i < results.length; i++ ){
-			suggestedMovies.push(results[i].id);
-		  }
-		});
-	});
+	  for (var i = 0; i < preferredMovies.length; i++){
+  		tmdb.getMovieRecommendations(preferredMovies[i].movie_id, function (recommendations){
+            // Return 10 recommended movies each and add to suggestedMovies
+            var results = JSON.parse(recommendations).results;
+            for (var m = 0; m < 10 && m < results.length; m++){
+              var entry = {movie_id:results[m].id,
+                           movieTitle: results[m].title,
+                           poster: results[m].poster_path };
+              suggestedMovies.push(entry);
+            }
 
-	  // TODO: Weigh each movie based on genre, rating, etc on a point scale
+            moviesProcessed++;
+            if (moviesProcessed == preferredMovies.length) {
+              callback(suggestedMovies);
+            }
+        });
+    }
 
-	  // Return suggestedMovies list to callback
-	  //console.log(suggestedMovies);
-	  callback(suggestedMovies);
-	}
+    // TODO: Weigh each movie based on genre, rating, etc on a point scale
+  }
 };
