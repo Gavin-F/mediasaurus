@@ -18,7 +18,7 @@
 }
 
 .background {
-	background-color: #E3E2DD;
+	background-color: #002145;
 	margin-left: 20px;
 	margin-right: 20px;
 	margin-bottom:100px;
@@ -28,6 +28,7 @@
 }
 
 .movie_details {
+	color: white;
 	margin-right: 50px;
 	margin-left: 400px;
 	margin-bottom: 50px;
@@ -44,6 +45,9 @@
 .like_button {
 	margin: 5px 0px 50px 108px;
 }
+#rating_div {
+	color: #33CCCC;
+}
 
 #rateYo {
 	margin: 50px 0px 0px 70px;
@@ -56,6 +60,7 @@
 
 #slash_10 {
 	display: inline-block;
+	color: white;
 }
 
 .clear {
@@ -64,4 +69,18 @@
 
 .horizontal_scroll {
 	overflow-x: scroll;
+}
+.tooltip_templates {
+  display:none;
+}
+
+body {
+  margin-bottom: 90px;
+}
+.padded {
+  padding-top: 30px
+}
+
+.moviePoster {
+  width: 100px;
 }

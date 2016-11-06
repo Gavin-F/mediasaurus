@@ -43,7 +43,7 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/login.html",
 		controller: "login-controller"
 	})
-	.when("/movie", {
+	.when("/movies/:id", {
 		templateUrl: "/html/movie.html",
 		controller: "movie-controller"
 	})
@@ -117,7 +117,7 @@ index.controller("dashboard-controller", function($scope,$location, $timeout, $l
 		delete $localStorage.userID;
 	}
 	$scope.gotoMovie = function(){
-		$location.url("/movie");
+		$location.url("/movies/" + "8966");
 	}
 
 	$(document).ready(function() {
@@ -300,9 +300,10 @@ index.controller("password-controller", function($scope,$location) {
 ///////////////////////////////////////////////////////
 // Movie CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("movie-controller", function($scope,$location) {
+index.controller("movie-controller", function($scope,$location,$routeParams) {
+	var movie_id = $routeParams.id;
 
-	$scope.$emit("movieEvent", "8966");
+	$scope.$emit("movieEvent", movie_id);
 
     $('.rating').likeDislike({
         initialValue: 0,
@@ -316,6 +317,7 @@ index.controller("movie-controller", function($scope,$location) {
     });
 
 	var movie_rating;
+	var runtime;
 	var obj_genres = [];
 
     $(function() {
@@ -347,12 +349,10 @@ index.controller("movie-controller", function($scope,$location) {
 		$scope.genres = obj_genres;
 		$scope.rating = obj_movie.vote_average;
 		movie_rating = obj_movie.vote_average*10;
-		console.log(movie_rating);
 		movie_rating = movie_rating + "%";
 		$("#rateYo").rateYo("rating", movie_rating);
-
-		// console.log(movie_rating);
-
+		runtime = obj_movie.runtime + " min";
+		$scope.duration = runtime;
 	});
 
 	$scope.$on("movieError", function(event, error) {
@@ -365,15 +365,10 @@ index.controller("movie-controller", function($scope,$location) {
     		starWidth: "20px",
     		numStars: 10,
     		readOnly: true,
-    		rating: "0%"
+    		rating: "0%",
+    		ratedFill: "#33CCCC"
     	});
     });
-
-	// var $rateYo = $("#rateYo").rateYo();
- 	// var rating = $rateYo.rateYo("rating");
- 	// rating = rating/10;
-    // document.getElementById("rating_text").innerHTML = movie_rating;
-
 });
 
 ///////////////////////////////////////////////////////
