@@ -7,6 +7,8 @@ var express = require('express');
 var router = express.Router();
 var Post = mongoose.model('Post');
 
+var tmdb = require('../api/tmdb_api');
+
 //Used for routes that must be authenticated.
 function isAuthenticated (req, res, next) {
     // if user is authenticated in the session, call the next() to call the next request handler 
@@ -26,6 +28,15 @@ function isAuthenticated (req, res, next) {
 };
 
 router.route('/preferences/movies')
+	
+	/*
+	 * Responds with a list of the user's movie likes/dislikes.
+	 *
+	 * Request: 
+	 *		_id: string; same _id of user that is given at login/signup
+	 * Response:
+	 *		list of user's movie likes/dislikes
+	 */
 	.post(function(req, res) {
 		User.findById(req.body._id)
 		.populate('movieProfile')
@@ -35,6 +46,15 @@ router.route('/preferences/movies')
 		});
 	})
 	
+	/*
+	 * Adds a user movie rating on movie with title movieTitle.
+	 *
+	 * Request:
+	 *		_id: string; same _id of user that is given at login/signup
+	 *		movieTitle: string; name of movie
+	 *		liked: boolean; liked or disliked
+	 * Response: TBD
+	 */
 	.put(function(req, res){
 		if(req.body.movieTitle === null)
 			return res.send(506, 'nothing to set');
@@ -53,6 +73,14 @@ router.route('/preferences/movies')
 		});
 	})
 	
+	/*
+	 * Removes the user's ratings on movie with title movieTitle.
+	 *
+	 * Request:
+	 *		_id: string; same _id of user that is given at login/signup
+	 *		movieTitle: string; name of movie
+	 * Response: TBD
+	 */
 	.delete(function(req, res) {
 		User.findById(req.body._id)
 		.populate('movieProfile')
@@ -74,10 +102,29 @@ router.route('/preferences/movies')
 
 router.route('/movies/:id')
 	.get(function(req, res){
-		//TODO CALL APIs
-		return res.send({movieID: req.params.id});
+		console.log(req.params.id);
+		tmdb.getMovieDetails(req.params.id, function(details){
+			jsonDetails = JSON.parse(details);
+			return res.send(jsonDetails.status_code ? null : jsonDetails);
+		});
 	});
-
+	
+router.route('/movies/search')
+	/*
+	 * Return 20 search results from TMDB
+	 *
+	 * Request:
+	 *		query: string; query to send to TMDB api
+	 *
+	 * Response:
+	 * 	
+	 */
+	.post(function(req, res){
+		//TODO call search from TMDB
+		tmdb.searchMovies(req.body.query, function(results){
+			return res.send(JSON.parse(results));
+		});
+	});
 //Register the authentication middleware
 //router.use('/posts', isAuthenticated);
 

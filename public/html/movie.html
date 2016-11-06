@@ -14,18 +14,18 @@
 	<div class="container" ng-controller="movie">
 		<div ng-controller="movie-controller">
 
-			<p class="movie_title">{{movie.title}}Kong: Skull Island (2017)</p>
+			<p class="movie_title">{{title}} ({{date}})</p>
 
 			<div class="background">
 
 				<div id="left">
 					<div>
 						<div id="rateYo"></div>
-						<div id="rating_text"></div>
+						<!-- <div id="rating_text"></div> -->
+						{{rating}}
 						<div id="slash_10"><small>/10</small></div>
 					</div>
-
-					<img src="{{movie.poster}}" class="movie_poster"/>
+					<img src="{{poster}}" class="movie_poster"/>
 
 					<div class="rating like_button">
 						<button class="like btn btn-default"> 
@@ -47,49 +47,35 @@
 					<div class="movie_description">
 						<h4>Movie Description</h4>
 						<p class="description">
-						{{movie.description}}
-						In the 1970s, a team of explorers is brought together to venture deep into an uncharted 
-						island in the Pacific—as beautiful as it is treacherous—unaware that they are crossing 
-						into the domain of the mythical giant gorilla known as Kong.In the 1970s, a team of 
-						explorers is brought together to venture deep into an uncharted island in the Pacific—as 
-						beautiful as it is treacherous—unaware that they are crossing into the domain of the 
-						mythical giant gorilla known as Kong. giant gorilla known as Kong.In the 1970s, a team of 
-						explorers is brought together to venture deep into an uncharted island in the Pacific—as 
-						beautiful as it is treacherous—unaware that they are crossing into the domain of the 
-						mythical giant gorilla known as Kong. 109445
+						{{overview}}
 						</p>
 					</div>
 
 					<div class="movie_director">
 						<h4>Director</h4>
 						<p class="director">
-						{{movie.director}}
-						Jordan Vogt-Roberts
+						{{director}}
 						</p>
 					</div>
 
 					<div class="movie_cast">
 						<h4>Cast</h4>
 						<p class="cast">
-						{{movie.cast}}
-						Brie Larson, Tom Hiddleston, Samuel L. Jackson, Toby Kebbell, John Goodman, Corey Hawkins, 
-						Tian Jing, John C. Reilly, Vivienne Taylor ... 
+						{{cast}}
 						</p>
 					</div>
 
 					<div class="movie_genres">
 						<h4>Genres</h4>
 						<p class="genres">
-						{{movie.genres}}
-						Action/Adventure
+						{{genres}}
 						</p>
 					</div>
 
 					<div class="movie_duration">
 						<h4>Duration</h4>
 						<p class="duration">
-						{{movie.duration}}
-						1h 34min
+						{{duration}}
 						</p>
 					</div>
 				</div>
