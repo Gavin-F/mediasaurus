@@ -14,6 +14,7 @@ var API_DISCOVER1 = "discover/movie?api_key=";
 var API_DISCOVER2 = "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=1";
 var API_SEARCH = "search/movie?api_key=" + APIKEY;
 
+
 // https://api.themoviedb.org/3/movie/405?api_key=8f9caf52038412780f3c4037b2b114ca&language=en-US
 
 // https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=1&with_genres=99
@@ -53,8 +54,6 @@ module.exports = {
 
     // This function consumes a String of a name of a Genre
     // Returns the GenreID of the given string from the mongodb server
-    // TODO: Implementation
-
     getGenreID: function (genre) {
         // STUB
         // https://api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
@@ -78,17 +77,16 @@ module.exports = {
     // notGenreArray is an array of String containing the genre tags to filter out
     // castArray is an array of String containing the actors names
     discoverMovies: function (year,keywordArray,genreArray,notGenreArray,castArray,callback) {
-        // body...
-        // TODO: implement
         var year_url = "";
         var keyword_url = "";
         var genre_url = "";
         var not_genre_url = "";
         var cast_url = "";
+        var i;
 
         // If year != null
         // Add the year API
-        if (year != null) {
+        if (year !== null) {
             year_url = "&primary_release_date.gte=" + year + "-01-01";
         }
 
@@ -96,18 +94,17 @@ module.exports = {
         // Add each keyword to the keyword_api
         if (keywordArray !== null) {
             keyword_url = "&with_keywords=";
-            for (var i = keywordArray.length - 1; i >= 0; i--) {
+            for (i = keywordArray.length - 1; i >= 0; i--) {
                 keyword_url += this.getKeywordID(keywordArray[i]);
                 if (i !== 0) {
                     keyword_url += ",";
                 }
             }
-
         }
 
-        if (genreArray != null) {
+        if (genreArray !== null) {
             genre_url = "&with_genres=";
-            for (var i = genreArray.length - 1; i >= 0; i--) {
+            for (i = genreArray.length - 1; i >= 0; i--) {
                 genre_url += this.getGenreID(genreArray[i]);
                 if (i !== 0) {
                     genre_url += ",";
@@ -115,9 +112,9 @@ module.exports = {
             }
         }
 
-        if (notGenreArray != null) {
+        if (notGenreArray !== null) {
             not_genre_url = "&without_genres=";
-            for (var i = notGenreArray.length - 1; i >= 0; i--) {
+            for (i = notGenreArray.length - 1; i >= 0; i--) {
                 not_genre_url += this.getGenreID(notGenreArray[i]);
                 if (i !== 0) {
                     not_genre_url += ",";
@@ -125,9 +122,9 @@ module.exports = {
             }
         }
 
-        if (castArray != null) {
+        if (castArray !== null) {
             cast_url = "&with_genres=";
-            for (var i = castArray.length - 1; i >= 0; i--) {
+            for (i = castArray.length - 1; i >= 0; i--) {
                 cast_url += castArray[i];
                 if (i !== 0) {
                     cast_url += ",";
@@ -145,19 +142,19 @@ module.exports = {
 
       this.httpGetAsync(consAPI_URL, callback);
     },
-	
+
 	 getMovieDetails: function(id, callback) {
 		consAPI_URL = API_BASE + 'movie/' + id + '?api_key=' + APIKEY;
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
-	 
+
 	 getMovieRecommendations: function(id, callback){
-		consAPI_URL = API_BASE + 'movie/' + id + 'recommendations?api_key=' + APIKEY;
+		consAPI_URL = API_BASE + 'movie/' + id + '/recommendations?api_key=' + APIKEY;
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
-	 
+
 	 getSimilarMovies: function(id, callback){
-		consAPI_URL = API_BASE + 'movie/' + id + 'similar?api_key=' + APIKEY;
+		consAPI_URL = API_BASE + 'movie/' + id + '/similar?api_key=' + APIKEY;
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
 
@@ -179,7 +176,7 @@ module.exports = {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                 callback(xmlHttp.responseText);
-        }
+        };
         xmlHttp.open("GET", theUrl, true); // true for asynchronous
         xmlHttp.send(null);
     },
@@ -189,7 +186,7 @@ module.exports = {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                 return xmlHttp.responseText;
-        }
+        };
         xmlHttp.open("GET", theUrl, true); // true for asynchronous
         xmlHttp.send(null);
     },
@@ -199,11 +196,12 @@ module.exports = {
       console.log(value);
     }
 
-}
+};
+
 
 // <<TEST BANK>>
 
-// discoverMovieswithGenre("action", printThis);
+// dis;coverMovieswithGenre("action", printThis);
 
 // discoverMovies("2017", null, null, null, null, printThis);
 
