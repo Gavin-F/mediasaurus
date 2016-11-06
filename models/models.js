@@ -32,7 +32,7 @@ var movieProfileSchema = new Schema({
 	length: Number,
 
 	preferences: [{movie_id: Number, liked: Boolean}],
-	suggestions: [{movie_id: Number, movieTitle: String, poster: String}]
+	suggestions: [{movie_id: Number, title: String, poster_path: String}]
 });
 
 

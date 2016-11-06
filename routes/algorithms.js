@@ -38,9 +38,9 @@ module.exports = {
             // Return 10 recommended movies each and add to suggestedMovies
             var results = JSON.parse(recommendations).results;
             for (var m = 0; m < 10 && m < results.length; m++){
-              var entry = {movie_id:results[m].id,
-                           movieTitle: results[m].title,
-                           poster: results[m].poster_path };
+              var entry = {movie_id: results[m].id,
+                           title: results[m].title,
+                           poster_path: results[m].poster_path };
               suggestedMovies.push(entry);
             }
 
