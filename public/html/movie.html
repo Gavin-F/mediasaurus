@@ -3,6 +3,7 @@
 
 	<link rel="stylesheet" href="../css/superhero-style.css">
 	<link rel="stylesheet" href="../css/movie-style.css">
+	<link rel="stylesheet" href="../css/dashboard-styles.css">
 	<link rel="stylesheet" href="../css/tooltips-style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.2.0/jquery.rateyo.min.css">
 
@@ -10,79 +11,100 @@
 
 <body>
 
-	<div class="container">
+	<div class="container" ng-controller="movie">
+		<div ng-controller="movie-controller">
 
-		<p class="movie_title">Kong: Skull Island (2017)</p>
+			<p class="movie_title">{{title}} ({{date}})</p>
 
-		<div class="background">
+			<div class="background">
 
-			<div id="left">
-				<div>
-					<div id="rateYo"></div>
-					<div id="rating_text"></div>
-					<div id="slash_10"><small>/10</small></div>
+				<div id="left">
+					<div>
+						<div id="rateYo"></div>
+						<!-- <div id="rating_text"></div> -->
+						{{rating}}
+						<div id="slash_10"><small>/10</small></div>
+					</div>
+					<img src="{{poster}}" class="movie_poster"/>
+
+					<div class="rating like_button">
+						<button class="like btn btn-default"> 
+							<div class="glyphicon glyphicon-thumbs-up"></div>
+							&nbsp;
+							Like
+							&nbsp;
+							<span class="likes">0</span>
+						</button>
+						<button class="dislike btn btn-default"> 
+							<div class="glyphicon glyphicon-thumbs-down"></div>
+							&emsp;
+							<span class="dislikes">0</span>
+						</button>
+					</div>
 				</div>
 
-				<img src="../images/Kong.png" class="movie_poster"/>
+				<div class="movie_details">
+					<div class="movie_description">
+						<h4>Movie Description</h4>
+						<p class="description">
+						{{overview}}
+						</p>
+					</div>
 
-				<div class="rating like_button">
-					<button class="like btn btn-default"> 
-						<div class="glyphicon glyphicon-thumbs-up"></div>
-						&nbsp;
-						Like
-						&nbsp;
-						<span class="likes">0</span>
-					</button>
-					<button class="dislike btn btn-default"> 
-						<div class="glyphicon glyphicon-thumbs-down"></div>
-						&emsp;
-						<span class="dislikes">0</span>
-					</button>
+					<div class="movie_director">
+						<h4>Director</h4>
+						<p class="director">
+						{{director}}
+						</p>
+					</div>
+
+					<div class="movie_cast">
+						<h4>Cast</h4>
+						<p class="cast">
+						{{cast}}
+						</p>
+					</div>
+
+					<div class="movie_genres">
+						<h4>Genres</h4>
+						<p class="genres">
+						{{genres}}
+						</p>
+					</div>
+
+					<div class="movie_duration">
+						<h4>Duration</h4>
+						<p class="duration">
+						{{duration}}
+						</p>
+					</div>
 				</div>
+
 			</div>
 
-			<div class="movie_details">
-				<div class="movie_description">
-					<h4>Movie Description</h4>
-					<p class="description">
-					In the 1970s, a team of explorers is brought together to venture deep into an uncharted 
-					island in the Pacific—as beautiful as it is treacherous—unaware that they are crossing 
-					into the domain of the mythical giant gorilla known as Kong.In the 1970s, a team of 
-					explorers is brought together to venture deep into an uncharted island in the Pacific—as 
-					beautiful as it is treacherous—unaware that they are crossing into the domain of the 
-					mythical giant gorilla known as Kong. giant gorilla known as Kong.In the 1970s, a team of 
-					explorers is brought together to venture deep into an uncharted island in the Pacific—as 
-					beautiful as it is treacherous—unaware that they are crossing into the domain of the 
-					mythical giant gorilla known as Kong. 
-					</p>
-				</div>
+			<h3>Related Movies</h3>
+			<div class="horizontal_scroll jumbotron">
 
-				<div class="movie_director">
-					<h4>Director</h4>
-					<p class="director">
-					Jordan Vogt-Roberts
-					</p>
-				</div>
+				<a ng-click="gotoMovie()"><img src="../images/Kong.png" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo" /></a>
+				&emsp;&emsp;
+				<img src="../images/Logan.png" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo" />
+				&emsp;&emsp;
+				<img src="../images/GotG2.png" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo" />
 
-				<div class="movie_cast">
-					<h4>Cast</h4>
-					<p class="cast">
-					Brie Larson, Tom Hiddleston, Samuel L. Jackson, Toby Kebbell, John Goodman, Corey Hawkins, 
-					Tian Jing, John C. Reilly, Vivienne Taylor ... 
-					</p>
-				</div>
+			</div>
 
-				<div class="movie_genres">
-					<h4>Genres</h4>
-					<p class="genres">
-					Action/Adventure
-					</p>
-				</div>
-
-				<div class="movie_duration">
-					<h4>Duration</h4>
-					<p class="duration">
-					1h 34min
+			<div class="tooltip_templates">
+				<div class="tooltipInfo" >
+					<p>
+						Movie Title: Blah
+						<br/>
+						Movie Description: Blah Blah
+						<br/>
+						Stuff...
+						<br/>
+						Rating...
+						<br/>
+						link: <a href="www.google.ca">Google</a>
 					</p>
 				</div>
 			</div>

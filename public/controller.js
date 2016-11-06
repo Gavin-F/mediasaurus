@@ -1,11 +1,14 @@
+
 var index = angular.module("index",
 	["ngRoute",
 	"ngStorage",
 	"index.signup",
 	"index.login",
-	"index.accsetup"
+	"index.accsetup",
+	"index.moviepage"
 	]);
 
+//Branch Comment
 index.config(function($routeProvider) {
 	$routeProvider
 	.when("/", {
@@ -298,6 +301,8 @@ index.controller("password-controller", function($scope,$location) {
 ///////////////////////////////////////////////////////
 index.controller("movie-controller", function($scope,$location) {
 
+	$scope.$emit("movieEvent", "8966");
+
     $('.rating').likeDislike({
         initialValue: 0,
         click: function (value, l, d, event) {
@@ -306,28 +311,67 @@ index.controller("movie-controller", function($scope,$location) {
 
             likes.text(parseInt(likes.text()) + l);
             dislikes.text(parseInt(dislikes.text()) + d);
-
-            // $.ajax({
-            //     url: 'url',
-            //     type: 'post',
-            //     data: 'value=' + value,
-            // });
         }
     });
 
+	var movie_rating;
+	var obj_genres = [];
+
+    $(function() {
+		$('.tooltip-custom').tooltipster({
+			side: 'right',
+			interactive: true,
+			arrow: false,
+			animation: 'swing',
+			contentCloning: true
+		});
+	});
+
+	$scope.$on("movieUpdate", function(event, obj_movie) {
+		console.log(obj_movie);
+		$scope.overview = obj_movie.overview;
+		$scope.title = obj_movie.title;
+		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie.poster_path;
+		$scope.date = obj_movie.release_date;
+
+		for (i = 0; i < obj_movie.genres.length; i++) { 
+			if ((i+1) == obj_movie.genres.length) {
+				obj_genres += obj_movie.genres[i].name;
+			}
+			else {
+    			obj_genres += obj_movie.genres[i].name + ", ";
+			}
+		}
+
+		$scope.genres = obj_genres;
+		$scope.rating = obj_movie.vote_average;
+		movie_rating = obj_movie.vote_average*10;
+		console.log(movie_rating);
+		movie_rating = movie_rating + "%";
+		$("#rateYo").rateYo("rating", movie_rating);
+
+		// console.log(movie_rating);
+
+	});
+
+	$scope.$on("movieError", function(event, error) {
+
+	});
+
     $(function () {
+    	console.log(movie_rating);
     	$("#rateYo").rateYo({
     		starWidth: "20px",
     		numStars: 10,
     		readOnly: true,
-    		rating: "88%"
+    		rating: "0%"
     	});
     });
 
-    var $rateYo = $("#rateYo").rateYo();
-    var rating = $rateYo.rateYo("rating");
-    rating = rating/10;
-    document.getElementById("rating_text").innerHTML = rating;
+	// var $rateYo = $("#rateYo").rateYo();
+ 	// var rating = $rateYo.rateYo("rating");
+ 	// rating = rating/10;
+    // document.getElementById("rating_text").innerHTML = movie_rating;
 
 });
 
