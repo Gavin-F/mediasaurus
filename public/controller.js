@@ -16,6 +16,10 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/dashboard.html",
 		controller: "dashboard-controller"
 	})
+	.when("/search", {
+		templateUrl: "/html/search.html",
+		controller: "search-controller"
+	})
 	.when("/testpage", {
 		templateUrl: "/html/TestPage.html",
 		controller: "testpage-controller"
@@ -117,6 +121,9 @@ index.controller("dashboard-controller", function($scope,$location, $timeout, $l
 	$scope.gotoMovie = function(){
 		$location.url("/movie");
 	}
+	$scope.goSearch = function(){
+		$location.url("/search");
+	}
 
 	$(document).ready(function() {
 		$('.tooltip-custom').tooltipster({
@@ -129,6 +136,25 @@ index.controller("dashboard-controller", function($scope,$location, $timeout, $l
 	});
 });
 
+
+///////////////////////////////////////////////////////
+// search CONTROLLER
+///////////////////////////////////////////////////////
+index.controller("search-controller", function($scope,$location, $timeout, $localStorage) {
+
+	if($localStorage.userID !== undefined) {
+		$scope.userID = "Logged in!";
+		$scope.loggedin = true;
+	}
+	else {
+		$scope.userID = "Not logged in!";
+		$scope.loggedin = false;
+	}
+
+	$scope.reset = function() {
+		delete $localStorage.userID;
+	}
+});
 
 
 ///////////////////////////////////////////////////////
