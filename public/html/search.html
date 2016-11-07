@@ -1,4 +1,4 @@
-<html ng-app="index">
+<html ng-app="search">
 <head>
 	<link rel="stylesheet" href="../css/superhero-style.css">
 	<link rel="stylesheet" href="/css/search-style.css">
@@ -16,12 +16,14 @@
 
 		<div class="form-group">
 			<div class="input-group">
-				<input type="text" class="form-control">
+				<input type="text" placeholder="{{search_query}}" class="form-control">
 				<span class="input-group-btn">
-					<button class="btn btn-default" ng-click="goSeach()" type="button">Search</button>
+					<button class="btn btn-default" ng-click="seach()" type="button">Search</button>
 				</span>
 			</div>
 		</div>
+
+
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 </body>

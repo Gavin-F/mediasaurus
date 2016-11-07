@@ -66,6 +66,11 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 		return 0;
 	}
 	};
+
+	$scope.reset = function() {
+		delete $localStorage.userID;
+	}
+	
 	$scope.goHome = function(){
 		$location.url("/home");
 		console.log("goHome");
@@ -104,7 +109,7 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("dashboard-controller", function($scope,$location, $timeout, $localStorage) {
+index.controller("dashboard-controller", function($scope,$location, $http, $timeout, $localStorage) {
 
 	if($localStorage.userID !== undefined) {
 		$scope.userID = "Logged in!";
@@ -115,14 +120,24 @@ index.controller("dashboard-controller", function($scope,$location, $timeout, $l
 		$scope.loggedin = false;
 	}
 
+	$scope.search = function() {
+		// get form info
+		var search_query = {
+			search_query: $scope.search_query
+		};
+		// send to parent controller
+		$scope.$emit("searchEvent", search_query);
+		$location.url("/search");
+	}
+	
+
 	$scope.reset = function() {
 		delete $localStorage.userID;
+		location.reload();
 	}
+
 	$scope.gotoMovie = function(){
 		$location.url("/movie");
-	}
-	$scope.goSearch = function(){
-		$location.url("/search");
 	}
 
 	$(document).ready(function() {
@@ -134,11 +149,22 @@ index.controller("dashboard-controller", function($scope,$location, $timeout, $l
 			contentCloning: true
 		});
 	});
+
+	// if search was successful, update id and send to new page
+	$scope.$on("searchUpdate", function(event, search_query) {
+		$localStorage.search_query = search_query;
+		$location.url("/search");
+	});
+
+	// if search failed, update page
+	$scope.$on("searchError", function(event, error) {
+		$scope.searchError = error;
+	});
 });
 
 
 ///////////////////////////////////////////////////////
-// search CONTROLLER
+// SEARCH CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("search-controller", function($scope,$location, $timeout, $localStorage) {
 
@@ -151,9 +177,31 @@ index.controller("search-controller", function($scope,$location, $timeout, $loca
 		$scope.loggedin = false;
 	}
 
+	$scope.search = function() {
+		// get form info
+		var search_query = {
+			search_string: $scope.search_string
+		};
+		// send to parent controller
+		$scope.$emit("searchEvent", search_query);
+		$location.url("/search");
+	}
+
 	$scope.reset = function() {
 		delete $localStorage.userID;
 	}
+	
+	// if search was successful, update id and send to new page
+	$scope.$on("searchUpdate", function(event, search_query) {
+		$localStorage.search_query = search_query;
+		$location.url("/search");
+	});
+
+	// if search failed, update page
+	$scope.$on("searchError", function(event, error) {
+		$scope.searchError = error;
+	});
+
 });
 
 
