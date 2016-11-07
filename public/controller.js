@@ -1,11 +1,14 @@
+
 var index = angular.module("index",
 	["ngRoute",
 	"ngStorage",
 	"index.signup",
 	"index.login",
-	"index.accsetup"
+	"index.accsetup",
+	"index.moviepage"
 	]);
 
+//Branch Comment
 index.config(function($routeProvider) {
 	$routeProvider
 	.when("/", {
@@ -44,7 +47,7 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/login.html",
 		controller: "login-controller"
 	})
-	.when("/movie", {
+	.when("/movies/:id", {
 		templateUrl: "/html/movie.html",
 		controller: "movie-controller"
 	})
@@ -137,7 +140,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	}
 
 	$scope.gotoMovie = function(){
-		$location.url("/movie");
+		$location.url("/movies/" + "8966");
 	}
 
 	$(document).ready(function() {
@@ -362,7 +365,10 @@ index.controller("password-controller", function($scope,$location) {
 ///////////////////////////////////////////////////////
 // Movie CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("movie-controller", function($scope,$location) {
+index.controller("movie-controller", function($scope,$location,$routeParams) {
+	var movie_id = $routeParams.id;
+
+	$scope.$emit("movieEvent", movie_id);
 
     $('.rating').likeDislike({
         initialValue: 0,
@@ -372,29 +378,62 @@ index.controller("movie-controller", function($scope,$location) {
 
             likes.text(parseInt(likes.text()) + l);
             dislikes.text(parseInt(dislikes.text()) + d);
-
-            // $.ajax({
-            //     url: 'url',
-            //     type: 'post',
-            //     data: 'value=' + value,
-            // });
         }
     });
 
+	var movie_rating;
+	var runtime;
+	var obj_genres = [];
+
+    $(function() {
+		$('.tooltip-custom').tooltipster({
+			side: 'right',
+			interactive: true,
+			arrow: false,
+			animation: 'swing',
+			contentCloning: true
+		});
+	});
+
+	$scope.$on("movieUpdate", function(event, obj_movie) {
+		console.log(obj_movie);
+		$scope.overview = obj_movie.overview;
+		$scope.title = obj_movie.title;
+		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie.poster_path;
+		$scope.date = obj_movie.release_date;
+
+		for (i = 0; i < obj_movie.genres.length; i++) { 
+			if ((i+1) == obj_movie.genres.length) {
+				obj_genres += obj_movie.genres[i].name;
+			}
+			else {
+    			obj_genres += obj_movie.genres[i].name + ", ";
+			}
+		}
+
+		$scope.genres = obj_genres;
+		$scope.rating = obj_movie.vote_average;
+		movie_rating = obj_movie.vote_average*10;
+		movie_rating = movie_rating + "%";
+		$("#rateYo").rateYo("rating", movie_rating);
+		runtime = obj_movie.runtime + " min";
+		$scope.duration = runtime;
+	});
+
+	$scope.$on("movieError", function(event, error) {
+
+	});
+
     $(function () {
+    	console.log(movie_rating);
     	$("#rateYo").rateYo({
     		starWidth: "20px",
     		numStars: 10,
     		readOnly: true,
-    		rating: "88%"
+    		rating: "0%",
+    		ratedFill: "#33CCCC"
     	});
     });
-
-    var $rateYo = $("#rateYo").rateYo();
-    var rating = $rateYo.rateYo("rating");
-    rating = rating/10;
-    document.getElementById("rating_text").innerHTML = rating;
-
 });
 
 ///////////////////////////////////////////////////////
