@@ -87,7 +87,6 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 index.controller("home-controller", function($scope, $location, $localStorage) {
 
 	if($localStorage.userID !== undefined) {
-		console.log($localStorage.userID);
 		$location.url("/dashboard");
 	}
 
@@ -112,8 +111,10 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
+
 index.controller("dashboard-controller", function($scope,$location, $http, $timeout, $localStorage) {
 
+	// logout user for debugging only!!
 	if($localStorage.userID !== undefined) {
 		$scope.userID = "Logged in!";
 		$scope.loggedin = true;
@@ -122,6 +123,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		$scope.userID = "Not logged in!";
 		$scope.loggedin = false;
 	}
+
 
 	$scope.search = function() {
 		// get form info
@@ -133,22 +135,45 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		$location.url("/search");
 	}
 	
-
 	$scope.reset = function() {
 		delete $localStorage.userID;
 		location.reload();
 	}
 
-	$scope.gotoMovie = function(){
-		$location.url("/movies/" + "8966");
+	$scope.movies = [];
+
+	$scope.gotoMovie = function(id){
+		//$location.url("/movie");
+		$location.url("/movies/" + id);
 	}
+
+	$http.get("/api/movies/popular/" + 1).success(function(req) {
+		for(i = 0; i < 5; i++) {
+			console.log(req[i]);
+			var movie = {
+				id: req[i].id,
+				title: req[i].title,
+				poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
+				rating: req[i].vote_average
+			};
+			$scope.movies.push(movie);
+		}
+		// $scope.m0 =  {
+		// 	id: req[0].id,
+		// 	title: req[0].title,
+		// 	poster: "https://image.tmdb.org/t/p/w500" + req[0].poster_path,
+		// 	rating: req[0].vote_average
+		// };
+		console.log($scope.movies);
+	});
 
 	$(document).ready(function() {
 		$('.tooltip-custom').tooltipster({
-			side: 'right',
-			interactive: true,
+			side: 'bottom',
+			interactive: false,
 			arrow: false,
-			animation: 'swing',
+			theme: 'tooltipster-borderless',
+			//animation: 'fall',
 			contentCloning: true
 		});
 	});
@@ -228,7 +253,7 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 	// if sign up was successful, update id and send to new page
 	$scope.$on("signupUpdate", function(event, userID) {
 		$localStorage.userID = userID;
-		$location.url("/dashboard");
+		$location.url("/setup");
 	});
 
 	// if sign up failed, update page
@@ -264,6 +289,15 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		console.log($scope.genres.toString());
 		$scope.$emit("setupEvent", $scope.genres);
 	}
+
+	$scope.skip = function() {
+		$location.url("/dashboard");
+	}
+
+	// if sign up was successful, update id and send to new page
+	$scope.$on("setupUpdate", function(event, setup) {
+		$location.url("/dashboard");
+	});
 
 	// Helper function to update the scope variables
 	function updateGenre(genre) {
@@ -402,7 +436,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams) {
 		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie.poster_path;
 		$scope.date = obj_movie.release_date;
 
-		for (i = 0; i < obj_movie.genres.length; i++) { 
+		for (i = 0; i < obj_movie.genres.length; i++) {
 			if ((i+1) == obj_movie.genres.length) {
 				obj_genres += obj_movie.genres[i].name;
 			}
