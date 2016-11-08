@@ -3,26 +3,67 @@
 	<link rel="stylesheet" href="../css/superhero-style.css">
 	<link rel="stylesheet" href="/css/search-style.css">
 	<link rel="stylesheet" href="/css/index-style.css">
+	<link rel="stylesheet" href="../css/tooltips-style.css">
+	<link rel="stylesheet" href="../css/dashboard-style.css">
+
 
 </head>
 
 <body>
 	<div class="container" ng-controller="search-controller">
 
-		{{userID}}
 		<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
 
 		<h3>Search</h3>
-
-		<div class="form-group">
-			<div class="input-group">
-				<input type="text" placeholder="{{search_query}}" class="form-control">
-				<span class="input-group-btn">
-					<button class="btn btn-default" ng-click="seach()" type="button">Search</button>
-				</span>
+		<div class="input-group">
+			<input type="search_string" id="search_string" class="form-control" name="search_string" ng-model="search_query" placeholder="{{$scope.previous_search_string}}" />
+			<span class="input-group-btn">
+				<button class="btn btn-default" ng-click="search()" type="button">Search</button>
+			</span>
+		</div> <br>
+		<div class="container">
+			<div class="moviePosterPosition" ng-click="gotoMovie(283995)">
+			<a><img src="../images/GotG2.png" class="tooltip-custom moviePosterSearch" data-tooltip-content=".tooltipInfo"/></a>
 			</div>
-		</div>
-
+			<div class="movieTitle">
+				<a class="MovieTitleText" ng-click="gotoMovie(283995)"><h4>Guardians of the Galaxy 2</h4></a>
+				<div class="movieDescription">
+					<p class="description">
+					Guardians of the Galaxy Vol. 2 is an upcoming American superhero film based on the Marvel Comics superhero team Guardians of the Galaxy, produced by Marvel Studios and distributed by Walt Disney Studios Motion Pictures. It is intended to be the sequel to 2014's Guardians of the Galaxy and the fifteenth film in the Marvel Cinematic Universe.
+					</p>
+				</div>
+			</div>
+		</div><br>
+		<div class="container">
+			<div class="moviePosterPosition" ng-click="gotoMovie(263115)">
+			<a><img src="../images/Logan.png" class="tooltip-custom moviePosterSearch" data-tooltip-content=".tooltipInfo"/></a>
+			</div>
+			<div class="movieTitle">
+				<a class="MovieTitleText" ng-click="gotoMovie(263115)"><h4>Logan</h4></a>
+				<div class="movieDescription">
+					<p class="description">
+					Logan is an upcoming American superhero film based on the Marvel Comics character Wolverine. It is intended to be the tenth installment in the X-Men film series, as well as the third and final Wolverine solo film following X-Men Origins: Wolverine and The Wolverine. The film takes inspiration from the comic book series Old Man Logan by Mark Millar. Directed by James Mangold, the film stars Hugh Jackman, Patrick Stewart, Richard E. Grant, Boyd Holbrook, Stephen Merchant, and Dafne Keen.
+					</p>
+				</div>
+			</div>
+		</div><br>
+		<div class="container">
+			<div class="moviePosterPosition " ng-click="gotoMovie(293167)">
+			<a><img src="../images/Kong.png" class="tooltip-custom moviePosterSearch" data-tooltip-content=".tooltipInfo"/></a>
+			</div>
+			<div class="movieTitle">
+				<a class="MovieTitleText" ng-click="gotoMovie(293167)"><h4>Kong: Skull Island</h4></a>
+				<div class="movieDescription">
+					<p class="description">
+					The King Kong character was conceived and created by American filmmaker Merian C. Cooper. In the original film, the character's name is Kong, a name given to him by the inhabitants of "Skull Island" in the Indian Ocean, where Kong lives along with other oversized animals such as a plesiosaur, pterosaurs and other dinosaurs. An American film crew, led by Carl Denham, captures Kong and takes him to New York City to be exhibited as the "Eighth Wonder of the World".
+					</p>
+				</div>
+			</div>
+		</div><br><br>
+		<ul class="pager">
+		  <li ><a ng-click="searchPrevious()">Previous</a></li>
+		  <li ><a ng-click="searchNext()">Next</a></li>
+		</ul>
 
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>

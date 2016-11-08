@@ -36,3 +36,37 @@
 .edit-icon: focus{
 	color: white;
 }
+
+.moviePosterSearch {
+	width: 100px;
+}
+
+.movieTitle{
+    position: relative;
+    float:left;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.movieDescription{
+    position: relative;
+    float:left;
+    min-height: 1px;
+    padding-right: 15px;
+    width: 900px;
+}
+.moviePosterPosition{
+    position: relative;
+    float:left;
+    min-height: 1px;
+    padding-left: 40px;
+    padding-right: 15px;
+}
+
+.MovieTitleText{
+	color: black;
+}
+.MovieTitleText hover,
+.MovieTitleText focus{
+	color: white;
+}

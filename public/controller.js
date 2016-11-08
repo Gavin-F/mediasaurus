@@ -72,6 +72,7 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 
 	$scope.reset = function() {
 		delete $localStorage.userID;
+		location.reload();
 	}
 	
 	$scope.goHome = function(){
@@ -126,12 +127,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 
 
 	$scope.search = function() {
-		// get form info
-		var search_query = {
-			search_query: $scope.search_query
-		};
-		// send to parent controller
-		$scope.$emit("searchEvent", search_query);
+		var search_query = $scope.search_string;
 		$location.url("/search");
 	}
 	
@@ -194,41 +190,30 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 ///////////////////////////////////////////////////////
 // SEARCH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("search-controller", function($scope,$location, $timeout, $localStorage) {
+index.controller("search-controller", function($scope,$route,$location, $timeout, $localStorage) {
 
-	if($localStorage.userID !== undefined) {
-		$scope.userID = "Logged in!";
-		$scope.loggedin = true;
-	}
-	else {
-		$scope.userID = "Not logged in!";
-		$scope.loggedin = false;
-	}
-
+	$scope.previous_search_string = $localStorage.search_query;
 	$scope.search = function() {
-		// get form info
-		var search_query = {
-			search_string: $scope.search_string
-		};
-		// send to parent controller
-		$scope.$emit("searchEvent", search_query);
+		
+		var search_query = $scope.search_string;
 		$location.url("/search");
+		$route.reload();
 	}
-
+	$scope.searchNext = function() {
+		$location.url("/search");
+		$route.reload();
+	}
+	$scope.searchPrevious = function() {
+		$location.url("/search");
+		$route.reload();
+	}
 	$scope.reset = function() {
 		delete $localStorage.userID;
 	}
-	
-	// if search was successful, update id and send to new page
-	$scope.$on("searchUpdate", function(event, search_query) {
-		$localStorage.search_query = search_query;
-		$location.url("/search");
-	});
-
-	// if search failed, update page
-	$scope.$on("searchError", function(event, error) {
-		$scope.searchError = error;
-	});
+	$scope.gotoMovie = function(id){
+		//$location.url("/movie");
+		$location.url("/movies/" + id);
+	}
 
 });
 
