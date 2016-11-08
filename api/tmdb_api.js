@@ -137,8 +137,8 @@ module.exports = {
         this.httpGetAsync(consAPI_URL, callback);
     },
 
-    searchMovies: function (query, callback) {
-      consAPI_URL = API_BASE + API_SEARCH + "&query=" + query;
+    searchMovies: function (req, callback) {
+      consAPI_URL = API_BASE + API_SEARCH + "&query=" + req.body.query + '&page=' + req.params.page;
 
       this.httpGetAsync(consAPI_URL, callback);
     },

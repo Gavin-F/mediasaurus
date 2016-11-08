@@ -144,7 +144,7 @@ router.route('/movies/:id')
 		});
 	});
 
-router.route('/movies/search')
+router.route('/movies/search/:page')
 	/*
 	 * Return 20 search results from TMDB
 	 *
@@ -156,8 +156,8 @@ router.route('/movies/search')
 	 */
 	.post(function(req, res){
 		//TODO call search from TMDB
-		tmdb.searchMovies(req.body.query, function(results){
-			return res.send(JSON.parse(results));
+		tmdb.searchMovies(req, function(results){
+			return res.send((JSON.parse(results)).results);
 		});
 	});
 //Register the authentication middleware
