@@ -7,18 +7,20 @@ h2 {
     text-align: center;
 }
 
-.jumbotron {
-    background-color: #002145;
-    color: white;
-}
-
 .movie-box {
-  background-color: green;
-  width: 100px;
+  margin: auto;
+  background-color: #002145;
+  color: white;
+  height: 300px;
 }
 
 .movie-box > p {
   text-align: center;
+}
+
+.inner-movie {
+  position: absolute;
+  background-color: green;
 }
 
 .popbox {
