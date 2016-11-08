@@ -145,7 +145,6 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 
 	$http.get("/api/movies/popular/" + 1).success(function(req) {
 		for(i = 0; i < 5; i++) {
-			console.log(req[i]);
 			var movie = {
 				id: req[i].id,
 				title: req[i].title,
@@ -154,13 +153,6 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 			};
 			$scope.movies.push(movie);
 		}
-		// $scope.m0 =  {
-		// 	id: req[0].id,
-		// 	title: req[0].title,
-		// 	poster: "https://image.tmdb.org/t/p/w500" + req[0].poster_path,
-		// 	rating: req[0].vote_average
-		// };
-		console.log($scope.movies);
 	});
 
 	$(document).ready(function() {
