@@ -114,7 +114,7 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
 
-index.controller("dashboard-controller", function($scope,$location, $http, $timeout, $localStorage) {
+index.controller("dashboard-controller", function($scope,$location, $http, $timeout, $localStorage,$sessionStorage) {
 
 	// logout user for debugging only!!
 	if($localStorage.userID !== undefined) {
@@ -133,8 +133,11 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 			query: $scope.search_string
 		};
 		$scope.$emit("searchEvent", searchObject);
-		$location.url("/search");
 	}
+	$scope.$on("searchUpdate", function(event, searchArray) {
+		$sessionStorage.searchResult = searchArray;
+		$location.url("/search");
+	});
 	
 	$scope.reset = function() {
 		delete $localStorage.userID;
@@ -177,17 +180,24 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 ///////////////////////////////////////////////////////
 // SEARCH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("search-controller", function($scope,$route,$location, $timeout, $localStorage) {
+index.controller("search-controller", function($scope,$route,$location, $timeout, $localStorage, $sessionStorage) {
+	
 	$scope.searchResult = [];
+	$scope.searchResult = $sessionStorage.searchResult;
 	$scope.search = function() {
 		var searchObject = {
 			query: $scope.search_string
 		};
 		$scope.$emit("searchEvent", searchObject);
-		$location.url("/search");
 	}
 	$scope.$on("searchUpdate", function(event, searchArray) {
-		$scope.searchResult = searchArray;
+		if($sessionStorage.searchResult !== undefined) {
+			$scope.searchResult = $sessionStorage.searchResult;
+			delete $sessionStorage.searchResult;
+		}
+		else{
+			$scope.searchResult = searchArray;
+		}
 		$location.url("/search");
 	});
 

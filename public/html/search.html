@@ -21,7 +21,7 @@
 						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
 					</span>
 			</div> <br>
-			<div class="container" ng-repeat="sResult in searchResult">
+			<div class="container MovieContainer" ng-repeat="sResult in searchResult">
 				<div class="moviePosterPosition" ng-click="gotoMovie(sResult.id)">
 					<a><img src="{{sResult.poster}}" class="tooltip-custom moviePosterSearch" data-tooltip-content=".tooltipInfo"/></a>
 				</div>
