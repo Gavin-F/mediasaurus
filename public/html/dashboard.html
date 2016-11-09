@@ -9,23 +9,27 @@
 </head>
 
 <body>
+	<div class="container" ng-controller="search">
+		<div class="container" ng-controller="dashboard-controller">
+
+			{{userID}}
+			<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
+
+			<h3>Dashboard</h3>
+
+			<div class="form-group">
+				<label class="control-label">Search</label>
+				<div class="input-group">
+					<form class="form-register" method="post"></form>
+						<input type="text" name="search_string" ng-model="search_string" />
+						<span class="input-group-btn">
+							<button class="btn btn-default" ng-click="search()" type="button">Search</button>
+						</span>
+					</form>
+				</div>
+		</div>
+	</div>
 	<div class="container" ng-controller="dashboard-controller">
-
-		{{userID}}
-		<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
-
-		<h3>Dashboard</h3>
-
-		<div class="form-group">
-			<label class="control-label">Search</label>
-			<div class="input-group">
-				<input type="search_string" id="search_string" class="form-control" name="search_string" ng-model="search_query"/>
-				<span class="input-group-btn">
-					<button class="btn btn-default" ng-click="search()" type="button">Search</button>
-				</span>
-
-			</div>
-
 			<h2>Top Rated</h2>
 			<div class="movie-box">
 				<div class="inner-movie">

@@ -5,7 +5,8 @@ var index = angular.module("index",
 	"index.signup",
 	"index.login",
 	"index.accsetup",
-	"index.moviepage"
+	"index.moviepage",
+	"index.search"
 	]);
 
 //Branch Comment
@@ -126,8 +127,12 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	}
 
 
+	$scope.searchResult = [];
 	$scope.search = function() {
-		var search_query = $scope.search_string;
+		var searchObject = {
+			query: $scope.search_string
+		};
+		$scope.$emit("searchEvent", searchObject);
 		$location.url("/search");
 	}
 	
@@ -166,16 +171,6 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		});
 	});
 
-	// if search was successful, update id and send to new page
-	$scope.$on("searchUpdate", function(event, search_query) {
-		$localStorage.search_query = search_query;
-		$location.url("/search");
-	});
-
-	// if search failed, update page
-	$scope.$on("searchError", function(event, error) {
-		$scope.searchError = error;
-	});
 });
 
 
@@ -183,14 +178,20 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 // SEARCH CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("search-controller", function($scope,$route,$location, $timeout, $localStorage) {
-
-	$scope.previous_search_string = $localStorage.search_query;
+	$scope.searchResult = [];
 	$scope.search = function() {
-		
-		var search_query = $scope.search_string;
+		var searchObject = {
+			query: $scope.search_string
+		};
+		$scope.$emit("searchEvent", searchObject);
 		$location.url("/search");
-		$route.reload();
 	}
+	$scope.$on("searchUpdate", function(event, searchArray) {
+		$scope.searchResult = searchArray;
+		$location.url("/search");
+	});
+
+
 	$scope.searchNext = function() {
 		$location.url("/search");
 		$route.reload();
