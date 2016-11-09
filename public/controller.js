@@ -449,10 +449,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
     $(function() {
 		$('.tooltip-custom').tooltipster({
 			side: 'right',
-			interactive: true,
-			arrow: false,
-			animation: 'swing',
-			contentCloning: true
+			arrow: false
 		});
 	});
 
@@ -461,6 +458,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 	var obj_genres = "";
 
 	$scope.$on("movieUpdate", function(event, obj_movie) {
+		console.log(obj_movie);
 		$scope.overview = obj_movie.overview;
 		$scope.title = obj_movie.title;
 		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie.poster_path;

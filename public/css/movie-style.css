@@ -85,5 +85,9 @@ body {
 }
 
 .moviePoster {
-  width: 100px;
+  width: 150px;
+}
+
+.jumbotron {
+	background-color: #002145;
 }
