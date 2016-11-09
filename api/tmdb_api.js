@@ -153,8 +153,8 @@ module.exports = {
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
 
-	 getSimilarMovies: function(id, callback){
-		consAPI_URL = API_BASE + 'movie/' + id + '/similar?api_key=' + APIKEY;
+	 getSimilarMovies: function(req, callback){
+		consAPI_URL = API_BASE + 'movie/' + req.params.movie_id + '/similar?api_key=' + APIKEY + '&page=' + req.params.page;
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
 

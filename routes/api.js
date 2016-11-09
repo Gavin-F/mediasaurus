@@ -28,7 +28,7 @@ function isAuthenticated (req, res, next) {
     return res.redirect('/#login');
 };
 
-router.route('/movies/preferences')
+router.route('/movies/preferences/:id')
 
 	/*
 	 * Responds with a list of the user's movie likes/dislikes.
@@ -38,8 +38,8 @@ router.route('/movies/preferences')
 	 * Response:
 	 *		list of user's movie likes/dislikes
 	 */
-	.post(function(req, res) {
-		User.findById(req.body._id)
+	.get(function(req, res) {
+		User.findById(req.params.id)
 		.populate('movieProfile')
 		.exec(function(err, user){
 			if(err) res.send(504, err);
@@ -56,22 +56,28 @@ router.route('/movies/preferences')
 	 *		liked: boolean; liked or disliked
 	 * Response: TBD
 	 */
-	.put(function(req, res){
+	.post(function(req, res){
 		if(req.body.movieTitle === null)
-			return res.send(506, 'nothing to set');
-		User.findById(req.body._id)
+			return res.send(505, 'nothing to set');
+		User.findById(req.params.id)
 		.populate('movieProfile')
 		.exec(function(err,user){
 			if(err) {
-				return res.send(505, err);
+				return res.send(506, err);
 			}
 			var prefItem = {movie_id: req.body.movie_id, liked: req.body.liked};
 			user.movieProfile.preferences.push(prefItem);
-			user.movieProfile.save(function(err){
-				if(err) return res.send(506, err);
+			
+			// recalculate suggestions
+			algorithms.findSuggestedMovies(user.movieProfile, function(updatedSuggestions){
+				user.movieProfile.suggestions = updatedSuggestions;
+				user.movieProfile.save(function(err){
+					if(err) return res.send(506, err);
+					return res.send(user.movieProfile);
+				});
 			});
-			return res.send(user);
 		});
+		
 	})
 
 	/*
@@ -83,7 +89,7 @@ router.route('/movies/preferences')
 	 * Response: TBD
 	 */
 	.delete(function(req, res) {
-		User.findById(req.body._id)
+		User.findById(req.params.id)
 		.populate('movieProfile')
 		.exec(function(err, user){
 			if(err) return res.send(507, err);
@@ -94,33 +100,38 @@ router.route('/movies/preferences')
 				if(preferencesArr[i].movie_id === req.body.movie_id)
 					preferencesArr.splice(i, 1);
 
-			user.movieProfile.save(function(err){
-				if(err)return res.send(508,err);
-				return res.send(user.movieProfile.preferences);
-			});
-
+				// recalculate suggestions
+				algorithms.findSuggestedMovies(user.movieProfile, function(updatedSuggestions){
+				user.movieProfile.suggestions = updatedSuggestions;
+				user.movieProfile.save(function(err){
+					if(err) return res.send(508, err);
+					return res.send(user.movieProfile);
+				});
+			});	
 		});
+		
 	});
 
-router.route('/movies/suggestions')
-	.post(function(req, res){
-		User.findById(req.body._id)
+router.route('/movies/suggestions/:id')
+	.get(function(req, res){
+		User.findById(req.params.id)
 		.populate('movieProfile')
 		.exec(function(err,user){
 			if(err) {
-				return res.send(505, err);
+				return res.send(509, err);
 			}
-			algorithms.findSuggestedMovies(user.movieProfile, function(updatedSuggestions){
-				user.movieProfile.suggestions = updatedSuggestions;
-        user.movieProfile.save(function(err){
-					if(err) return res.send(509, err);
-					return res.send(user);
-				});
+				return res.send(user.movieProfile.suggestions);
 			});
-		});
 	});
 
-
+router.route('/movies/similar/:movie_id/:page')
+	.get(function(req, res){
+		tmdb.getSimilarMovies(req, function(results){
+			jsonResults = JSON.parse(results);
+			return res.send(jsonResults.status_code ? null : jsonResults.results);
+		});
+	});
+	
 router.route('/movies/popular/:page')
 	.get(function(req, res){
 		tmdb.getPopularMovies(req.params.page, function(results){
@@ -137,7 +148,6 @@ router.route('/movies/now_playing/:page')
 	
 router.route('/movies/:id')
 	.get(function(req, res){
-		console.log(req.params.id);
 		tmdb.getMovieDetails(req.params.id, function(details){
 			jsonDetails = JSON.parse(details);
 			return res.send(jsonDetails.status_code ? null : jsonDetails);
@@ -158,6 +168,18 @@ router.route('/movies/search/:page')
 		//TODO call search from TMDB
 		tmdb.searchMovies(req, function(results){
 			return res.send((JSON.parse(results)).results);
+		});
+	});
+	
+router.route('/users/:id')
+	.get(function(req, res){
+		User.findById(req.params.id, function(err, user){
+			if(err) return res.send(510, err);
+			var userInfo = {
+				username: user.username,
+				email: user.email
+			};
+			res.send(userInfo);
 		});
 	});
 //Register the authentication middleware
