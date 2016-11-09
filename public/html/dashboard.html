@@ -26,25 +26,47 @@
 				</div>
 			</div>
 
-			<h2>Top Rated</h2>
+			<h2>Popular</h2>
 			<div class="movie-box">
 				<div class="button-col">
-					<a ng-click="scrollLeft()" style="align:left">
+					<a ng-click="popScrollLeft()" style="align:left">
 						<img src="../images/left-arrow.png" height="120px" width="120px"/>
 					</a>
 				</div>
 				<div class="movie-col">
-					<div class="movie" ng-repeat="movie in topMovieDisplay">
+					<div class="movie" ng-repeat="movie in popMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/> <!-- class="tooltip-custom" data-tooltip-content]]]=".tooltipInfo" -->
 						</a>
 					</div>
 				</div>
 				<div class="button-col">
-					<a ng-click="scrollRight()">
+					<a ng-click="popScrollRight()">
 						<img src="../images/right-arrow.png" height="120px" width="120px"/>
 					</a>
 				</div>
+			</div>
+
+			<h2>Now Playing</h2>
+			<div class="movie-box">
+				<div class="button-col">
+					<a ng-click="nowScrollLeft()" style="align:left">
+						<img src="../images/left-arrow.png" height="120px" width="120px"/>
+					</a>
+				</div>
+				<div class="movie-col">
+					<div class="movie" ng-repeat="movie in nowMovieDisplay">
+						<a ng-click="gotoMovie(movie.id)">
+							<img src="{{movie.poster}}" class="moviePoster"/> <!-- class="tooltip-custom" data-tooltip-content]]]=".tooltipInfo" -->
+						</a>
+					</div>
+				</div>
+				<div class="button-col">
+					<a ng-click="nowScrollRight()">
+						<img src="../images/right-arrow.png" height="120px" width="120px"/>
+					</a>
+				</div>
+			</div>
 
 			<div class="tooltip_templates">
 				<div class="tooltipInfo">

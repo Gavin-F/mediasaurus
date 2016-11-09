@@ -119,36 +119,37 @@ index.controller("dashboard-controller", function($scope, $location, $http, $loc
 	}
 	// logout user for debugging only!!
 
-	$scope.topMovieDisplay = [];
-	$scope.topMovieStore = [];
-	$scope.topScrollCount = 0;
+	$scope.popMovieDisplay = [];
+	$scope.popMovieStore = [];
+	$scope.popScrollCount = 0;
 
 	// scrollLeft shifts displayed movies to the left
-	$scope.scrollLeft = function() {
-		if($scope.topScrollCount > 0) $scope.topScrollCount--;
-		else if($scope.topScrollCount == 0) $scope.topScrollCount = $scope.topMovieStore.length-1;
-		$scope.topMovieDisplay = $scope.topMovieStore[$scope.topScrollCount];
+	$scope.popScrollLeft = function() {
+		if($scope.popScrollCount > 0) $scope.popScrollCount--;
+		else if($scope.popScrollCount == 0) $scope.popScrollCount = $scope.popMovieStore.length-1;
+		$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
 	}
 
 	// scrollRight shifts displayed movies to the right
-	$scope.scrollRight = function() {
-		if($scope.topScrollCount < $scope.topMovieStore.length-1) $scope.topScrollCount++;
-		else if($scope.topScrollCount == $scope.topMovieStore.length-1) $scope.topScrollCount = 0;
-		$scope.topMovieDisplay = $scope.topMovieStore[$scope.topScrollCount];
+	$scope.popScrollRight = function() {
+		if($scope.popScrollCount < $scope.popMovieStore.length-1) $scope.popScrollCount++;
+		else if($scope.popScrollCount == $scope.popMovieStore.length-1) $scope.popScrollCount = 0;
+		$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
 	}
 
 	$scope.gotoMovie = function(id){
 		$location.url("/movies/" + id);
 	}
 
-	$scope.$emit("dashboardEvent", "");
+	$scope.$emit("dashboardPopEvent", 1);
+	$scope.$emit("dashboardNowEvent", 1);
 
-	$scope.$on("dashboardUpdate", function(event, movies) {
-		$scope.topMovieDisplay = movies.slice(0,5);
-		$scope.topMovieStore.push(movies.slice(0,5),
-							  movies.slice(5,10),
-							  movies.slice(10,15),
-							  movies.slice(15,20));
+	$scope.$on("dashboardPopUpdate", function(event, returnMovies) {
+		$scope.popMovieDisplay = returnMovies.slice(0,5);
+		$scope.popMovieStore.push(returnMovies.slice(0,5),
+							  returnMovies.slice(5,10),
+							  returnMovies.slice(10,15),
+							  returnMovies.slice(15,20));
 	});
 
 	// $(document).ready(function() {
