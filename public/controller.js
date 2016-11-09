@@ -5,7 +5,10 @@ var index = angular.module("index",
 	"index.signup",
 	"index.login",
 	"index.accsetup",
-	"index.moviepage"
+	"index.moviepage",
+	"index.dashboard",
+	"index.search",
+	"index.account"
 	]);
 
 //Branch Comment
@@ -18,6 +21,10 @@ index.config(function($routeProvider) {
 	.when("/dashboard", {
 		templateUrl: "/html/dashboard.html",
 		controller: "dashboard-controller"
+	})
+	.when("/search", {
+		templateUrl: "/html/search.html",
+		controller: "search-controller"
 	})
 	.when("/testpage", {
 		templateUrl: "/html/TestPage.html",
@@ -65,6 +72,12 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 		return 0;
 	}
 	};
+
+	$scope.reset = function() {
+		delete $localStorage.userID;
+		location.reload();
+	}
+	
 	$scope.goHome = function(){
 		$location.url("/home");
 		console.log("goHome");
@@ -102,8 +115,7 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("dashboard-controller", function($scope, $location, $http, $localStorage) {
-
+index.controller("dashboard-controller", function($scope,$location, $http, $timeout, $localStorage,$sessionStorage) {
 	// logout user for debugging only!!
 	if($localStorage.userID !== undefined) {
 		$scope.userID = "Logged in!";
@@ -113,35 +125,85 @@ index.controller("dashboard-controller", function($scope, $location, $http, $loc
 		$scope.userID = "Not logged in!";
 		$scope.loggedin = false;
 	}
+
+	$scope.searchResult = [];
+	$scope.search = function() {
+		var searchObject = {
+			query: $scope.search_string
+		};
+		$sessionStorage.sString=$scope.search_string;
+		$scope.$emit("searchEvent", searchObject);
+	}
+	$scope.$on("searchUpdate", function(event, searchArray) {
+		$sessionStorage.searchResult = searchArray;
+		$location.url("/search");
+	});
+	
 	$scope.reset = function() {
 		delete $localStorage.userID;
+		location.reload();
+	}
+	// logout user for debugging only!!
+
+	$scope.popMovieDisplay = [];
+	$scope.popMovieStore = [];
+	$scope.popScrollCount = 0;
+
+	$scope.nowMovieDisplay = [];
+	$scope.nowMovieStore = [];
+	$scope.nowScrollCount = 0;
+
+	// scrollLeft shifts displayed movies to the left
+	$scope.scrollLeft = function(section) {
+		switch(section) {
+			case "pop":
+				if($scope.popScrollCount > 0) $scope.popScrollCount--;
+				else if($scope.popScrollCount == 0) $scope.popScrollCount = $scope.popMovieStore.length-1;
+				$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
+				break;
+			case "now":
+				if($scope.nowScrollCount > 0) $scope.nowScrollCount--;
+				else if($scope.nowScrollCount == 0) $scope.nowScrollCount = $scope.nowMovieStore.length-1;
+				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
+				break;
+			default: break;
+		}
 	}
 
-	$scope.movies = [];
+	// scrollRight shifts displayed movies to the right
+	$scope.scrollRight = function(section) {
+		switch(section) {
+			case "pop":
+				if($scope.popScrollCount < $scope.popMovieStore.length-1) $scope.popScrollCount++;
+				else if($scope.popScrollCount == $scope.popMovieStore.length-1) $scope.popScrollCount = 0;
+				$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
+				break;
+			case "now":
+				if($scope.nowScrollCount < $scope.nowMovieStore.length-1) $scope.nowScrollCount++;
+				else if($scope.nowScrollCount == $scope.nowMovieStore.length-1) $scope.nowScrollCount = 0;
+				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
+				break;
+			default: break;
+		}
+	}
 
 	$scope.gotoMovie = function(id){
-		//$location.url("/movie");
 		$location.url("/movies/" + id);
 	}
 
-	$http.get("/api/movies/popular/" + 1).success(function(req) {
-		for(i = 0; i < 5; i++) {
-			console.log(req[i]);
-			var movie = {
-				id: req[i].id,
-				title: req[i].title,
-				poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
-				rating: req[i].vote_average
-			};
-			$scope.movies.push(movie);
-		}
-		// $scope.m0 =  {
-		// 	id: req[0].id,
-		// 	title: req[0].title,
-		// 	poster: "https://image.tmdb.org/t/p/w500" + req[0].poster_path,
-		// 	rating: req[0].vote_average
-		// };
-		console.log($scope.movies);
+	$scope.$emit("dashboardEvent", 1);
+
+	$scope.$on("dashboardUpdate", function(event, returnMovies) {
+		$scope.popMovieDisplay = returnMovies[0].slice(0,5);
+		$scope.nowMovieDisplay = returnMovies[1].slice(0,5);
+		$scope.popMovieStore.push(returnMovies[0].slice(0,5),
+			returnMovies[0].slice(5,10),
+			returnMovies[0].slice(10,15),
+			returnMovies[0].slice(15,20));
+		$scope.nowMovieStore.push(returnMovies[1].slice(0,5),
+		  	returnMovies[1].slice(5,10),
+		  	returnMovies[1].slice(10,15),
+		  	returnMovies[1].slice(15,20));
 	});
 
 	$(document).ready(function() {
@@ -156,6 +218,50 @@ index.controller("dashboard-controller", function($scope, $location, $http, $loc
 	});
 });
 
+
+///////////////////////////////////////////////////////
+// SEARCH CONTROLLER
+///////////////////////////////////////////////////////
+index.controller("search-controller", function($scope,$route,$location, $timeout, $localStorage, $sessionStorage) {
+	
+	$scope.searchResult = [];
+	$scope.searchResult = $sessionStorage.searchResult;
+	$scope.search = function() {
+		var searchObject = {
+			query: $scope.search_string
+		};
+		$sessionStorage.sString=$scope.search_string;
+		$scope.$emit("searchEvent", searchObject);
+	}
+	$scope.$on("searchUpdate", function(event, searchArray) {
+		if($sessionStorage.searchResult !== undefined) {
+			$scope.searchResult = $sessionStorage.searchResult;
+			delete $sessionStorage.searchResult;
+		}
+		else{
+			$scope.searchResult = searchArray;
+		}
+		$location.url("/search");
+	});
+
+
+	$scope.searchNext = function() {
+		$location.url("/search");
+		$route.reload();
+	}
+	$scope.searchPrevious = function() {
+		$location.url("/search");
+		$route.reload();
+	}
+	$scope.reset = function() {
+		delete $localStorage.userID;
+	}
+	$scope.gotoMovie = function(id){
+		//$location.url("/movie");
+		$location.url("/movies/" + id);
+	}
+
+});
 
 
 ///////////////////////////////////////////////////////
@@ -418,11 +524,17 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 ///////////////////////////////////////////////////////
 // Account CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("account-controller", function($scope,$location) {
+index.controller("account-controller", function($scope,$location,$localStorage) {
+	$scope.userID=$localStorage.userID;
+	var user = {
+		id: $scope.userID
+	};
+	$scope.$emit("accountEvent", user);
+	// if login was successful, update id and send to new page
+	$scope.$on("accountUpdate", function(event, userInfo) {
+		$scope.username = userInfo.username;
+		$scope.email = userInfo.email;
+		console.log(userInfo);
+	});
 
-	$scope.message = "hello";
-
-	$scope.setText = function() {
-		$scope.test = "Hello world!";
-	}
 });

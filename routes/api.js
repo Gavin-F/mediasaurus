@@ -170,6 +170,18 @@ router.route('/movies/search/:page')
 			return res.send((JSON.parse(results)).results);
 		});
 	});
+	
+router.route('/users/:id')
+	.get(function(req, res){
+		User.findById(req.params.id, function(err, user){
+			if(err) return res.send(510, err);
+			var userInfo = {
+				username: user.username,
+				email: user.email
+			};
+			res.send(userInfo);
+		});
+	});
 //Register the authentication middleware
 //router.use('/posts', isAuthenticated);
 
