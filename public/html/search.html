@@ -15,13 +15,11 @@
 			<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
 
 			<h3>Search</h3>
-			<div class="input-group">
-				<form class="form-register" method="post" novalidate>		
-					<input type="text" name="search_string" ng-model="search_string" />
+			<div class="input-group">	
+					<input type="text" name="search_string" ng-model="search_string" class="form-control"/>
 					<span class="input-group-btn">
 						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
 					</span>
-				</form>
 			</div> <br>
 			<div class="container" ng-repeat="sResult in searchResult">
 				<div class="moviePosterPosition" ng-click="gotoMovie(sResult.id)">
