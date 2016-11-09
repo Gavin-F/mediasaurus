@@ -1,0 +1,42 @@
+<html ng-app="search">
+<head>
+	<link rel="stylesheet" href="../css/superhero-style.css">
+	<link rel="stylesheet" href="/css/search-style.css">
+	<link rel="stylesheet" href="/css/index-style.css">
+	<link rel="stylesheet" href="../css/tooltips-style.css">
+	<link rel="stylesheet" href="../css/dashboard-style.css">
+
+
+</head>
+
+<body>
+	<div class="container" ng-controller="search">
+		<div ng-controller="search-controller">
+			<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
+
+			<h3>Search</h3>
+			<div class="input-group">	
+					<input type="text" name="search_string" ng-model="search_string" class="form-control"}" />
+					<span class="input-group-btn">
+						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
+					</span>
+			</div> <br>
+			<div class="container MovieContainer" ng-repeat="sResult in searchResult">
+				<div class="moviePosterPosition" ng-click="gotoMovie(sResult.id)">
+					<a><img src="{{sResult.poster}}" class="tooltip-custom moviePosterSearch" data-tooltip-content=".tooltipInfo"/></a>
+				</div>
+				<div class="movieTitle">
+					<a class="MovieTitleText" ng-click="gotoMovie(sResult.id)"><h4>{{sResult.title}}</h4></a>
+					<div class="movieDescription">
+						<p class="description">
+							{{sResult.overview}}
+						</p>
+					</div>
+				</div>
+			</div><br>
+		</div>
+	</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+</body>
+</html>

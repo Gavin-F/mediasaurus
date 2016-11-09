@@ -9,23 +9,27 @@
 </head>
 
 <body>
-	<div class="container" ng-controller="dashboard">
-		<div ng-controller="dashboard-controller">
+	<div class="container" ng-controller="search">
+		<div class="container" ng-controller="dashboard-controller">
 			{{userID}}
 			<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
 
-			<h2>Dashboard</h2>
+			<h3>Dashboard</h3>
 
 			<div class="form-group">
 				<label class="control-label">Search</label>
 				<div class="input-group">
-					<input type="text" class="form-control">
+					<input type="text" name="search_string" ng-model="search_string" class="form-control"/>
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button">Search</button>
+						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
 					</span>
 				</div>
 			</div>
+		</div>
+	</div>
 
+	<div class="container" ng-controller="dashboard">
+		<div ng-controller="dashboard-controller">
 			<h2>Popular</h2>
 			<div class="movie-box">
 				<div class="button-col">
@@ -46,7 +50,6 @@
 					</a>
 				</div>
 			</div>
-
 			<h2>Now Playing</h2>
 			<div class="movie-box">
 				<div class="button-col">
@@ -67,7 +70,6 @@
 					</a>
 				</div>
 			</div>
-
 			<div class="tooltip_templates">
 				<div class="tooltipInfo">
 					<p style="font-size:24px; margin-top:5px"> m0.title </p>
@@ -76,6 +78,7 @@
 			</div>
 		</div>
 	</div>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 </body>
 

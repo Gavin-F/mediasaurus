@@ -137,8 +137,8 @@ module.exports = {
         this.httpGetAsync(consAPI_URL, callback);
     },
 
-    searchMovies: function (query, callback) {
-      consAPI_URL = API_BASE + API_SEARCH + "&query=" + query;
+    searchMovies: function (req, callback) {
+      consAPI_URL = API_BASE + API_SEARCH + "&query=" + req.body.query + '&page=' + req.params.page;
 
       this.httpGetAsync(consAPI_URL, callback);
     },
@@ -153,8 +153,8 @@ module.exports = {
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
 
-	 getSimilarMovies: function(id, callback){
-		consAPI_URL = API_BASE + 'movie/' + id + '/similar?api_key=' + APIKEY;
+	 getSimilarMovies: function(req, callback){
+		consAPI_URL = API_BASE + 'movie/' + req.params.movie_id + '/similar?api_key=' + APIKEY + '&page=' + req.params.page;
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
 

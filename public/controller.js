@@ -6,7 +6,9 @@ var index = angular.module("index",
 	"index.login",
 	"index.accsetup",
 	"index.moviepage",
-	"index.dashboard"
+	"index.dashboard",
+	"index.search",
+	"index.account"
 	]);
 
 //Branch Comment
@@ -19,6 +21,10 @@ index.config(function($routeProvider) {
 	.when("/dashboard", {
 		templateUrl: "/html/dashboard.html",
 		controller: "dashboard-controller"
+	})
+	.when("/search", {
+		templateUrl: "/html/search.html",
+		controller: "search-controller"
 	})
 	.when("/testpage", {
 		templateUrl: "/html/TestPage.html",
@@ -66,6 +72,12 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 		return 0;
 	}
 	};
+
+	$scope.reset = function() {
+		delete $localStorage.userID;
+		location.reload();
+	}
+	
 	$scope.goHome = function(){
 		$location.url("/home");
 		console.log("goHome");
@@ -103,7 +115,7 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("dashboard-controller", function($scope, $location, $http, $localStorage) {
+index.controller("dashboard-controller", function($scope,$location, $http, $timeout, $localStorage,$sessionStorage) {
 	// logout user for debugging only!!
 	if($localStorage.userID !== undefined) {
 		$scope.userID = "Logged in!";
@@ -113,8 +125,23 @@ index.controller("dashboard-controller", function($scope, $location, $http, $loc
 		$scope.userID = "Not logged in!";
 		$scope.loggedin = false;
 	}
+
+	$scope.searchResult = [];
+	$scope.search = function() {
+		var searchObject = {
+			query: $scope.search_string
+		};
+		$sessionStorage.sString=$scope.search_string;
+		$scope.$emit("searchEvent", searchObject);
+	}
+	$scope.$on("searchUpdate", function(event, searchArray) {
+		$sessionStorage.searchResult = searchArray;
+		$location.url("/search");
+	});
+	
 	$scope.reset = function() {
 		delete $localStorage.userID;
+		location.reload();
 	}
 	// logout user for debugging only!!
 
@@ -179,18 +206,62 @@ index.controller("dashboard-controller", function($scope, $location, $http, $loc
 		  	returnMovies[1].slice(15,20));
 	});
 
-	// $(document).ready(function() {
-	// 	$('.tooltip-custom').tooltipster({
-	// 		side: 'bottom',
-	// 		interactive: false,
-	// 		arrow: false,
-	// 		theme: 'tooltipster-borderless',
-	// 		//animation: 'fall',
-	// 		contentCloning: true
-	// 	});
-	// });
+	$(document).ready(function() {
+		$('.tooltip-custom').tooltipster({
+			side: 'bottom',
+			interactive: false,
+			arrow: false,
+			theme: 'tooltipster-borderless',
+			//animation: 'fall',
+			contentCloning: true
+		});
+	});
 });
 
+
+///////////////////////////////////////////////////////
+// SEARCH CONTROLLER
+///////////////////////////////////////////////////////
+index.controller("search-controller", function($scope,$route,$location, $timeout, $localStorage, $sessionStorage) {
+	
+	$scope.searchResult = [];
+	$scope.searchResult = $sessionStorage.searchResult;
+	$scope.search = function() {
+		var searchObject = {
+			query: $scope.search_string
+		};
+		$sessionStorage.sString=$scope.search_string;
+		$scope.$emit("searchEvent", searchObject);
+	}
+	$scope.$on("searchUpdate", function(event, searchArray) {
+		if($sessionStorage.searchResult !== undefined) {
+			$scope.searchResult = $sessionStorage.searchResult;
+			delete $sessionStorage.searchResult;
+		}
+		else{
+			$scope.searchResult = searchArray;
+		}
+		$location.url("/search");
+	});
+
+
+	$scope.searchNext = function() {
+		$location.url("/search");
+		$route.reload();
+	}
+	$scope.searchPrevious = function() {
+		$location.url("/search");
+		$route.reload();
+	}
+	$scope.reset = function() {
+		delete $localStorage.userID;
+	}
+	$scope.gotoMovie = function(id){
+		//$location.url("/movie");
+		$location.url("/movies/" + id);
+	}
+
+});
 
 
 ///////////////////////////////////////////////////////
@@ -433,11 +504,17 @@ index.controller("movie-controller", function($scope,$location,$routeParams) {
 ///////////////////////////////////////////////////////
 // Account CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("account-controller", function($scope,$location) {
+index.controller("account-controller", function($scope,$location,$localStorage) {
+	$scope.userID=$localStorage.userID;
+	var user = {
+		id: $scope.userID
+	};
+	$scope.$emit("accountEvent", user);
+	// if login was successful, update id and send to new page
+	$scope.$on("accountUpdate", function(event, userInfo) {
+		$scope.username = userInfo.username;
+		$scope.email = userInfo.email;
+		console.log(userInfo);
+	});
 
-	$scope.message = "hello";
-
-	$scope.setText = function() {
-		$scope.test = "Hello world!";
-	}
 });
