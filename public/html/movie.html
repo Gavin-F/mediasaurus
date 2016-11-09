@@ -84,8 +84,8 @@
 			<h3>Related Movies</h3>
 			<div class="horizontal_scroll jumbotron">
 
-				<a ng-click="gotoMovie(movie.id)" ng-repeat="movie in relatedMovies">
-					<img src="{{movie.poster}}" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo"/>
+				<a ng-click="gotoMovie(relatedMovie.id)" ng-repeat="relatedMovie in relatedMovies">
+					<img src="{{relatedMovie.poster}}" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo"/>
 					&emsp;&emsp;
 				</a>
 
@@ -94,7 +94,7 @@
 			<div class="tooltip_templates">
 				<div class="tooltipInfo" >
 					<p>
-						Rating: {{tooltipRating}}
+						Rating: {{relatedMovie.rating}}
 					</p>
 				</div>
 			</div>

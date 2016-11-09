@@ -324,7 +324,7 @@ index.controller("password-controller", function($scope,$location) {
 ///////////////////////////////////////////////////////
 // Movie CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("movie-controller", function($scope,$location,$routeParams) {
+index.controller("movie-controller", function($scope,$location,$routeParams,$http) {
 	var movie_id = $routeParams.id;
 
 	$scope.$emit("movieEvent", movie_id);
@@ -355,7 +355,6 @@ index.controller("movie-controller", function($scope,$location,$routeParams) {
 	var obj_genres = "";
 
 	$scope.$on("movieUpdate", function(event, obj_movie) {
-		console.log(obj_movie);
 		$scope.overview = obj_movie.overview;
 		$scope.title = obj_movie.title;
 		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie.poster_path;
@@ -384,7 +383,6 @@ index.controller("movie-controller", function($scope,$location,$routeParams) {
 	});
 
     $(function () {
-    	console.log(movie_rating);
     	$("#rateYo").rateYo({
     		starWidth: "20px",
     		numStars: 10,
@@ -394,24 +392,26 @@ index.controller("movie-controller", function($scope,$location,$routeParams) {
     	});
     });
 
-	$scope.relatedMovies = "";
-
 	$scope.gotoMovie = function(id){
 		//$location.url("/movie");
 		$location.url("/movies/" + id);
 	}
 
-	$http.get("/api/movies/popular/" + 1).success(function(req) {
-		for(i = 0; i < 5; i++) {
-			console.log(req[i]);
-			var movie = {
-				id: req[i].id,
-				title: req[i].title,
-				poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
-				rating: req[i].vote_average
+	$scope.relatedMovies = [];
+
+	$scope.$on("relatedMovieUpdate", function(event, relatedMovies) {
+		for(i = 0; i < relatedMovies.length; i++) {
+			console.log(relatedMovies[i]);
+			var relatedMovie = {
+				id: relatedMovies[i].id,
+				title: relatedMovies[i].title,
+				poster: "https://image.tmdb.org/t/p/w500" + relatedMovies[i].poster_path,
+				rating: relatedMovies[i].vote_average
 			};
-			$scope.movies.push(movie);
+			$scope.relatedMovies.push(relatedMovie);
 		}
+	});
+	
 
 });
 
