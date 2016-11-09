@@ -10,7 +10,6 @@ angular.module("index.moviepage", ["ngRoute"]).controller("movie", function($sco
 			$http.get("/api/movies/similar/" + movie_id + "/" + 1).success(function(req2) {
 				if (req2 === null) {}
 				else {
-					console.log(req2);
 					$scope.$broadcast("relatedMovieUpdate", req2); 
 				}
 			});

@@ -401,7 +401,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 
 	$scope.$on("relatedMovieUpdate", function(event, relatedMovies) {
 		for(i = 0; i < relatedMovies.length; i++) {
-			console.log(relatedMovies[i]);
+			//console.log(relatedMovies[i]);
 			var relatedMovie = {
 				id: relatedMovies[i].id,
 				title: relatedMovies[i].title,
