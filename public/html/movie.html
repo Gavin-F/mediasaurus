@@ -84,26 +84,17 @@
 			<h3>Related Movies</h3>
 			<div class="horizontal_scroll jumbotron">
 
-				<a ng-click="gotoMovie()"><img src="../images/Kong.png" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo" /></a>
-				&emsp;&emsp;
-				<img src="../images/Logan.png" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo" />
-				&emsp;&emsp;
-				<img src="../images/GotG2.png" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo" />
+				<a ng-click="gotoMovie(movie.id)" ng-repeat="movie in relatedMovies">
+					<img src="{{movie.poster}}" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo"/>
+					&emsp;&emsp;
+				</a>
 
 			</div>
 
 			<div class="tooltip_templates">
 				<div class="tooltipInfo" >
 					<p>
-						Movie Title: Blah
-						<br/>
-						Movie Description: Blah Blah
-						<br/>
-						Stuff...
-						<br/>
-						Rating...
-						<br/>
-						link: <a href="www.google.ca">Google</a>
+						Rating: {{tooltipRating}}
 					</p>
 				</div>
 			</div>

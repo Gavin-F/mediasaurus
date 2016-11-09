@@ -340,10 +340,6 @@ index.controller("movie-controller", function($scope,$location,$routeParams) {
         }
     });
 
-	var movie_rating;
-	var runtime;
-	var obj_genres = [];
-
     $(function() {
 		$('.tooltip-custom').tooltipster({
 			side: 'right',
@@ -353,6 +349,10 @@ index.controller("movie-controller", function($scope,$location,$routeParams) {
 			contentCloning: true
 		});
 	});
+
+	var movie_rating;
+	var runtime;
+	var obj_genres = "";
 
 	$scope.$on("movieUpdate", function(event, obj_movie) {
 		console.log(obj_movie);
@@ -393,6 +393,26 @@ index.controller("movie-controller", function($scope,$location,$routeParams) {
     		ratedFill: "#33CCCC"
     	});
     });
+
+	$scope.relatedMovies = "";
+
+	$scope.gotoMovie = function(id){
+		//$location.url("/movie");
+		$location.url("/movies/" + id);
+	}
+
+	$http.get("/api/movies/popular/" + 1).success(function(req) {
+		for(i = 0; i < 5; i++) {
+			console.log(req[i]);
+			var movie = {
+				id: req[i].id,
+				title: req[i].title,
+				poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
+				rating: req[i].vote_average
+			};
+			$scope.movies.push(movie);
+		}
+
 });
 
 ///////////////////////////////////////////////////////
