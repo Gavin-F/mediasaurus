@@ -29,19 +29,19 @@
 			<h2>Popular</h2>
 			<div class="movie-box">
 				<div class="button-col">
-					<a ng-click="popScrollLeft()" style="align:left">
+					<a ng-click="scrollLeft('pop')" style="align:left">
 						<img src="../images/left-arrow.png" height="120px" width="120px"/>
 					</a>
 				</div>
 				<div class="movie-col">
 					<div class="movie" ng-repeat="movie in popMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
-							<img src="{{movie.poster}}" class="moviePoster"/> <!-- class="tooltip-custom" data-tooltip-content]]]=".tooltipInfo" -->
+							<img src="{{movie.poster}}" class="moviePoster"/>
 						</a>
 					</div>
 				</div>
 				<div class="button-col">
-					<a ng-click="popScrollRight()">
+					<a ng-click="scrollRight('pop')">
 						<img src="../images/right-arrow.png" height="120px" width="120px"/>
 					</a>
 				</div>
@@ -50,19 +50,19 @@
 			<h2>Now Playing</h2>
 			<div class="movie-box">
 				<div class="button-col">
-					<a ng-click="nowScrollLeft()" style="align:left">
+					<a ng-click="scrollLeft('now')" style="align:left">
 						<img src="../images/left-arrow.png" height="120px" width="120px"/>
 					</a>
 				</div>
 				<div class="movie-col">
 					<div class="movie" ng-repeat="movie in nowMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
-							<img src="{{movie.poster}}" class="moviePoster"/> <!-- class="tooltip-custom" data-tooltip-content]]]=".tooltipInfo" -->
+							<img src="{{movie.poster}}" class="moviePoster"/>
 						</a>
 					</div>
 				</div>
 				<div class="button-col">
-					<a ng-click="nowScrollRight()">
+					<a ng-click="scrollRight('now')">
 						<img src="../images/right-arrow.png" height="120px" width="120px"/>
 					</a>
 				</div>

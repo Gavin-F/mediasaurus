@@ -104,7 +104,6 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("dashboard-controller", function($scope, $location, $http, $localStorage) {
-
 	// logout user for debugging only!!
 	if($localStorage.userID !== undefined) {
 		$scope.userID = "Logged in!";
@@ -123,33 +122,61 @@ index.controller("dashboard-controller", function($scope, $location, $http, $loc
 	$scope.popMovieStore = [];
 	$scope.popScrollCount = 0;
 
+	$scope.nowMovieDisplay = [];
+	$scope.nowMovieStore = [];
+	$scope.nowScrollCount = 0;
+
 	// scrollLeft shifts displayed movies to the left
-	$scope.popScrollLeft = function() {
-		if($scope.popScrollCount > 0) $scope.popScrollCount--;
-		else if($scope.popScrollCount == 0) $scope.popScrollCount = $scope.popMovieStore.length-1;
-		$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
+	$scope.scrollLeft = function(section) {
+		switch(section) {
+			case "pop":
+				if($scope.popScrollCount > 0) $scope.popScrollCount--;
+				else if($scope.popScrollCount == 0) $scope.popScrollCount = $scope.popMovieStore.length-1;
+				$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
+				break;
+			case "now":
+				if($scope.nowScrollCount > 0) $scope.nowScrollCount--;
+				else if($scope.nowScrollCount == 0) $scope.nowScrollCount = $scope.nowMovieStore.length-1;
+				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
+				break;
+			default: break;
+		}
 	}
 
 	// scrollRight shifts displayed movies to the right
-	$scope.popScrollRight = function() {
-		if($scope.popScrollCount < $scope.popMovieStore.length-1) $scope.popScrollCount++;
-		else if($scope.popScrollCount == $scope.popMovieStore.length-1) $scope.popScrollCount = 0;
-		$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
+	$scope.scrollRight = function(section) {
+		switch(section) {
+			case "pop":
+				if($scope.popScrollCount < $scope.popMovieStore.length-1) $scope.popScrollCount++;
+				else if($scope.popScrollCount == $scope.popMovieStore.length-1) $scope.popScrollCount = 0;
+				$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
+				break;
+			case "now":
+				if($scope.nowScrollCount < $scope.nowMovieStore.length-1) $scope.nowScrollCount++;
+				else if($scope.nowScrollCount == $scope.nowMovieStore.length-1) $scope.nowScrollCount = 0;
+				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
+				break;
+			default: break;
+		}
 	}
 
 	$scope.gotoMovie = function(id){
 		$location.url("/movies/" + id);
 	}
 
-	$scope.$emit("dashboardPopEvent", 1);
-	$scope.$emit("dashboardNowEvent", 1);
+	$scope.$emit("dashboardEvent", 1);
 
-	$scope.$on("dashboardPopUpdate", function(event, returnMovies) {
-		$scope.popMovieDisplay = returnMovies.slice(0,5);
-		$scope.popMovieStore.push(returnMovies.slice(0,5),
-							  returnMovies.slice(5,10),
-							  returnMovies.slice(10,15),
-							  returnMovies.slice(15,20));
+	$scope.$on("dashboardUpdate", function(event, returnMovies) {
+		$scope.popMovieDisplay = returnMovies[0].slice(0,5);
+		$scope.nowMovieDisplay = returnMovies[1].slice(0,5);
+		$scope.popMovieStore.push(returnMovies[0].slice(0,5),
+			returnMovies[0].slice(5,10),
+			returnMovies[0].slice(10,15),
+			returnMovies[0].slice(15,20));
+		$scope.nowMovieStore.push(returnMovies[1].slice(0,5),
+		  	returnMovies[1].slice(5,10),
+		  	returnMovies[1].slice(10,15),
+		  	returnMovies[1].slice(15,20));
 	});
 
 	// $(document).ready(function() {
