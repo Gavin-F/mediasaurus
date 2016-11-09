@@ -6,7 +6,8 @@ var index = angular.module("index",
 	"index.login",
 	"index.accsetup",
 	"index.moviepage",
-	"index.search"
+	"index.search",
+	"index.account"
 	]);
 
 //Branch Comment
@@ -132,6 +133,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		var searchObject = {
 			query: $scope.search_string
 		};
+		$sessionStorage.sString=$scope.search_string;
 		$scope.$emit("searchEvent", searchObject);
 	}
 	$scope.$on("searchUpdate", function(event, searchArray) {
@@ -188,6 +190,7 @@ index.controller("search-controller", function($scope,$route,$location, $timeout
 		var searchObject = {
 			query: $scope.search_string
 		};
+		$sessionStorage.sString=$scope.search_string;
 		$scope.$emit("searchEvent", searchObject);
 	}
 	$scope.$on("searchUpdate", function(event, searchArray) {
@@ -461,11 +464,17 @@ index.controller("movie-controller", function($scope,$location,$routeParams) {
 ///////////////////////////////////////////////////////
 // Account CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("account-controller", function($scope,$location) {
+index.controller("account-controller", function($scope,$location,$localStorage) {
+	$scope.userID=$localStorage.userID;
+	var user = {
+		id: $scope.userID
+	};
+	$scope.$emit("accountEvent", user);
+	// if login was successful, update id and send to new page
+	$scope.$on("accountUpdate", function(event, userInfo) {
+		$scope.username = userInfo.username;
+		$scope.email = userInfo.email;
+		console.log(userInfo);
+	});
 
-	$scope.message = "hello";
-
-	$scope.setText = function() {
-		$scope.test = "Hello world!";
-	}
 });

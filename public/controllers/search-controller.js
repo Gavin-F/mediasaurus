@@ -7,7 +7,6 @@ angular.module("index.search", ["ngRoute"]).controller("search", function($scope
 	$scope.$on("searchEvent", function(event, searchObject) { // receive from child controller
 		$http.post(("/api/movies/search/"+1),searchObject).success(function(req) { // authenticate user login
 			var searchArray=[];
-			console.log(searchObject.query)
 			for(i = 0; i < 20; i++) {
 				var searchItem = {
 					id: req[i].id,
