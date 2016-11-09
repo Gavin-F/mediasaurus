@@ -1,4 +1,4 @@
-<html>
+<html ng-app="dashboard">
 <head>
 
 	<link rel="stylesheet" href="../css/superhero-style.css">
@@ -9,8 +9,8 @@
 </head>
 
 <body>
-	<div class="container" ng-controller="dashboard-controller">
-		<div>
+	<div class="container" ng-controller="dashboard">
+		<div ng-controller="dashboard-controller">
 			{{userID}}
 			<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
 
@@ -28,25 +28,23 @@
 
 			<h2>Top Rated</h2>
 			<div class="movie-box">
-				<div class="inner-movie">
-				<a ng-click="gotoMovie(movie.id)" ng-repeat="movie in movies">
-					<img src="{{movie.poster}}" class="tooltip-custom moviePoster" /> <!-- data-tooltip-content]]]=".tooltipInfo" -->
-					&emsp;&emsp;
-				</a>
+				<div class="button-col">
+					<a ng-click="scrollLeft()" style="align:left">
+						<img src="../images/left-arrow.png" height="120px" width="120px"/>
+					</a>
 				</div>
-			</div>
-
-			<!-- <h2>Recommended</h2>
-			<div class="jumbotron pre-scrollable">
-				<p>Empty for now :(
-				</p>
-			</div>
-
-			<h2>Trending</h2>
-			<div class="pre-scrollable jumbotron">
-				<p>Also empty for now :(
-				</p>
-			</div> -->
+				<div class="movie-col">
+					<div class="movie" ng-repeat="movie in topMovieDisplay">
+						<a ng-click="gotoMovie(movie.id)">
+							<img src="{{movie.poster}}" class="moviePoster"/> <!-- class="tooltip-custom" data-tooltip-content]]]=".tooltipInfo" -->
+						</a>
+					</div>
+				</div>
+				<div class="button-col">
+					<a ng-click="scrollRight()">
+						<img src="../images/right-arrow.png" height="120px" width="120px"/>
+					</a>
+				</div>
 
 			<div class="tooltip_templates">
 				<div class="tooltipInfo">
@@ -56,7 +54,7 @@
 			</div>
 		</div>
 	</div>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 </body>
 
 </html>

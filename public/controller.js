@@ -5,7 +5,8 @@ var index = angular.module("index",
 	"index.signup",
 	"index.login",
 	"index.accsetup",
-	"index.moviepage"
+	"index.moviepage",
+	"index.dashboard"
 	]);
 
 //Branch Comment
@@ -116,36 +117,50 @@ index.controller("dashboard-controller", function($scope, $location, $http, $loc
 	$scope.reset = function() {
 		delete $localStorage.userID;
 	}
+	// logout user for debugging only!!
 
-	$scope.movies = [];
+	$scope.topMovieDisplay = [];
+	$scope.topMovieStore = [];
+	$scope.topScrollCount = 0;
+
+	// scrollLeft shifts displayed movies to the left
+	$scope.scrollLeft = function() {
+		if($scope.topScrollCount > 0) $scope.topScrollCount--;
+		else if($scope.topScrollCount == 0) $scope.topScrollCount = $scope.topMovieStore.length-1;
+		$scope.topMovieDisplay = $scope.topMovieStore[$scope.topScrollCount];
+	}
+
+	// scrollRight shifts displayed movies to the right
+	$scope.scrollRight = function() {
+		if($scope.topScrollCount < $scope.topMovieStore.length-1) $scope.topScrollCount++;
+		else if($scope.topScrollCount == $scope.topMovieStore.length-1) $scope.topScrollCount = 0;
+		$scope.topMovieDisplay = $scope.topMovieStore[$scope.topScrollCount];
+	}
 
 	$scope.gotoMovie = function(id){
-		//$location.url("/movie");
 		$location.url("/movies/" + id);
 	}
 
-	$http.get("/api/movies/popular/" + 1).success(function(req) {
-		for(i = 0; i < 5; i++) {
-			var movie = {
-				id: req[i].id,
-				title: req[i].title,
-				poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
-				rating: req[i].vote_average
-			};
-			$scope.movies.push(movie);
-		}
+	$scope.$emit("dashboardEvent", "");
+
+	$scope.$on("dashboardUpdate", function(event, movies) {
+		$scope.topMovieDisplay = movies.slice(0,5);
+		$scope.topMovieStore.push(movies.slice(0,5),
+							  movies.slice(5,10),
+							  movies.slice(10,15),
+							  movies.slice(15,20));
 	});
 
-	$(document).ready(function() {
-		$('.tooltip-custom').tooltipster({
-			side: 'bottom',
-			interactive: false,
-			arrow: false,
-			theme: 'tooltipster-borderless',
-			//animation: 'fall',
-			contentCloning: true
-		});
-	});
+	// $(document).ready(function() {
+	// 	$('.tooltip-custom').tooltipster({
+	// 		side: 'bottom',
+	// 		interactive: false,
+	// 		arrow: false,
+	// 		theme: 'tooltipster-borderless',
+	// 		//animation: 'fall',
+	// 		contentCloning: true
+	// 	});
+	// });
 });
 
 
