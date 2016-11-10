@@ -1,4 +1,4 @@
-<html>
+<html ng-app="dashboard">
 <head>
 
 	<link rel="stylesheet" href="../css/superhero-style.css">
@@ -9,43 +9,69 @@
 </head>
 
 <body>
-	<div class="container" ng-controller="dashboard-controller">
-		<div>
+	<div class="container" ng-controller="search">
+		<div class="container" ng-controller="dashboard-controller">
 			{{userID}}
 			<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
 
-			<h2>Dashboard</h2>
+			<h3>Dashboard</h3>
 
 			<div class="form-group">
 				<label class="control-label">Search</label>
 				<div class="input-group">
-					<input type="text" class="form-control">
+					<input type="text" name="search_string" ng-model="search_string" class="form-control"/>
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button">Search</button>
+						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
 					</span>
 				</div>
 			</div>
+		</div>
+	</div>
 
-			<h2>Recommended</h2>
-			<div class="pre-scrollable jumbotron" >
-					<a ng-click="gotoMovie(movie.id)" ng-repeat="movie in movies">
-						<img src="{{movie.poster}}" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo"/>
-						&emsp;&emsp;
+	<div class="container" ng-controller="dashboard">
+		<div ng-controller="dashboard-controller">
+			<h2>Popular</h2>
+			<div class="movie-box">
+				<div class="button-col">
+					<a ng-click="scrollLeft('pop')" style="align:left">
+						<img src="../images/left-arrow.png" height="120px" width="120px"/>
 					</a>
+				</div>
+				<div class="movie-col">
+					<div class="movie" ng-repeat="movie in popMovieDisplay">
+						<a ng-click="gotoMovie(movie.id)">
+							<img src="{{movie.poster}}" class="moviePoster"/>
+							<p>{{movie.title}}</p>
+						</a>
+					</div>
+				</div>
+				<div class="button-col">
+					<a ng-click="scrollRight('pop')">
+						<img src="../images/right-arrow.png" height="120px" width="120px"/>
+					</a>
+				</div>
 			</div>
-
-			<h2>Trending</h2>
-			<div class="jumbotron pre-scrollable">
-				<p>Empty for now :(
-				</p>
+			<h2>Now Playing</h2>
+			<div class="movie-box">
+				<div class="button-col">
+					<a ng-click="scrollLeft('now')" style="align:left">
+						<img src="../images/left-arrow.png" height="120px" width="120px"/>
+					</a>
+				</div>
+				<div class="movie-col">
+					<div class="movie" ng-repeat="movie in nowMovieDisplay">
+						<a ng-click="gotoMovie(movie.id)">
+							<img src="{{movie.poster}}" class="moviePoster"/>
+							<p>{{movie.title}}</p>
+						</a>
+					</div>
+				</div>
+				<div class="button-col">
+					<a ng-click="scrollRight('now')">
+						<img src="../images/right-arrow.png" height="120px" width="120px"/>
+					</a>
+				</div>
 			</div>
-
-			<h2>Top Rated</h2>
-			<div class="pre-scrollable jumbotron">
-				<p>Also empty for now :(
-				</p>
-			</div>
-
 			<div class="tooltip_templates">
 				<div class="tooltipInfo">
 					<p style="font-size:24px; margin-top:5px"> m0.title </p>
@@ -55,6 +81,7 @@
 		</div>
 	</div>
 
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 </body>
 
 </html>

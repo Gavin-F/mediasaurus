@@ -13,7 +13,7 @@
 	<div class="container" ng-controller="movie">
 		<div ng-controller="movie-controller">
 
-			<p class="movie_title">{{title}} ({{date}})</p>
+			<p class="movie_title"><b>{{title}}</b> ({{date}})</p>
 
 			<div class="background">
 
@@ -44,35 +44,35 @@
 
 				<div class="movie_details">
 					<div class="movie_description">
-						<h4>Movie Description</h4>
+						<h4><b>Movie Description</b></h4>
 						<p class="description">
 						{{overview}}
 						</p>
 					</div>
 
 					<div class="movie_director">
-						<h4>Director</h4>
+						<h4><b>Director</b></h4>
 						<p class="director">
 						{{director}}
 						</p>
 					</div>
 
 					<div class="movie_cast">
-						<h4>Cast</h4>
+						<h4><b>Cast</b></h4>
 						<p class="cast">
 						{{cast}}
 						</p>
 					</div>
 
 					<div class="movie_genres">
-						<h4>Genres</h4>
+						<h4><b>Genres</b></h4>
 						<p class="genres">
 						{{genres}}
 						</p>
 					</div>
 
 					<div class="movie_duration">
-						<h4>Duration</h4>
+						<h4><b>Duration</b></h4>
 						<p class="duration">
 						{{duration}}
 						</p>
@@ -84,27 +84,16 @@
 			<h3>Related Movies</h3>
 			<div class="horizontal_scroll jumbotron">
 
-				<a ng-click="gotoMovie()"><img src="../images/Kong.png" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo" /></a>
-				&emsp;&emsp;
-				<img src="../images/Logan.png" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo" />
-				&emsp;&emsp;
-				<img src="../images/GotG2.png" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo" />
+				<a ng-click="gotoMovie(relatedMovie.id)" ng-repeat="relatedMovie in relatedMovies">
+					<img src="{{relatedMovie.poster}}" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo"/>
+					&emsp;
+				</a>
 
 			</div>
 
 			<div class="tooltip_templates">
 				<div class="tooltipInfo" >
-					<p>
-						Movie Title: Blah
-						<br/>
-						Movie Description: Blah Blah
-						<br/>
-						Stuff...
-						<br/>
-						Rating...
-						<br/>
-						link: <a href="www.google.ca">Google</a>
-					</p>
+					Rating: {{relatedMovie.rating}}
 				</div>
 			</div>
 
