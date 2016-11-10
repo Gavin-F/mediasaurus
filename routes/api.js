@@ -136,6 +136,13 @@ router.route('/movies/now_playing/:page')
 		});
 	});
 	
+router.route('/movies/genre/:genre_id')
+	.get(function(req, res) {
+		tmdb.discoverPopularByGenre(req.params.genre_id, function(results){
+			return res.send(JSON.parse(results).results);
+		});
+	});
+	
 router.route('/movies/:id')
 	.get(function(req, res){
 		tmdb.getMovieDetails(req.params.id, function(details){
