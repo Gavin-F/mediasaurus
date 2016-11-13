@@ -47,7 +47,7 @@ module.exports = {
 
         consAPI_URL = API_BASE + "search/keyword?api_key=" + APIKEY + "&query=" + keyword;
 
-        jsonObj = this.httpGetRequest(consAPI_URL);
+        this.printThis(this.httpGetAsync(consAPI_URL, this.returnThis));
 
         // return ;
     },
@@ -57,9 +57,11 @@ module.exports = {
     getGenreID: function (genre) {
         // STUB
         // https://api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
-        // consAPI_URL = API_BASE +
+        consAPI_URL = API_BASE + "genre/movie/list?api_key=" + APIKEY + "&language=en-US";
 
-        return 0;
+        return this.httpGetGenreID(consAPI_URL, genre);
+
+        // return 0;
     },
 
     // discoverTrendingMovies returns a JSON object containing the currently trending movies
@@ -181,21 +183,49 @@ module.exports = {
         xmlHttp.send(null);
     },
 
-    httpGetRequest: function (theURL) {
+    httpGetGenreID: function (theURL, name) {
        var xmlHttp = xhr;
+       var done = 0;
+       var sent = 0;
+        while(done === 0) {
+        // console.log("going in!")
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                return xmlHttp.responseText;
+                var jsonArr = JSON.parse(xmlHttp.responseText);
+                // console.log(xmlHttp.responseText);
+                // console.log(typeof xmlHttp.responseText);
+                console.log("JSONARR = " + typeof jsonArr);
+                if((typeof jsonArr) === 'object') {
+                    done = 1;
+                    for (var i = 0; i < jsonArr.genres.length; i++) {
+                         if(name.toLowerCase() === jsonArr.genres[i].name.toLowerCase()) {
+                            console.log(jsonArr.genres[i].id);
+                            return jsonArr.genres[i].id; 
+                        }
+                    }
+                }
         };
-        xmlHttp.open("GET", theUrl, true); // true for asynchronous
-        xmlHttp.send(null);
+            if (sent === 0) {
+                console.log("sent!");
+                xmlHttp.open("GET", theURL, true); // true for asynchronous
+                xmlHttp.send(null);
+                sent = 1;
+            }
+            console.log("Well then... Waiting..." );
+            console.log("sent: " + sent + " ready: " + done);
+        }
     },
 
 
     printThis: function (value) {
       console.log(value);
-    }
+      console.log("Hello");
+    },
 
+    returnThis: function (value) {
+        console.log("Hi");
+        return value;
+    }
 };
 
 
