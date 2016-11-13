@@ -1,5 +1,13 @@
 /* This is the core CSS of Tooltipster */
 
+.tooltipster-default {
+	border-radius: 1px;
+	border: 1px solid #eee;
+
+	background: white;
+	color: #222;
+}
+
 /* GENERAL STRUCTURE RULES (do not edit this section) */
 
 .tooltipster-base {
@@ -232,7 +240,7 @@
 
 /**
  * DEFAULT STYLE OF THE SIDETIP PLUGIN
- * 
+ *
  * All styles are "namespaced" with .tooltipster-sidetip to prevent
  * conflicts between plugins.
  */

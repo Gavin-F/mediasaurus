@@ -1,11 +1,17 @@
+
 var index = angular.module("index",
 	["ngRoute",
 	"ngStorage",
 	"index.signup",
 	"index.login",
-	"index.accsetup"
+	"index.accsetup",
+	"index.moviepage",
+	"index.dashboard",
+	"index.search",
+	"index.account"
 	]);
 
+//Branch Comment
 index.config(function($routeProvider) {
 	$routeProvider
 	.when("/", {
@@ -15,6 +21,10 @@ index.config(function($routeProvider) {
 	.when("/dashboard", {
 		templateUrl: "/html/dashboard.html",
 		controller: "dashboard-controller"
+	})
+	.when("/search", {
+		templateUrl: "/html/search.html",
+		controller: "search-controller"
 	})
 	.when("/testpage", {
 		templateUrl: "/html/TestPage.html",
@@ -40,7 +50,7 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/login.html",
 		controller: "login-controller"
 	})
-	.when("/movie", {
+	.when("/movies/:id", {
 		templateUrl: "/html/movie.html",
 		controller: "movie-controller"
 	})
@@ -105,8 +115,8 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("dashboard-controller", function($scope,$location, $timeout, $localStorage) {
-
+index.controller("dashboard-controller", function($scope,$location, $http, $timeout, $localStorage,$sessionStorage) {
+	// logout user for debugging only!!
 	if($localStorage.userID !== undefined) {
 		$scope.userID = "Logged in!";
 		$scope.loggedin = true;
@@ -131,17 +141,78 @@ index.controller("dashboard-controller", function($scope,$location, $timeout, $l
 
 	$scope.reset = function() {
 		delete $localStorage.userID;
+		location.reload();
 	}
-	$scope.gotoMovie = function(){
-		$location.url("/movie");
+	// logout user for debugging only!!
+
+	$scope.popMovieDisplay = [];
+	$scope.popMovieStore = [];
+	$scope.popScrollCount = 0;
+
+	$scope.nowMovieDisplay = [];
+	$scope.nowMovieStore = [];
+	$scope.nowScrollCount = 0;
+
+	// scrollLeft shifts displayed movies to the left
+	$scope.scrollLeft = function(section) {
+		switch(section) {
+			case "pop":
+				if($scope.popScrollCount > 0) $scope.popScrollCount--;
+				else if($scope.popScrollCount == 0) $scope.popScrollCount = $scope.popMovieStore.length-1;
+				$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
+				break;
+			case "now":
+				if($scope.nowScrollCount > 0) $scope.nowScrollCount--;
+				else if($scope.nowScrollCount == 0) $scope.nowScrollCount = $scope.nowMovieStore.length-1;
+				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
+				break;
+			default: break;
+		}
 	}
+
+	// scrollRight shifts displayed movies to the right
+	$scope.scrollRight = function(section) {
+		switch(section) {
+			case "pop":
+				if($scope.popScrollCount < $scope.popMovieStore.length-1) $scope.popScrollCount++;
+				else if($scope.popScrollCount == $scope.popMovieStore.length-1) $scope.popScrollCount = 0;
+				$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
+				break;
+			case "now":
+				if($scope.nowScrollCount < $scope.nowMovieStore.length-1) $scope.nowScrollCount++;
+				else if($scope.nowScrollCount == $scope.nowMovieStore.length-1) $scope.nowScrollCount = 0;
+				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
+				break;
+			default: break;
+		}
+	}
+
+	$scope.gotoMovie = function(id){
+		$location.url("/movies/" + id);
+	}
+
+	$scope.$emit("dashboardEvent", 1);
+
+	$scope.$on("dashboardUpdate", function(event, returnMovies) {
+		$scope.popMovieDisplay = returnMovies[0].slice(0,5);
+		$scope.nowMovieDisplay = returnMovies[1].slice(0,5);
+		$scope.popMovieStore.push(returnMovies[0].slice(0,5),
+			returnMovies[0].slice(5,10),
+			returnMovies[0].slice(10,15),
+			returnMovies[0].slice(15,20));
+		$scope.nowMovieStore.push(returnMovies[1].slice(0,5),
+		  	returnMovies[1].slice(5,10),
+		  	returnMovies[1].slice(10,15),
+		  	returnMovies[1].slice(15,20));
+	});
 
 	$(document).ready(function() {
 		$('.tooltip-custom').tooltipster({
-			side: 'right',
-			interactive: true,
+			side: 'bottom',
+			interactive: false,
 			arrow: false,
-			animation: 'swing',
+			theme: 'tooltipster-borderless',
+			//animation: 'fall',
 			contentCloning: true
 		});
 	});
@@ -188,7 +259,6 @@ index.controller("search-controller", function($scope,$route,$location, $timeout
 		//$location.url("/movie");
 		$location.url("/movies/" + id);
 	}
-
 });
 
 ///////////////////////////////////////////////////////
@@ -372,7 +442,10 @@ index.controller("password-controller", function($scope,$location) {
 ///////////////////////////////////////////////////////
 // Movie CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("movie-controller", function($scope,$location) {
+index.controller("movie-controller", function($scope,$location,$routeParams,$http) {
+	var movie_id = $routeParams.id;
+
+	$scope.$emit("movieEvent", movie_id);
 
     $('.rating').likeDislike({
         initialValue: 0,
@@ -382,28 +455,79 @@ index.controller("movie-controller", function($scope,$location) {
 
             likes.text(parseInt(likes.text()) + l);
             dislikes.text(parseInt(dislikes.text()) + d);
-
-            // $.ajax({
-            //     url: 'url',
-            //     type: 'post',
-            //     data: 'value=' + value,
-            // });
         }
     });
+
+    $(function() {
+		$('.tooltip-custom').tooltipster({
+			side: 'right',
+			arrow: false
+		});
+	});
+
+	var movie_rating;
+	var runtime;
+	var obj_genres = "";
+
+	$scope.$on("movieUpdate", function(event, obj_movie) {
+		console.log(obj_movie);
+		$scope.overview = obj_movie.overview;
+		$scope.title = obj_movie.title;
+		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie.poster_path;
+		$scope.date = obj_movie.release_date;
+
+		for (i = 0; i < obj_movie.genres.length; i++) {
+			if ((i+1) == obj_movie.genres.length) {
+				obj_genres += obj_movie.genres[i].name;
+			}
+			else {
+    			obj_genres += obj_movie.genres[i].name + ", ";
+			}
+		}
+
+		$scope.genres = obj_genres;
+		$scope.rating = obj_movie.vote_average;
+		movie_rating = obj_movie.vote_average*10;
+		movie_rating = movie_rating + "%";
+		$("#rateYo").rateYo("rating", movie_rating);
+		runtime = obj_movie.runtime + " min";
+		$scope.duration = runtime;
+	});
+
+	$scope.$on("movieError", function(event, error) {
+
+	});
 
     $(function () {
     	$("#rateYo").rateYo({
     		starWidth: "20px",
     		numStars: 10,
     		readOnly: true,
-    		rating: "88%"
+    		rating: "0%",
+    		ratedFill: "#33CCCC"
     	});
     });
 
-    var $rateYo = $("#rateYo").rateYo();
-    var rating = $rateYo.rateYo("rating");
-    rating = rating/10;
-    document.getElementById("rating_text").innerHTML = rating;
+	$scope.gotoMovie = function(id){
+		//$location.url("/movie");
+		$location.url("/movies/" + id);
+	}
+
+	$scope.relatedMovies = [];
+
+	$scope.$on("relatedMovieUpdate", function(event, relatedMovies) {
+		for(i = 0; i < relatedMovies.length; i++) {
+			//console.log(relatedMovies[i]);
+			var relatedMovie = {
+				id: relatedMovies[i].id,
+				title: relatedMovies[i].title,
+				poster: "https://image.tmdb.org/t/p/w500" + relatedMovies[i].poster_path,
+				rating: relatedMovies[i].vote_average
+			};
+			$scope.relatedMovies.push(relatedMovie);
+		}
+	});
+
 
 	$scope.gotoMovie = function(id){
 		//$location.url("/movie");
@@ -429,11 +553,17 @@ index.controller("movie-controller", function($scope,$location) {
 ///////////////////////////////////////////////////////
 // Account CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("account-controller", function($scope,$location) {
+index.controller("account-controller", function($scope,$location,$localStorage) {
+	$scope.userID=$localStorage.userID;
+	var user = {
+		id: $scope.userID
+	};
+	$scope.$emit("accountEvent", user);
+	// if login was successful, update id and send to new page
+	$scope.$on("accountUpdate", function(event, userInfo) {
+		$scope.username = userInfo.username;
+		$scope.email = userInfo.email;
+		console.log(userInfo);
+	});
 
-	$scope.message = "hello";
-
-	$scope.setText = function() {
-		$scope.test = "Hello world!";
-	}
 });
