@@ -21,16 +21,34 @@ var tmdb = require('../api/tmdb_api');
 
 
 module.exports = {
+	
 	// movieProfile: User's movieProfile
-	findSuggestedMovies: function(movieProfile, callback)   {
-	  var suggestedMovies = [];
-
-	  // Get 5 most recently-liked movies from movieProfile
-	  var preferredMovies = movieProfile.preferences;
-	  preferredMovies = preferredMovies.slice(-5);
-
-    var moviesProcessed = 0;
-
+	updateRecommendedMovies: function(movieProfile, movie_id, res)   {
+		tmdb.getMovieRecommendations(movie_id, function (results){
+			if (movieProfile.recommendations.length >= 20)
+					movieProfile.recommendations.splice(15, 5);
+			
+			var jsonResults = JSON.parse(results);
+			
+			for (var i = Math.min(4, jsonResults.total_results); i >= 0; i--){
+				var entry = {
+					movie_id: jsonResults.results[i].id,
+					title: jsonResults.results[i].title,
+					poster_path: jsonResults.results[i].poster_path 
+				};
+				movieProfile.recommendations.unshift(entry);
+			}
+			//movieProfile.recommendations = [];
+			movieProfile.save(function(err){
+				if(err) return res.send(err);
+				return res.send(movieProfile.recommendations);
+			});
+			
+		});
+	}
+	
+};
+/*
 	  // Call API to get recommended movies for each recently-liked movie
 	  for (var i = 0; i < preferredMovies.length; i++){
   		tmdb.getMovieRecommendations(preferredMovies[i].movie_id, function (recommendations){
@@ -49,7 +67,4 @@ module.exports = {
               // TODO: Weigh each movie based on genre, rating, etc on a point scale
               callback(suggestedMovies);
             }
-        });
-    }
-  }
-};
+        });*/

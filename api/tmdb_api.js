@@ -1,6 +1,8 @@
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var xhr = new XMLHttpRequest();
 
+var genreList = require(('../models/genres.json'));
+
 
 // API key goes here
 APIKEY = "8f9caf52038412780f3c4037b2b114ca";
@@ -136,11 +138,17 @@ module.exports = {
 
         this.httpGetAsync(consAPI_URL, callback);
     },
+	
+	discoverPopularByGenre: function(genre_id, callback) {
+		consAPI_URL = API_BASE + 'discover/movie?api_key=' + APIKEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&with_genres=' + genre_id;
+		this.httpGetAsync(consAPI_URL, callback);
+	},
 
     searchMovies: function (req, callback) {
-      consAPI_URL = API_BASE + API_SEARCH + "&query=" + req.body.query + '&page=' + req.params.page;
-
-      this.httpGetAsync(consAPI_URL, callback);
+		var query = req.body.query.replace(/ /g, '%20');
+		console.log(query)
+		consAPI_URL = API_BASE + API_SEARCH + "&query=" + query + '&page=' + req.params.page;
+		this.httpGetAsync(consAPI_URL, callback);
     },
 
 	 getMovieDetails: function(id, callback) {
