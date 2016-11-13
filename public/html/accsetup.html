@@ -44,39 +44,34 @@
 
 				<table class="genre-table">
 					<tr>
-						<td><button class="btn genre-btn" ng-click=genreClick("action") ng-class="actionState ? 'clicked' : 'unclicked'">Action</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("adventure") ng-class="adventureState ? 'clicked' : 'unclicked'">Adventure</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("animation") ng-class="animationState ? 'clicked' : 'unclicked'">Animation</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(28) ng-class="actionState ? 'clicked' : 'unclicked'">Action</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(12) ng-class="adventureState ? 'clicked' : 'unclicked'">Adventure</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(16) ng-class="animationState ? 'clicked' : 'unclicked'">Animation</td>
 					</tr>
 					<tr>
-						<td><button class="btn genre-btn" ng-click=genreClick("biography") ng-class="biographyState ? 'clicked' : 'unclicked'">Biography</td>
-            			<td><button class="btn genre-btn" ng-click=genreClick("comedy") ng-class="comedyState ? 'clicked' : 'unclicked'">Comedy</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("crime") ng-class="crimeState ? 'clicked' : 'unclicked'">Crime</td>
+            			<td><button class="btn genre-btn" ng-click=genreClick(35) ng-class="comedyState ? 'clicked' : 'unclicked'">Comedy</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(89) ng-class="crimeState ? 'clicked' : 'unclicked'">Crime</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(99) ng-class="dramaState ? 'clicked' : 'unclicked'">Drama</td>
 					</tr>
 					<tr>
-						<td><button class="btn genre-btn" ng-click=genreClick("drama") ng-class="dramaState ? 'clicked' : 'unclicked'">Drama</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("family") ng-class="familyState ? 'clicked' : 'unclicked'">Family</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("fantasy") ng-class="fantasyState ? 'clicked' : 'unclicked'">Fantasy</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(10751) ng-class="familyState ? 'clicked' : 'unclicked'">Family</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(14) ng-class="fantasyState ? 'clicked' : 'unclicked'">Fantasy</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(36) ng-class="historyState ? 'clicked' : 'unclicked'">History</td>
 					</tr>
 					<tr>
-						<td><button class="btn genre-btn" ng-click=genreClick("filmnoir") ng-class="filmnoirState ? 'clicked' : 'unclicked'">Film-Noir</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("history") ng-class="historyState ? 'clicked' : 'unclicked'">History</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("horror") ng-class="horrorState ? 'clicked' : 'unclicked'">Horror</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(27) ng-class="horrorState ? 'clicked' : 'unclicked'">Horror</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(10402) ng-class="musicState ? 'clicked' : 'unclicked'">Music</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(9648) ng-class="mysteryState ? 'clicked' : 'unclicked'">Mystery</td>
 					</tr>
 					<tr>
-						<td><button class="btn genre-btn" ng-click=genreClick("music") ng-class="musicState ? 'clicked' : 'unclicked'">Music</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("musical") ng-class="musicalState ? 'clicked' : 'unclicked'">Musical</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("mystery") ng-class="mysteryState ? 'clicked' : 'unclicked'">Mystery</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(10749) ng-class="romanceState ? 'clicked' : 'unclicked'">Romance</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(878) ng-class="scifiState ? 'clicked' : 'unclicked'">Sci-Fi</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(53) ng-class="thrillerState ? 'clicked' : 'unclicked'">Thriller</td>
 					</tr>
 					<tr>
-						<td><button class="btn genre-btn" ng-click=genreClick("romance") ng-class="romanceState ? 'clicked' : 'unclicked'">Romance</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("scifi") ng-class="scifiState ? 'clicked' : 'unclicked'">Sci-Fi</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("sport") ng-class="sportState ? 'clicked' : 'unclicked'">Sport</td>
-					</tr>
-					<tr>
-						<td><button class="btn genre-btn" ng-click=genreClick("thriller") ng-class="thrillerState ? 'clicked' : 'unclicked'">Thriller</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("war") ng-class="warState ? 'clicked' : 'unclicked'">War</td>
-						<td><button class="btn genre-btn" ng-click=genreClick("western") ng-class="westernState ? 'clicked' : 'unclicked'">Western</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(10770) ng-class="tvmovieState ? 'clicked' : 'unclicked'">TV Movie</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(10752) ng-class="warState ? 'clicked' : 'unclicked'">War</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(37) ng-class="westernState ? 'clicked' : 'unclicked'">Western</td>
 					</tr>
 				</table>
 
@@ -89,13 +84,12 @@
 			</div>
 
 			<div class="selection-box box-2" ng-show="movieShow">
-
-				<h2 class="header">from these movies, pick the ones you like</h2>
+				<h2 class="header">pick some movies you like from below</h2>
 
 				<div class="selection-divider-upper"></div>
 
 				<div class="movie-box">
-					<div class="movie" ng-repeat="movie in movies">
+					<div class="movie" ng-repeat="movie in movieBuffer">
 						<a ng-click="selectMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster" />
 							<p>{{movie.title}}</p>
@@ -105,17 +99,11 @@
 
 				<div class="completion-buttons">
 					<div class="selection-divider-lower"></div>
-					<button class="btn btn-default" id="next" ng-click="genreNext()">Next</button>
+					<button class="btn btn-default" id="next" ng-click="nextMovies()">Next</button>
 				</div>
-
 			</div>
 		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-<<<<<<< HEAD
 </body>
 </html>
-=======
-  </body>
-</html>
->>>>>>> front

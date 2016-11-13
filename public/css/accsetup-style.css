@@ -66,14 +66,14 @@
 
 .box-1 {
   width: 65%;
-  height: 650px;
+  height: 600px;
   opacity: 0;
   animation-delay: 0s;
 }
 
 .box-2 {
   width: 90%;
-  height: 490px;
+  height: 480px;
   opacity: 0;
   animation-delay: 0s;
 }
@@ -82,7 +82,7 @@
   width: 100%;
   margin-top: 20px;
   padding-left: 65px;
-  height: 270px;
+  height: 250px;
   float: left;
 }
 

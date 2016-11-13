@@ -194,16 +194,12 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	$scope.$emit("dashboardEvent", 1);
 
 	$scope.$on("dashboardUpdate", function(event, returnMovies) {
-		$scope.popMovieDisplay = returnMovies[0].slice(0,5);
-		$scope.nowMovieDisplay = returnMovies[1].slice(0,5);
-		$scope.popMovieStore.push(returnMovies[0].slice(0,5),
-			returnMovies[0].slice(5,10),
-			returnMovies[0].slice(10,15),
-			returnMovies[0].slice(15,20));
-		$scope.nowMovieStore.push(returnMovies[1].slice(0,5),
-		  	returnMovies[1].slice(5,10),
-		  	returnMovies[1].slice(10,15),
-		  	returnMovies[1].slice(15,20));
+		for(i = 0; i < 20; i += 5) {
+			$scope.popMovieStore.push(returnMovies[0].slice(i,i+5));
+			$scope.nowMovieStore.push(returnMovies[1].slice(i,i+5));
+		}
+		$scope.popMovieDisplay = $scope.popMovieStore[0];
+		$scope.nowMovieDisplay = $scope.nowMovieStore[0];
 	});
 
 	$(document).ready(function() {
@@ -296,8 +292,6 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 // ACCOUNT SETUP CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("accsetup-controller", function($scope, $location, $http, $localStorage) {
-	$scope.genreShow = true;
-	$scope.movieShow = false;
 	// if the user isn't signed in, send them back to signup splash
 	if($localStorage.userID === undefined) {
 		$location.url("/");
@@ -306,30 +300,50 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		$location.url("/dashboard");
 	}
 
-	$scope.movies = [];
-	$scope.genres = []; // array to pass to server, contains all the genres the user has selected
+	// ng-show flags for boxes
+	$scope.genreShow = true;
+	$scope.movieShow = false;
 
+	$scope.genres = []; // array to pass to server, contains all the genres the user has selected
+	$scope.movies = []; // return array from api get
+	$scope.movieDisplay = []; // buffer that is displayed on preferences
+	$scope.count = 0; // count for buffer
+
+	// add genre to array if clicked, remove if already clicked
 	$scope.genreClick = function(genre) {
 		var index = $scope.genres.indexOf(genre);
-		if(index > -1) {// array contains the genre
+		if(index > -1) { // if array contains genre
 			$scope.genres.splice(index, 1);
 		}
-		else { // else remove genre from array
+		else { // else add genre to array
 			$scope.genres.push(genre);
 		}
 		updateGenre(genre);
 	};
 
+	// swap boxes
 	$scope.genreNext = function() {
 		$scope.genreShow = false;
 		$scope.movieShow = true;
 		//$scope.$emit("setupEvent", $scope.genres);
 	}
 
+	// display next set of movies
+	$scope.nextMovies = function() {
+		$scope.count++;
+		if($scope.count == $scope.movies.length) { // if no more, send them to dashboard
+			$location.url("/dashboard");
+		}
+		else { // otherwise show new list of movies
+			$scope.movieDisplay = $scope.movies[$scope.count];
+		}
+	}
+
 	$scope.skip = function() {
 		$location.url("/dashboard");
 	}
 
+	// FOR TESTING ONLY, CHANGE TO ARRAY OF MOVIES
 	$scope.$emit("genreEvent", 28);
 
 	// if sign up was successful, update id and send to new page
@@ -337,35 +351,38 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		$location.url("/dashboard");
 	});
 
+	// receieve array of movies from genre array
 	$scope.$on("genreUpdate", function(event, movies) {
 		movies.sort(function() { return 0.5 - Math.random() }); // scramble the movies
-		$scope.movies = movies.slice(0,5);
+		// add sets of 5 movies to the array
+		for(i = 0; i <= movies.length-5; i += 5) {
+			$scope.movies.push(movies.slice(i, i+5));
+		}
+		// set buffer to first list of movies
+		$scope.movieDisplay = $scope.movies[0];
 	});
 
 	// Helper function to update the scope variables
 	function updateGenre(genre) {
 		switch(genre) {
-			case "action": $scope.actionState = !$scope.actionState ; break;
-			case "adventure": $scope.adventureState = !$scope.adventureState; break;
-			case "animation": $scope.animationState = !$scope.animationState; break;
-			case "biography": $scope.biographyState = !$scope.biographyState; break;
-			case "comedy": $scope.comedyState = !$scope.comedyState; break;
-			case "crime": $scope.crimeState = !$scope.crimeState; break;
-			case "drama": $scope.dramaState = !$scope.dramaState; break;
-			case "family": $scope.familyState = !$scope.familyState; break;
-			case "fantasy": $scope.fantasyState = !$scope.fantasyState; break;
-			case "filmnoir": $scope.filmnoirState = !$scope.filmnoirState; break;
-			case "history": $scope.historyState = !$scope.historyState; break;
-			case "horror": $scope.horrorState = !$scope.horrorState; break;
-			case "music": $scope.musicState = !$scope.musicState; break;
-			case "musical": $scope.musicalState = !$scope.musicalState; break;
-			case "mystery": $scope.mysteryState = !$scope.mysteryState; break;
-			case "romance": $scope.romanceState = !$scope.romanceState; break;
-			case "scifi": $scope.scifiState	= !$scope.scifiState; break;
-			case "sport": $scope.sportState = !$scope.sportState; break;
-			case "thriller": $scope.thrillerState = !$scope.thrillerState; break;
-			case "war": $scope.warState = !$scope.warState; break;
-			case "western": $scope.westernState = !$scope.westernState; break;
+			case 28: $scope.actionState = !$scope.actionState ; break;
+			case 12: $scope.adventureState = !$scope.adventureState; break;
+			case 16: $scope.animationState = !$scope.animationState; break;
+			case 35: $scope.comedyState = !$scope.comedyState; break;
+			case 89: $scope.crimeState = !$scope.crimeState; break;
+			case 99: $scope.dramaState = !$scope.dramaState; break;
+			case 10751: $scope.familyState = !$scope.familyState; break;
+			case 14: $scope.fantasyState = !$scope.fantasyState; break;
+			case 36: $scope.historyState = !$scope.historyState; break;
+			case 28: $scope.horrorState = !$scope.horrorState; break;
+			case 10402: $scope.musicState = !$scope.musicState; break;
+			case 9648: $scope.mysteryState = !$scope.mysteryState; break;
+			case 10749: $scope.romanceState = !$scope.romanceState; break;
+			case 878: $scope.scifiState	= !$scope.scifiState; break;
+			case 53: $scope.thrillerState = !$scope.thrillerState; break;
+			case 10770: $scope.tvmovieState = !$scope.tvmovieState; break;
+			case 10752: $scope.warState = !$scope.warState; break;
+			case 37: $scope.westernState = !$scope.westernState; break;
 			default: break;
 		}
 	};
