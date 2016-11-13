@@ -40,36 +40,81 @@
   margin-top: 100px;
   text-align: center;
   opacity: 0;
-  animation: fadeInOutDown 4s;
+  animation: fadeInOutDown 3s;
 }
 
 .message-two {
   margin-top: 0px;
   text-align: center;
   opacity: 0;
-  animation: fadeInOutDown 4s;
-  animation-delay: 3s;
+  animation: fadeInOutDown 3s;
+  animation-delay: 2s;
 }
 
 /* Genre selection box */
 .selection-box {
   position: relative;
   margin: -275px auto auto auto;
-  height: 650px;
-  width: 65%;
+
   background-color: #002145;
   color: white;
   text-align: center;
 	border-radius: 3px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19);
-
-  opacity: 0;
-  animation: fadeIn 4s forwards; /* 4 */
-  animation-delay: 7s; /* 7 */
+  animation: fadeIn 2s forwards;
 }
 
-.selection-divider {
+.box-1 {
+  width: 65%;
+  height: 650px;
+  opacity: 0;
+  animation-delay: 0s;
+}
+
+.box-2 {
+  width: 90%;
+  height: 490px;
+  opacity: 0;
+  animation-delay: 0s;
+}
+
+.movie-box {
+  width: 100%;
+  margin-top: 20px;
+  padding-left: 65px;
+  height: 270px;
+  float: left;
+}
+
+.movie {
+  float: left;
+  text-align: center;
+  width: 160px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.movie > a  {
+  text-decoration: none;
+  color: white;
+}
+
+.moviePoster {
+  width: 150px;
+  height: 225px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.selection-divider-upper {
 	margin: 25px auto 5px auto;
+	width: 80%;
+	border-top: solid;
+	border-color: white;
+	border-width: 1px;
+}
+
+.selection-divider-lower {
+	margin: 5px auto 25px auto;
 	width: 80%;
 	border-top: solid;
 	border-color: white;
@@ -112,7 +157,7 @@ td {
     padding-right: 30px;
 }
 
-#genre-header {
+.header {
   padding-top: 30px;
 }
 

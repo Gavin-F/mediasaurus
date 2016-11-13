@@ -62,6 +62,12 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 		return 0;
 	}
 	};
+
+	$scope.reset = function() {
+		delete $localStorage.userID;
+		location.reload();
+	}
+
 	$scope.goHome = function(){
 		$location.url("/home");
 		console.log("goHome");
@@ -110,6 +116,19 @@ index.controller("dashboard-controller", function($scope,$location, $timeout, $l
 		$scope.loggedin = false;
 	}
 
+	$scope.searchResult = [];
+	$scope.search = function() {
+		var searchObject = {
+			query: $scope.search_string
+		};
+		$sessionStorage.sString=$scope.search_string;
+		$scope.$emit("searchEvent", searchObject);
+	}
+	$scope.$on("searchUpdate", function(event, searchArray) {
+		$sessionStorage.searchResult = searchArray;
+		$location.url("/search");
+	});
+
 	$scope.reset = function() {
 		delete $localStorage.userID;
 	}
@@ -128,7 +147,49 @@ index.controller("dashboard-controller", function($scope,$location, $timeout, $l
 	});
 });
 
+///////////////////////////////////////////////////////
+// SEARCH CONTROLLER
+///////////////////////////////////////////////////////
+index.controller("search-controller", function($scope,$route,$location, $timeout, $localStorage, $sessionStorage) {
 
+	$scope.searchResult = [];
+	$scope.searchResult = $sessionStorage.searchResult;
+	$scope.search = function() {
+		var searchObject = {
+			query: $scope.search_string
+		};
+		$sessionStorage.sString=$scope.search_string;
+		$scope.$emit("searchEvent", searchObject);
+	}
+	$scope.$on("searchUpdate", function(event, searchArray) {
+		if($sessionStorage.searchResult !== undefined) {
+			$scope.searchResult = $sessionStorage.searchResult;
+			delete $sessionStorage.searchResult;
+		}
+		else{
+			$scope.searchResult = searchArray;
+		}
+		$location.url("/search");
+	});
+
+
+	$scope.searchNext = function() {
+		$location.url("/search");
+		$route.reload();
+	}
+	$scope.searchPrevious = function() {
+		$location.url("/search");
+		$route.reload();
+	}
+	$scope.reset = function() {
+		delete $localStorage.userID;
+	}
+	$scope.gotoMovie = function(id){
+		//$location.url("/movie");
+		$location.url("/movies/" + id);
+	}
+
+});
 
 ///////////////////////////////////////////////////////
 // SIGNUP CONTROLLER
@@ -165,12 +226,19 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 // ACCOUNT SETUP CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("accsetup-controller", function($scope, $location, $http, $localStorage) {
+	$scope.genreShow = true;
+	$scope.movieShow = false;
 	// if the user isn't signed in, send them back to signup splash
 	if($localStorage.userID === undefined) {
 		$location.url("/");
 	}
+	else if($localStorage.setupDone === true) {
+		$location.url("/dashboard");
+	}
 
+	$scope.movies = [];
 	$scope.genres = []; // array to pass to server, contains all the genres the user has selected
+
 	$scope.genreClick = function(genre) {
 		var index = $scope.genres.indexOf(genre);
 		if(index > -1) {// array contains the genre
@@ -182,18 +250,26 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		updateGenre(genre);
 	};
 
-	$scope.next = function() {
-		console.log($scope.genres.toString());
-		$scope.$emit("setupEvent", $scope.genres);
+	$scope.genreNext = function() {
+		$scope.genreShow = false;
+		$scope.movieShow = true;
+		//$scope.$emit("setupEvent", $scope.genres);
 	}
 
 	$scope.skip = function() {
 		$location.url("/dashboard");
 	}
 
+	$scope.$emit("genreEvent", 28);
+
 	// if sign up was successful, update id and send to new page
 	$scope.$on("setupUpdate", function(event, setup) {
 		$location.url("/dashboard");
+	});
+
+	$scope.$on("genreUpdate", function(event, movies) {
+		movies.sort(function() { return 0.5 - Math.random() }); // scramble the movies
+		$scope.movies = movies.slice(0,5);
 	});
 
 	// Helper function to update the scope variables
@@ -223,7 +299,6 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 			default: break;
 		}
 	};
-
 });
 
 
@@ -293,6 +368,7 @@ index.controller("password-controller", function($scope,$location) {
 		$location.url("/password");
 	}
 });
+
 ///////////////////////////////////////////////////////
 // Movie CONTROLLER
 ///////////////////////////////////////////////////////
@@ -329,6 +405,25 @@ index.controller("movie-controller", function($scope,$location) {
     rating = rating/10;
     document.getElementById("rating_text").innerHTML = rating;
 
+	$scope.gotoMovie = function(id){
+		//$location.url("/movie");
+		$location.url("/movies/" + id);
+	}
+
+	$scope.relatedMovies = [];
+
+	$scope.$on("relatedMovieUpdate", function(event, relatedMovies) {
+		for(i = 0; i < relatedMovies.length; i++) {
+			//console.log(relatedMovies[i]);
+			var relatedMovie = {
+				id: relatedMovies[i].id,
+				title: relatedMovies[i].title,
+				poster: "https://image.tmdb.org/t/p/w500" + relatedMovies[i].poster_path,
+				rating: relatedMovies[i].vote_average
+			};
+			$scope.relatedMovies.push(relatedMovie);
+		}
+	});
 });
 
 ///////////////////////////////////////////////////////
