@@ -65,14 +65,13 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 		return viewLocation === $location.path();
 	};
 	$scope.isActive2 = function() {
-    if(($location.path()=='/account')||($location.path()=='/password')){
-    	return 1;
-	}
-	else{
-		return 0;
-	}
+	    if(($location.path()=='/account')||($location.path()=='/password')){
+	    	return 1;
+		}
+		else{
+			return 0;
+		}
 	};
-
 	$scope.reset = function() {
 		delete $localStorage.userID;
 		location.reload();
@@ -129,9 +128,9 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	$scope.searchResult = [];
 	$scope.search = function() {
 		var searchObject = {
-			query: $scope.search_string
+			query: $scope.searchString
 		};
-		$sessionStorage.sString=$scope.search_string;
+		$sessionStorage.sString=$scope.searchString;
 		$scope.$emit("searchEvent", searchObject);
 	}
 	$scope.$on("searchUpdate", function(event, searchArray) {
@@ -226,11 +225,12 @@ index.controller("search-controller", function($scope,$route,$location, $timeout
 	
 	$scope.searchResult = [];
 	$scope.searchResult = $sessionStorage.searchResult;
+	$scope.searchString=$sessionStorage.sString;
 	$scope.search = function() {
 		var searchObject = {
-			query: $scope.search_string
+			query: $scope.searchString
 		};
-		$sessionStorage.sString=$scope.search_string;
+		$sessionStorage.sString=$scope.searchString;
 		$scope.$emit("searchEvent", searchObject);
 	}
 	$scope.$on("searchUpdate", function(event, searchArray) {
@@ -243,7 +243,7 @@ index.controller("search-controller", function($scope,$route,$location, $timeout
 		}
 		$location.url("/search");
 	});
-
+	
 
 	$scope.searchNext = function() {
 		$location.url("/search");
