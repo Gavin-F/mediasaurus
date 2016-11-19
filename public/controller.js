@@ -430,7 +430,7 @@ index.controller("password-controller", function($scope,$location) {
 ///////////////////////////////////////////////////////
 // Movie CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("movie-controller", function($scope,$location,$routeParams,$http, $localStorage) {
+index.controller("movie-controller", function($scope,$location,$routeParams,$http, $localStorage, $filter) {
 	var ids = {
 		movie_id: $routeParams.id,
 		user_id: $localStorage.userID
@@ -481,30 +481,57 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 	var movie_rating;
 	var runtime;
 	var obj_genres = "";
+	var obj_cast = "";
+	var obj_dir = "";
 
 	$scope.$on("movieUpdate", function(event, obj_movie) {
 		console.log(obj_movie);
-		$scope.overview = obj_movie.overview;
-		$scope.title = obj_movie.title;
-		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie.poster_path;
-		$scope.date = obj_movie.release_date;
+		$scope.overview = obj_movie[0].details.overview;
+		$scope.title = obj_movie[0].details.title;
+		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie[0].details.poster_path;
+		$scope.date = obj_movie[0].details.release_date;
 
-		for (i = 0; i < obj_movie.genres.length; i++) {
-			if ((i+1) == obj_movie.genres.length) {
-				obj_genres += obj_movie.genres[i].name;
+		for (i = 0; i < obj_movie[0].details.genres.length; i++) {
+			if ((i+1) == obj_movie[0].details.genres.length) {
+				obj_genres += obj_movie[0].details.genres[i].name;
 			}
 			else {
-    			obj_genres += obj_movie.genres[i].name + ", ";
+    			obj_genres += obj_movie[0].details.genres[i].name + ", ";
 			}
 		}
 
 		$scope.genres = obj_genres;
-		$scope.rating = obj_movie.vote_average;
-		movie_rating = obj_movie.vote_average*10;
+		$scope.rating = obj_movie[0].details.vote_average;
+		movie_rating = obj_movie[0].details.vote_average*10;
 		movie_rating = movie_rating + "%";
 		$("#rateYo").rateYo("rating", movie_rating);
-		runtime = obj_movie.runtime + " min";
+		runtime = obj_movie[0].details.runtime + " min";
 		$scope.duration = runtime;
+
+		for (i = 0; i < 10; i++) {
+			if (i == 9) {
+				obj_cast += obj_movie[0].cast[i].name;
+			}
+			else {
+    			obj_cast += obj_movie[0].cast[i].name + ", ";
+			}
+		}
+
+		$scope.cast = obj_cast;
+
+		var directors = $filter('filter')(obj_movie[0].crew, {job:"Director", department:"Directing"})
+		console.log(directors);
+
+		for (i = 0; i < directors.length; i++) {
+			if ((i+1) == directors.length) {
+				obj_dir += directors[i].name;
+			}
+			else {
+    			obj_dir += directors[i].name + ", ";
+			}
+		}
+
+		$scope.director = obj_dir;
 	});
 
 	$scope.$on("movieError", function(event, error) {
