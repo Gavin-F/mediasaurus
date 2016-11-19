@@ -212,7 +212,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		$location.url("/movies/" + id);
 	}
 
-	$scope.$emit("dashboardEvent", 1);
+	$scope.$emit("dashboardEvent", [1, $localStorage.userID]);
 
 	$scope.$on("dashboardUpdate", function(event, returnMovies) {
 		for(i = 0; i < 20; i += 5) {
@@ -354,6 +354,7 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		else { // else add movie id to array
 			$scope.moviePrefs.push(movie.id);
 		}
+		console.log($scope.moviePrefs);
 	}
 
 	// swap boxes

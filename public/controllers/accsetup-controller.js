@@ -7,6 +7,7 @@
 */
 angular.module("index.accsetup", ["ngRoute"]).controller("accsetup", function($scope, $http) {
 	$scope.$on("prefEvent", function(event, moviePrefs) { // receive from child controller
+		$http.put("/api/movies/preferences/" + moviePrefs);
 		$scope.$broadcast("prefUpdate", "done"); // redirect
 	});
 
