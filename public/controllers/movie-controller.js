@@ -17,4 +17,11 @@ angular.module("index.moviepage", ["ngRoute"]).controller("movie", function($sco
 		});
 
 	});
+
+	$scope.$on("likeEvent", function (event, like) {
+		$http.post("/api/movies/preferences/" + like.userID, like).success(function(req3){
+			console.log("send like");
+		});
+	});
+
 });

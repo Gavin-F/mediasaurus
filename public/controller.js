@@ -430,7 +430,7 @@ index.controller("password-controller", function($scope,$location) {
 ///////////////////////////////////////////////////////
 // Movie CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("movie-controller", function($scope,$location,$routeParams,$http) {
+index.controller("movie-controller", function($scope,$location,$routeParams,$http, $localStorage) {
 	var movie_id = $routeParams.id;
 
 	$scope.$emit("movieEvent", movie_id);
@@ -440,11 +440,29 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
         click: function (value, l, d, event) {
             var likes = $(this.element).find('.likes');
             var dislikes = $(this.element).find('.dislikes');
-
-            likes.text(parseInt(likes.text()) + l);
-            dislikes.text(parseInt(dislikes.text()) + d);
+            if ($localStorage.userID !== undefined) {
+	            likes.text(parseInt(likes.text()) + l);
+	            dislikes.text(parseInt(dislikes.text()) + d);
+	        }
         }
     });
+
+	$scope.like = function() {
+		// get form info
+		if ($localStorage.userID !== undefined) {
+			var like = {
+				movieID: movie_id,
+				userID: $localStorage.userID,
+				like: true
+			};
+			// send to parent controller
+			$scope.$emit("likeEvent", like);
+		}
+		else {
+			alert("Log in to like this movie");
+		}
+	}
+
 
     $(function() {
 		$('.tooltip-custom').tooltipster({
