@@ -30,6 +30,29 @@
 
 	<div class="container" ng-controller="dashboard">
 		<div ng-controller="dashboard-controller">
+
+			<h2 ng-show="recShow">Recommended</h2>
+			<div class="movie-box" ng-show="recShow">
+				<div class="button-col">
+					<a ng-click="scrollLeft('rec')" style="align:left">
+						<img src="../images/left-arrow.png" height="120px" width="120px"/>
+					</a>
+				</div>
+				<div class="movie-col">
+					<div class="movie" ng-repeat="movie in recMovieDisplay">
+						<a ng-click="gotoMovie(movie.id)">
+							<img src="{{movie.poster}}" class="moviePoster"/>
+							<p>{{movie.title}}</p>
+						</a>
+					</div>
+				</div>
+				<div class="button-col">
+					<a ng-click="scrollRight('rec')">
+						<img src="../images/right-arrow.png" height="120px" width="120px"/>
+					</a>
+				</div>
+			</div>
+
 			<h2>Popular</h2>
 			<div class="movie-box">
 				<div class="button-col">
@@ -51,6 +74,7 @@
 					</a>
 				</div>
 			</div>
+
 			<h2>Now Playing</h2>
 			<div class="movie-box">
 				<div class="button-col">

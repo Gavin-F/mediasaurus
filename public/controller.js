@@ -77,7 +77,7 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 		delete $localStorage.userID;
 		location.reload();
 	}
-	
+
 	$scope.goHome = function(){
 		$location.url("/home");
 		console.log("goHome");
@@ -120,10 +120,17 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	if($localStorage.userID !== undefined) {
 		$scope.userID = "Logged in!";
 		$scope.loggedin = true;
+		$scope.recShow = true;
 	}
 	else {
+		$scope.recShow = false;
 		$scope.userID = "Not logged in!";
 		$scope.loggedin = false;
+	}
+
+	$scope.recShow = false;
+	if($localStorage.userID !== undefined) {
+		$scope.recShow = true;
 	}
 
 	$scope.searchResult = [];
@@ -138,7 +145,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		$sessionStorage.searchResult = searchArray;
 		$location.url("/search");
 	});
-	
+
 	$scope.reset = function() {
 		delete $localStorage.userID;
 		location.reload();
@@ -153,6 +160,10 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	$scope.nowMovieStore = [];
 	$scope.nowScrollCount = 0;
 
+	$scope.recMovieDisplay = [];
+	$scope.recMovieStore = [];
+	$scope.recScrollCount = 0;
+
 	// scrollLeft shifts displayed movies to the left
 	$scope.scrollLeft = function(section) {
 		switch(section) {
@@ -165,6 +176,11 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 				if($scope.nowScrollCount > 0) $scope.nowScrollCount--;
 				else if($scope.nowScrollCount == 0) $scope.nowScrollCount = $scope.nowMovieStore.length-1;
 				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
+				break;
+			case "rec":
+				if($scope.recScrollCount > 0) $scope.recScrollCount--;
+				else if($scope.recScrollCount == 0) $scope.recScrollCount = $scope.recMovieStore.length-1;
+				$scope.recMovieDisplay = $scope.recMovieStore[$scope.reecScrollCount];
 				break;
 			default: break;
 		}
@@ -183,6 +199,11 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 				else if($scope.nowScrollCount == $scope.nowMovieStore.length-1) $scope.nowScrollCount = 0;
 				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
 				break;
+			case "rec":
+				if($scope.recScrollCount < $scope.recMovieStore.length-1) $scope.recScrollCount++;
+				else if($scope.recScrollCount == $scope.recMovieStore.length-1) $scope.recScrollCount = 0;
+				$scope.recMovieDisplay = $scope.recMovieStore[$scope.recScrollCount];
+				break;
 			default: break;
 		}
 	}
@@ -196,6 +217,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	$scope.$on("dashboardUpdate", function(event, returnMovies) {
 		$scope.popMovieDisplay = returnMovies[0].slice(0,5);
 		$scope.nowMovieDisplay = returnMovies[1].slice(0,5);
+		$scope.recMovieDisplay = returnMovies[2].slice(0,5);
 		$scope.popMovieStore.push(returnMovies[0].slice(0,5),
 			returnMovies[0].slice(5,10),
 			returnMovies[0].slice(10,15),
@@ -204,6 +226,10 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		  	returnMovies[1].slice(5,10),
 		  	returnMovies[1].slice(10,15),
 		  	returnMovies[1].slice(15,20));
+		$scope.recMovieStore.push(returnMovies[2].slice(0,5),
+		  	returnMovies[2].slice(5,10),
+		  	returnMovies[2].slice(10,15),
+		  	returnMovies[2].slice(15,20));
 	});
 
 	$(document).ready(function() {
@@ -223,7 +249,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 // SEARCH CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("search-controller", function($scope,$route,$location, $timeout, $localStorage, $sessionStorage) {
-	
+
 	$scope.searchResult = [];
 	$scope.searchResult = $sessionStorage.searchResult;
 	$scope.search = function() {
@@ -515,7 +541,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 			$scope.relatedMovies.push(relatedMovie);
 		}
 	});
-	
+
 
 });
 
