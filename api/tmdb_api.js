@@ -139,9 +139,9 @@ module.exports = {
         this.httpGetAsync(consAPI_URL, callback);
     },
 	
-	discoverPopularByGenre: function(genre_id, callback) {
+	discoverPopularByGenreSync: function(genre_id, callback) {
 		consAPI_URL = API_BASE + 'discover/movie?api_key=' + APIKEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&with_genres=' + genre_id;
-		this.httpGetAsync(consAPI_URL, callback);
+		return this.httpGetSync(consAPI_URL);
 	},
 
     searchMovies: function (req, callback) {
