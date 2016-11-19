@@ -329,7 +329,8 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 
 	$scope.genres = []; // array to pass to server, contains all the genres the user has selected
 	$scope.movies = []; // return array from api get
-	$scope.movieDisplay = []; // buffer that is displayed on preferences
+	$scope.movieBuffer = []; // buffer that is displayed on preferences
+	$scope.moviePrefs = [];
 	$scope.count = 0; // count for buffer
 
 	// add genre to array if clicked, remove if already clicked
@@ -344,21 +345,33 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		updateGenre(genre);
 	};
 
+	$scope.movieClick = function(movie_id) {
+		var index = $scope.moviePrefs.indexOf(movie_id);
+		if(index > -1) { // if array contains movie id
+			$scope.moviePrefs.splice(index, 1);
+		}
+		else { // else add movie id to array
+			$scope.moviePrefs.push(movie_id);
+		}
+		updateMovie(movie_id);
+	}
+
 	// swap boxes
 	$scope.genreNext = function() {
 		$scope.genreShow = false;
 		$scope.movieShow = true;
-		//$scope.$emit("setupEvent", $scope.genres);
+		$scope.$emit("genreEvent", $scope.genres[0])
 	}
 
 	// display next set of movies
 	$scope.nextMovies = function() {
 		$scope.count++;
 		if($scope.count == $scope.movies.length) { // if no more, send them to dashboard
-			$location.url("/dashboard");
+			//$localStorage.setupDone = true;
+			$scope.$emit("prefEvent", $scope.moviePrefs);
 		}
 		else { // otherwise show new list of movies
-			$scope.movieDisplay = $scope.movies[$scope.count];
+			$scope.movieBuffer = $scope.movies[$scope.count];
 		}
 	}
 
@@ -367,22 +380,21 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 	}
 
 	// FOR TESTING ONLY, CHANGE TO ARRAY OF MOVIES
-	$scope.$emit("genreEvent", 28);
+	// $scope.$emit("genreEvent", 28);
 
 	// if sign up was successful, update id and send to new page
-	$scope.$on("setupUpdate", function(event, setup) {
+	$scope.$on("prefUpdate", function(event, setup) {
 		$location.url("/dashboard");
 	});
 
 	// receieve array of movies from genre array
 	$scope.$on("genreUpdate", function(event, movies) {
-		movies.sort(function() { return 0.5 - Math.random() }); // scramble the movies
 		// add sets of 5 movies to the array
 		for(i = 0; i <= movies.length-5; i += 5) {
 			$scope.movies.push(movies.slice(i, i+5));
 		}
 		// set buffer to first list of movies
-		$scope.movieDisplay = $scope.movies[0];
+		$scope.movieBuffer = $scope.movies[0];
 	});
 
 	// Helper function to update the scope variables
@@ -392,12 +404,12 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 			case 12: $scope.adventureState = !$scope.adventureState; break;
 			case 16: $scope.animationState = !$scope.animationState; break;
 			case 35: $scope.comedyState = !$scope.comedyState; break;
-			case 89: $scope.crimeState = !$scope.crimeState; break;
-			case 99: $scope.dramaState = !$scope.dramaState; break;
+			case 80: $scope.crimeState = !$scope.crimeState; break;
+			case 18: $scope.dramaState = !$scope.dramaState; break;
 			case 10751: $scope.familyState = !$scope.familyState; break;
 			case 14: $scope.fantasyState = !$scope.fantasyState; break;
 			case 36: $scope.historyState = !$scope.historyState; break;
-			case 28: $scope.horrorState = !$scope.horrorState; break;
+			case 27: $scope.horrorState = !$scope.horrorState; break;
 			case 10402: $scope.musicState = !$scope.musicState; break;
 			case 9648: $scope.mysteryState = !$scope.mysteryState; break;
 			case 10749: $scope.romanceState = !$scope.romanceState; break;
@@ -409,6 +421,10 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 			default: break;
 		}
 	};
+
+	function updateMovie(movie_id) {
+
+	}
 });
 
 

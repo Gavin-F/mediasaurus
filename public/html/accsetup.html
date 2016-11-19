@@ -50,8 +50,8 @@
 					</tr>
 					<tr>
             			<td><button class="btn genre-btn" ng-click=genreClick(35) ng-class="comedyState ? 'clicked' : 'unclicked'">Comedy</td>
-						<td><button class="btn genre-btn" ng-click=genreClick(89) ng-class="crimeState ? 'clicked' : 'unclicked'">Crime</td>
-						<td><button class="btn genre-btn" ng-click=genreClick(99) ng-class="dramaState ? 'clicked' : 'unclicked'">Drama</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(80) ng-class="crimeState ? 'clicked' : 'unclicked'">Crime</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(18) ng-class="dramaState ? 'clicked' : 'unclicked'">Drama</td>
 					</tr>
 					<tr>
 						<td><button class="btn genre-btn" ng-click=genreClick(10751) ng-class="familyState ? 'clicked' : 'unclicked'">Family</td>
@@ -90,9 +90,10 @@
 
 				<div class="movie-box">
 					<div class="movie" ng-repeat="movie in movieBuffer">
-						<a ng-click="selectMovie(movie.id)">
+						<a ng-click="movieClick(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster" />
-							<p>{{movie.title}}</p>
+							<br/>
+							<p class="movieTitle">{{movie.title}}</p>
 						</a>
 					</div>
 				</div>

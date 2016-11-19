@@ -6,14 +6,15 @@
 * 	to server when childsends the array to this controlller
 */
 angular.module("index.accsetup", ["ngRoute"]).controller("accsetup", function($scope, $http) {
-	$scope.$on("setupEvent", function(event, genres) { // receive from child controller
-		$scope.$broadcast("setupUpdate", "done"); // redirect
+	$scope.$on("prefEvent", function(event, moviePrefs) { // receive from child controller
+		$scope.$broadcast("prefUpdate", "done"); // redirect
 	});
 
 	$scope.$on("genreEvent", function(event, genre_id) {
 		var movies = [];
 		$http.get("/api/movies/genre/" + genre_id).success(function(req) {
-			for(i = 0; i < 20; i++) {
+			req.sort(function() { return 0.5 - Math.random() });
+			for(i = 0; i < 5; i++) {
 				var movie = {
 					id: req[i].id,
 					title: req[i].title,
