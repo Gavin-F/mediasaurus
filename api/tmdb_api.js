@@ -195,16 +195,12 @@ module.exports = {
         xmlHttp.send(null);
     },
 
-    httpGetRequest: function (theURL) {
-       var xmlHttp = xhr;
-	   // var xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                return xmlHttp.responseText;
-        };
-        xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    httpGetSync: function (theUrl) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
         xmlHttp.send(null);
-    },
+        return xmlHttp.responseText;
+    }
 
 
     printThis: function (value) {
