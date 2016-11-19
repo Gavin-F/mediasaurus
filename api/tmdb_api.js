@@ -166,6 +166,11 @@ module.exports = {
 		consAPI_URL = API_BASE + 'movie/' + id + '/recommendations?api_key=' + APIKEY;
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
+	 
+	 getMovieRecommendationsSync: function(id){
+		consAPI_URL = API_BASE + 'movie/' + id + '/recommendations?api_key=' + APIKEY;
+		return this.httpGetSync(consAPI_URL); 
+	 },
 
 	 getSimilarMovies: function(req, callback){
 		consAPI_URL = API_BASE + 'movie/' + req.params.movie_id + '/similar?api_key=' + APIKEY + '&page=' + req.params.page;
@@ -200,8 +205,7 @@ module.exports = {
         xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
         xmlHttp.send(null);
         return xmlHttp.responseText;
-    }
-
+    },
 
     printThis: function (value) {
       console.log(value);

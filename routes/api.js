@@ -71,6 +71,25 @@ router.route('/movies/preferences/:id')
 		});
 		
 	})
+	
+	.put(function(req, res) {
+		if(req.body.movie_ids === null)
+			return res.send(511, 'nothing in ids');
+		User.findById(req.params.id)
+		.populate('movieProfile')
+		.exec(function(err,user){
+			if(err) return res.send(512, err);
+			
+			for(var i = 0; i < req.body.movie_ids.length; i++){
+				var prefItem = {movie_id: req.body.movie_ids[i], liked: true};
+				user.movieProfile.preferences.unshift(prefItem);
+			}
+			
+			algorithms.massUpdateRecommendedMovies(user.movieProfile, req.body.movie_ids, res);
+			
+		});
+		
+	})
 
 	/*
 	 * Removes the user's ratings on movie with title movieTitle.
