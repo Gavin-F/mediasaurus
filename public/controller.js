@@ -567,11 +567,6 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 			$scope.relatedMovies.push(relatedMovie);
 		}
 	});
-<<<<<<< HEAD
-=======
-
->>>>>>> dashboard-jumbo
-
 
 	$scope.gotoMovie = function(id){
 		//$location.url("/movie");
