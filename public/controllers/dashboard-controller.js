@@ -33,7 +33,7 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 					nowMovies.push(movie);
 				}
 				returnMovies.push(nowMovies);
-				$scope.$broadcast("dashboardUpdate", [popMovies, nowMovies]);
+				$scope.$broadcast("dashboardUpdate", [popMovies, nowMovies, nowMovies]);
 			});
 		});
 	});

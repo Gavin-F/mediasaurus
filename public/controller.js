@@ -120,10 +120,17 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	if($localStorage.userID !== undefined) {
 		$scope.userID = "Logged in!";
 		$scope.loggedin = true;
+		$scope.recShow = true;
 	}
 	else {
+		$scope.recShow = false;
 		$scope.userID = "Not logged in!";
 		$scope.loggedin = false;
+	}
+
+	$scope.recShow = false;
+	if($localStorage.userID !== undefined) {
+		$scope.recShow = true;
 	}
 
 	$scope.searchResult = [];
@@ -153,6 +160,10 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	$scope.nowMovieStore = [];
 	$scope.nowScrollCount = 0;
 
+	$scope.recMovieDisplay = [];
+	$scope.recMovieStore = [];
+	$scope.recScrollCount = 0;
+
 	// scrollLeft shifts displayed movies to the left
 	$scope.scrollLeft = function(section) {
 		switch(section) {
@@ -165,6 +176,11 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 				if($scope.nowScrollCount > 0) $scope.nowScrollCount--;
 				else if($scope.nowScrollCount == 0) $scope.nowScrollCount = $scope.nowMovieStore.length-1;
 				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
+				break;
+			case "rec":
+				if($scope.recScrollCount > 0) $scope.recScrollCount--;
+				else if($scope.recScrollCount == 0) $scope.recScrollCount = $scope.recMovieStore.length-1;
+				$scope.recMovieDisplay = $scope.recMovieStore[$scope.reecScrollCount];
 				break;
 			default: break;
 		}
@@ -183,6 +199,11 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 				else if($scope.nowScrollCount == $scope.nowMovieStore.length-1) $scope.nowScrollCount = 0;
 				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
 				break;
+			case "rec":
+				if($scope.recScrollCount < $scope.recMovieStore.length-1) $scope.recScrollCount++;
+				else if($scope.recScrollCount == $scope.recMovieStore.length-1) $scope.recScrollCount = 0;
+				$scope.recMovieDisplay = $scope.recMovieStore[$scope.recScrollCount];
+				break;
 			default: break;
 		}
 	}
@@ -197,9 +218,11 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		for(i = 0; i < 20; i += 5) {
 			$scope.popMovieStore.push(returnMovies[0].slice(i,i+5));
 			$scope.nowMovieStore.push(returnMovies[1].slice(i,i+5));
+			$scope.recMovieStore.push(returnMovies[2].slice(i,i+5));
 		}
 		$scope.popMovieDisplay = $scope.popMovieStore[0];
 		$scope.nowMovieDisplay = $scope.nowMovieStore[0];
+		$scope.recMovieDisplay = $scope.recMovieStore[0];
 	});
 
 	$(document).ready(function() {
@@ -544,6 +567,10 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 			$scope.relatedMovies.push(relatedMovie);
 		}
 	});
+<<<<<<< HEAD
+=======
+
+>>>>>>> dashboard-jumbo
 
 
 	$scope.gotoMovie = function(id){
