@@ -90,8 +90,8 @@
 
 				<div class="movie-box">
 					<div class="movie" ng-repeat="movie in movieBuffer">
-						<a ng-click="movieClick(movie.id)">
-							<img src="{{movie.poster}}" class="moviePoster" />
+						<a ng-click="movieClick(movie)">
+							<img src="{{movie.poster}}" class="moviePoster" ng-class="{movieClicked : movie.clicked}"/>
 							<br/>
 							<p class="movieTitle">{{movie.title}}</p>
 						</a>
@@ -101,6 +101,8 @@
 				<div class="completion-buttons">
 					<div class="selection-divider-lower"></div>
 					<button class="btn btn-default" id="next" ng-click="nextMovies()">Next</button>
+					<div class="button-divider"> </div>
+					<button class="btn btn-default" id="next" ng-click="scramble()">Scramble</button>
 				</div>
 			</div>
 		</div>

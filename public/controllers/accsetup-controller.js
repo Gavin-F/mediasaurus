@@ -13,13 +13,13 @@ angular.module("index.accsetup", ["ngRoute"]).controller("accsetup", function($s
 	$scope.$on("genreEvent", function(event, genre_id) {
 		var movies = [];
 		$http.get("/api/movies/genre/" + genre_id).success(function(req) {
-			req.sort(function() { return 0.5 - Math.random() });
-			for(i = 0; i < 5; i++) {
+			for(i = 0; i < 20; i++) {
 				var movie = {
 					id: req[i].id,
 					title: req[i].title,
 					poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
-					rating: req[i].vote_average
+					rating: req[i].vote_average,
+					clicked: false
 				};
 				movies.push(movie);
 			}

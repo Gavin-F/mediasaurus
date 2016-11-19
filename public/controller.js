@@ -12,8 +12,7 @@ var index = angular.module("index",
 	]);
 
 //Branch Comment
-index.config(function($routeProvider, $locationProvider) {
-	$locationProvider.html5Mode(true);
+index.config(function($routeProvider) {
 	$routeProvider
 	.when("/", {
 		templateUrl: "/html/home.html",
@@ -329,9 +328,9 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 	$scope.movieShow = false;
 
 	$scope.genres = []; // array to pass to server, contains all the genres the user has selected
-	$scope.movies = []; // return array from api get
+	$scope.movieStore = []; // return array from api get
 	$scope.movieBuffer = []; // buffer that is displayed on preferences
-	$scope.moviePrefs = [];
+	$scope.moviePrefs = []; // preferences to pass to server
 	$scope.count = 0; // count for buffer
 
 	// add genre to array if clicked, remove if already clicked
@@ -346,34 +345,43 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		updateGenre(genre);
 	};
 
-	$scope.movieClick = function(movie_id) {
-		var index = $scope.moviePrefs.indexOf(movie_id);
+	$scope.movieClick = function(movie) {
+		movie.clicked = !movie.clicked;
+		var index = $scope.moviePrefs.indexOf(movie.id);
 		if(index > -1) { // if array contains movie id
 			$scope.moviePrefs.splice(index, 1);
 		}
 		else { // else add movie id to array
-			$scope.moviePrefs.push(movie_id);
+			$scope.moviePrefs.push(movie.id);
 		}
-		updateMovie(movie_id);
 	}
 
 	// swap boxes
 	$scope.genreNext = function() {
 		$scope.genreShow = false;
 		$scope.movieShow = true;
-		$scope.$emit("genreEvent", $scope.genres[0])
+		if($scope.genres.length == 0) {
+			$scope.skip();
+		}
+		else {
+			$scope.$emit("genreEvent", $scope.genres[0]);
+		}
 	}
 
 	// display next set of movies
 	$scope.nextMovies = function() {
 		$scope.count++;
-		if($scope.count == $scope.movies.length) { // if no more, send them to dashboard
+		if($scope.count == $scope.movieStore.length) { // if no more, send them to dashboard
 			//$localStorage.setupDone = true;
 			$scope.$emit("prefEvent", $scope.moviePrefs);
 		}
 		else { // otherwise show new list of movies
-			$scope.movieBuffer = $scope.movies[$scope.count];
+			$scope.movieBuffer = $scope.movieStore[$scope.count];
 		}
+	}
+
+	$scope.scramble = function() {
+		scrambleGet5($scope.count);
 	}
 
 	$scope.skip = function() {
@@ -390,12 +398,12 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 
 	// receieve array of movies from genre array
 	$scope.$on("genreUpdate", function(event, movies) {
-		// add sets of 5 movies to the array
-		for(i = 0; i <= movies.length-5; i += 5) {
-			$scope.movies.push(movies.slice(i, i+5));
-		}
+		$scope.movieStore.push(movies);
+		// for(i = 0; i <= movies.length-1; i++ {
+		// 	$scope.movieStore.push(movies);
+		// }
 		// set buffer to first list of movies
-		$scope.movieBuffer = $scope.movies[0];
+		scrambleGet5(0);
 	});
 
 	// Helper function to update the scope variables
@@ -423,8 +431,9 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		}
 	};
 
-	function updateMovie(movie_id) {
-
+	function scrambleGet5(i) {
+		$scope.movieStore[i].sort(function() { return 0.5 - Math.random() });
+		$scope.movieBuffer = $scope.movieStore[i].slice(0,5);
 	}
 });
 
