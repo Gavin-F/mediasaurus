@@ -23,7 +23,7 @@ var tmdb = require('../api/tmdb_api');
 module.exports = {
 	
 	// movieProfile: User's movieProfile
-	updateRecommendedMovies: function(movieProfile, movie_id, res)   {
+	updateRecommendedMovies: function(movieProfile, movie_id, res){
 		tmdb.getMovieRecommendations(movie_id, function (results){
 			if (movieProfile.recommendations.length >= 20)
 					movieProfile.recommendations.splice(15, 5);
@@ -44,6 +44,28 @@ module.exports = {
 				return res.send(movieProfile.recommendations);
 			});
 			
+		});
+	},
+	
+	massUpdateRecommendedMovies: function(movieProfile, movie_ids, res){
+		var movieIDs = movie_ids.slice(Math.max(movie_ids.length - 4, 0));
+		for(var i = 0; i < movieIDs.length; i++){
+			var results = tmdb.getMovieRecommendationsSync(movieIDs[i]);
+			//console.log(results);
+			var jsonResults = JSON.parse(results);
+			for (var j = Math.min(4, jsonResults.total_results); j >= 0; j--){
+				var entry = {
+					movie_id: jsonResults.results[j].id,
+					title: jsonResults.results[j].title,
+					poster_path: jsonResults.results[j].poster_path 
+				};
+				movieProfile.recommendations.unshift(entry);
+			}
+		}
+		
+		movieProfile.save(function(err){
+			if(err) return res.send(err);
+			return res.send(movieProfile.recommendations);
 		});
 	}
 	
