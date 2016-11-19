@@ -102,7 +102,7 @@ router.route('/movies/preferences/:id')
 		});
 	});
 
-router.route('/movies/suggestions/:id')
+router.route('/movies/recommendations/:id')
 	.get(function(req, res){
 		User.findById(req.params.id)
 		.populate('movieProfile')
@@ -146,8 +146,13 @@ router.route('/movies/genre/:genre_id')
 router.route('/movies/:id')
 	.get(function(req, res){
 		tmdb.getMovieDetails(req.params.id, function(details){
-			jsonDetails = JSON.parse(details);
-			return res.send(jsonDetails.status_code ? null : jsonDetails);
+			var jsonDetails = JSON.parse(details);
+			if(jsonDetails.status_code) return res.send(null);
+			tmdb.getMovieCredits(req.params.id, function(credits){
+				var jsonCredits = JSON.parse(credits);
+				var results = [{details: jsonDetails, cast: jsonCredits.cast, crew: jsonCredits.crew}];
+				return res.send(results);
+			});
 		});
 	});
 
@@ -164,7 +169,8 @@ router.route('/movies/search/:page')
 	.post(function(req, res){
 		//TODO call search from TMDB
 		tmdb.searchMovies(req, function(results){
-			return res.send((JSON.parse(results)).results);
+			console.log(JSON.parse(results).results);
+			return res.send(JSON.parse(results).results);
 		});
 	});
 	

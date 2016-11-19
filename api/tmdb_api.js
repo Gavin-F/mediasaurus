@@ -145,14 +145,20 @@ module.exports = {
 	},
 
     searchMovies: function (req, callback) {
-		var query = req.body.query.replace(/ /g, '%20');
-		console.log(query)
-		consAPI_URL = API_BASE + API_SEARCH + "&query=" + query + '&page=' + req.params.page;
+		console.log(req.body.query);
+		//var query = req.body.query.replace(/ /g, '\%20');
+		//console.log(query)
+		consAPI_URL = API_BASE + API_SEARCH + "&query=" + req.body.query + '&page=' + req.params.page;
 		this.httpGetAsync(consAPI_URL, callback);
     },
 
 	 getMovieDetails: function(id, callback) {
 		consAPI_URL = API_BASE + 'movie/' + id + '?api_key=' + APIKEY;
+		this.httpGetAsync(consAPI_URL, callback);
+	 },
+	 
+	 getMovieCredits: function(id, callback) {
+		consAPI_URL = API_BASE + 'movie/' + id + '/credits?api_key=' + APIKEY;
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
 
@@ -179,8 +185,8 @@ module.exports = {
     // http://stackoverflow.com/questions/247483/http-get-request-in-javascript
 
     httpGetAsync: function (theUrl, callback) {
-        // var xmlHttp = new XMLHttpRequest();
-        var xmlHttp = xhr;
+        var xmlHttp = new XMLHttpRequest();
+        // var xmlHttp = xhr;
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                 callback(xmlHttp.responseText);
@@ -191,6 +197,7 @@ module.exports = {
 
     httpGetRequest: function (theURL) {
        var xmlHttp = xhr;
+	   // var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                 return xmlHttp.responseText;
