@@ -43,6 +43,7 @@ class JustWatch:
 		print ("Payload: ")
 		print( type(payload))
 		r = requests.post(api_url, json=payload, headers=header)
+		print(r.headers['content-type'])
 		return r.json()
 
 
