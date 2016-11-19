@@ -155,7 +155,7 @@ router.route('/movies/now_playing/:page')
 		});
 	});
 	
-router.route('/movies/genre')
+router.route('/movies/genres')
 	.post(function(req, res) {
 		var results = [];
 		for(var i = 0; i < req.body.genres.length; i++){
