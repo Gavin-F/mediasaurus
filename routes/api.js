@@ -71,6 +71,25 @@ router.route('/movies/preferences/:id')
 		});
 		
 	})
+	
+	.put(function(req, res) {
+		if(req.body.movie_ids === null)
+			return res.send(511, 'nothing in ids');
+		User.findById(req.params.id)
+		.populate('movieProfile')
+		.exec(function(err,user){
+			if(err) return res.send(512, err);
+			
+			for(var i = 0; i < req.body.movie_ids.length; i++){
+				var prefItem = {movie_id: req.body.movie_ids[i], liked: true};
+				user.movieProfile.preferences.unshift(prefItem);
+			}
+			
+			algorithms.massUpdateRecommendedMovies(user.movieProfile, req.body.movie_ids, res);
+			
+		});
+		
+	})
 
 	/*
 	 * Removes the user's ratings on movie with title movieTitle.
@@ -102,7 +121,7 @@ router.route('/movies/preferences/:id')
 		});
 	});
 
-router.route('/movies/suggestions/:id')
+router.route('/movies/recommendations/:id')
 	.get(function(req, res){
 		User.findById(req.params.id)
 		.populate('movieProfile')
@@ -146,8 +165,13 @@ router.route('/movies/genre/:genre_id')
 router.route('/movies/:id')
 	.get(function(req, res){
 		tmdb.getMovieDetails(req.params.id, function(details){
-			jsonDetails = JSON.parse(details);
-			return res.send(jsonDetails.status_code ? null : jsonDetails);
+			var jsonDetails = JSON.parse(details);
+			if(jsonDetails.status_code) return res.send(null);
+			tmdb.getMovieCredits(req.params.id, function(credits){
+				var jsonCredits = JSON.parse(credits);
+				var results = [{details: jsonDetails, cast: jsonCredits.cast, crew: jsonCredits.crew}];
+				return res.send(results);
+			});
 		});
 	});
 
@@ -164,7 +188,8 @@ router.route('/movies/search/:page')
 	.post(function(req, res){
 		//TODO call search from TMDB
 		tmdb.searchMovies(req, function(results){
-			return res.send((JSON.parse(results)).results);
+			console.log(JSON.parse(results).results);
+			return res.send(JSON.parse(results).results);
 		});
 	});
 	
