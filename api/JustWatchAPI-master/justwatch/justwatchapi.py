@@ -34,6 +34,14 @@ class JustWatch:
 				print('{} is not a valid keyword'.format(key))
 		header = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36(KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36'}
 		api_url = 'https://api.justwatch.com/titles/{}_{}/popular'.format(self.language, self.country)
+		print ("api_url: ")
+		print( type(api_url))
+		print ("header: ")
+		print( type(header))
+		print ("None: ")
+		print( type(null))
+		print ("Payload: ")
+		print( type(payload))
 		r = requests.post(api_url, json=payload, headers=header)
 		return r.json()
 
@@ -43,4 +51,4 @@ just_watch = JustWatch()
 
 results = just_watch.search_for_item(query='the matrix')
 
-print(results)
+# print(results)

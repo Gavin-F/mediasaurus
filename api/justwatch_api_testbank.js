@@ -6,4 +6,4 @@ function printThis(value) {
 }
 
 justwatch_api.searchForProviders('the matrix', console.log);
-printThis(justwatch_api.searchForProviders('the matrix', printThis));
+// printThis(justwatch_api.searchForProviders('the matrix', printThis));

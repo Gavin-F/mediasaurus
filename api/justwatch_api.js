@@ -1,5 +1,6 @@
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var xhr = new XMLHttpRequest();
+var request = require('request');
 
 
 module.exports = {
@@ -14,22 +15,26 @@ module.exports = {
         var header = '{"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36(KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36"}';
         var api_url = 'https://api.justwatch.com/titles/en_CA/popular';
         // console.log("Calling xhr");
+        
         // this.httpGetAsync(api_url, JSON.parse(header), JSON.parse(jsonData), callback);
         // header = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36(KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36'}
-        return this.httpGet(api_url, JSON.parse(header), JSON.parse(jsonData));
+        // return this.httpGet(api_url, JSON.parse(header), JSON.parse(jsonData));
     },
 
     httpGetAsync: function (theUrl, header, payload, callback) {
         var xmlHttp = xhr;
+        // console.log("Starting call");
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                 console.log("Found something");
-                var jsonArr = JSON.parse(xmlHttp.responseText);
-                if((typeof jsonArr) === 'object') {
-                    var result = jsonArr.items;
-                    var offers = result[0].offers;
-                    console.log(typeof offers)
-                    callback(offers);
+                if (typeof(xmlHttp.responseText) === 'string') {
+                    // var jsonArr = JSON.parse(xmlHttp.responseText);
+                    if((typeof jsonArr) === 'object') {
+                        var result = jsonArr.items;
+                        var offers = result[0].offers;
+                        console.log(typeof offers)
+                        callback(offers);
+                    }
                 }
         };
         xmlHttp.open("GET", theUrl, true); // true for asynchronous
