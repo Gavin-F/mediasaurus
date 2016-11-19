@@ -43,7 +43,7 @@
 }
 
 .like_button {
-	margin: 5px 0px 50px 108px;
+	margin: 5px 0px 50px 145px;
 }
 #rating_div {
 	color: #33CCCC;
@@ -90,4 +90,20 @@ body {
 
 .jumbotron {
 	background-color: #002145;
+}
+
+.unclicked {
+  background-color: white;
+}
+
+.unclicked:hover {
+  background-color: #d3d3d3;
+}
+
+.clicked {
+  background-color: #33CCCC;
+}
+
+.clicked:hover {
+  background-color: #33CCCC;
 }

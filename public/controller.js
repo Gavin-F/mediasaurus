@@ -431,35 +431,42 @@ index.controller("password-controller", function($scope,$location) {
 // Movie CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("movie-controller", function($scope,$location,$routeParams,$http, $localStorage) {
-	var movie_id = $routeParams.id;
+	var ids = {
+		movie_id: $routeParams.id,
+		user_id: $localStorage.userID
+		}; // get the movie id from the URL
 
-	$scope.$emit("movieEvent", movie_id);
+	$scope.Like = "Like";
 
-    $('.rating').likeDislike({
-        initialValue: 0,
-        click: function (value, l, d, event) {
-            var likes = $(this.element).find('.likes');
-            var dislikes = $(this.element).find('.dislikes');
-            if ($localStorage.userID !== undefined) {
-	            likes.text(parseInt(likes.text()) + l);
-	            dislikes.text(parseInt(dislikes.text()) + d);
-	        }
-        }
-    });
+	$scope.$emit("movieEvent", ids); // emit movieEvent that gets all the movie data
+	if ($localStorage.userID === undefined) {
+		document.getElementById("likeButton").disabled = true;
+	}
+
+	$scope.$on("likeUpdate", function(event, likedMovies) {
+		for (i = 0; i < likedMovies.length; i++) {
+			console.log(likedMovies[i]);
+			if (likedMovies[i].movie_id == ids.movie_id) {
+				$scope.likeText = "Liked";
+				$scope.likeState = true; break;
+			}
+		}
+	});
 
 	$scope.like = function() {
-		// get form info
-		if ($localStorage.userID !== undefined) {
-			var like = {
-				movieID: movie_id,
-				userID: $localStorage.userID,
-				like: true
-			};
-			// send to parent controller
+		var like = {
+			movie_id: ids.movie_id,
+			userID: ids.user_id,
+		}
+
+		$scope.likeState = !$scope.likeState;
+		if ($scope.likeText == "Like") {
+			$scope.likeText = "Liked";
 			$scope.$emit("likeEvent", like);
 		}
 		else {
-			alert("Log in to like this movie");
+			$scope.likeText = "Like";
+			$scope.$emit("unlikeEvent", like);
 		}
 	}
 
