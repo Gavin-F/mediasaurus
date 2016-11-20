@@ -5,6 +5,9 @@ function printThis(value) {
   console.log(typeof value);
 }
 
-printThis("Hello");
 justwatch_api.searchForProviders('the matrix', printThis);
+justwatch_api.searchForProviders('frozen', printThis);
+justwatch_api.searchForProviders('twilight', printThis);
+
+
 // printThis(justwatch_api.searchForProviders('the matrix', printThis));
