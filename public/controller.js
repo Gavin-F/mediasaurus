@@ -436,7 +436,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 		user_id: $localStorage.userID
 		}; // get the movie id from the URL
 
-	$scope.Like = "Like";
+	$scope.likeText = "Like";
 
 	$scope.$emit("movieEvent", ids); // emit movieEvent that gets all the movie data
 	if ($localStorage.userID === undefined) {
@@ -445,7 +445,6 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 
 	$scope.$on("likeUpdate", function(event, likedMovies) {
 		for (i = 0; i < likedMovies.length; i++) {
-			console.log(likedMovies[i]);
 			if (likedMovies[i].movie_id == ids.movie_id) {
 				$scope.likeText = "Liked";
 				$scope.likeState = true; break;
@@ -485,7 +484,6 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 	var obj_dir = "";
 
 	$scope.$on("movieUpdate", function(event, obj_movie) {
-		console.log(obj_movie);
 		$scope.overview = obj_movie[0].details.overview;
 		$scope.title = obj_movie[0].details.title;
 		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie[0].details.poster_path;
@@ -520,7 +518,6 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 		$scope.cast = obj_cast;
 
 		var directors = $filter('filter')(obj_movie[0].crew, {job:"Director", department:"Directing"})
-		console.log(directors);
 
 		for (i = 0; i < directors.length; i++) {
 			if ((i+1) == directors.length) {
