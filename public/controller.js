@@ -440,9 +440,10 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 
 	$scope.$emit("movieEvent", ids); // emit movieEvent that gets all the movie data
 	if ($localStorage.userID === undefined) {
-		document.getElementById("likeButton").disabled = true;
+		document.getElementById("likeButton").disabled = true; // if not logged in, disable the like button
 	}
 
+	// check if the user has previously liked the movie
 	$scope.$on("likeUpdate", function(event, likedMovies) {
 		for (i = 0; i < likedMovies.length; i++) {
 			if (likedMovies[i].movie_id == ids.movie_id) {
@@ -452,12 +453,13 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 		}
 	});
 
+	// when the user clicks like or unlike, its emits an event and changed the look
+	// of the button 
 	$scope.like = function() {
 		var like = {
 			movie_id: ids.movie_id,
 			userID: ids.user_id,
 		}
-
 		$scope.likeState = !$scope.likeState;
 		if ($scope.likeText == "Like") {
 			$scope.likeText = "Liked";
@@ -469,14 +471,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 		}
 	}
 
-
-    $(function() {
-		$('.tooltip-custom').tooltipster({
-			side: 'right',
-			arrow: false
-		});
-	});
-
+	// populating the moviepage
 	var movie_rating;
 	var runtime;
 	var obj_genres = "";
@@ -535,6 +530,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 
 	});
 
+	// initiating the star ratings
     $(function () {
     	$("#rateYo").rateYo({
     		starWidth: "20px",
@@ -545,6 +541,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
     	});
     });
 
+    // route for other movies
 	$scope.gotoMovie = function(id){
 		//$location.url("/movie");
 		$location.url("/movies/" + id);

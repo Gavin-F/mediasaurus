@@ -88,6 +88,10 @@ body {
   width: 150px;
 }
 
+.btn {
+	width: 100px;
+}
+
 .jumbotron {
 	background-color: #002145;
 }
@@ -96,7 +100,7 @@ body {
   background-color: white;
 }
 
-.unclicked:hover {
+.unclicked:hover, .unclicked:focus {
   background-color: #d3d3d3;
 }
 
@@ -105,5 +109,5 @@ body {
 }
 
 .clicked:hover {
-  background-color: #33CCCC;
+  background-color: #33CCCC`;
 }
