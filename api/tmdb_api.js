@@ -49,7 +49,7 @@ module.exports = {
 
         consAPI_URL = API_BASE + "search/keyword?api_key=" + APIKEY + "&query=" + keyword;
 
-        jsonObj = this.httpGetRequest(consAPI_URL);
+        this.printThis(this.httpGetAsync(consAPI_URL, this.returnThis));
 
         // return ;
     },
@@ -59,9 +59,11 @@ module.exports = {
     getGenreID: function (genre) {
         // STUB
         // https://api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
-        // consAPI_URL = API_BASE +
+        consAPI_URL = API_BASE + "genre/movie/list?api_key=" + APIKEY + "&language=en-US";
 
-        return 0;
+        return this.httpGetGenreID(consAPI_URL, genre);
+
+        // return 0;
     },
 
     // discoverTrendingMovies returns a JSON object containing the currently trending movies
@@ -209,8 +211,13 @@ module.exports = {
 
     printThis: function (value) {
       console.log(value);
-    }
+      console.log("Hello");
+    },
 
+    returnThis: function (value) {
+        console.log("Hi");
+        return value;
+    }
 };
 
 
