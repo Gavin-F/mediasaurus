@@ -6,16 +6,19 @@
 angular.module("index.search", ["ngRoute"]).controller("search", function($scope, $http) {
 	$scope.$on("searchEvent", function(event, searchObject) { // receive from child controller
 		$http.post(("/api/movies/search/"+1),searchObject).success(function(req) { // authenticate user login
+			console.log(req);
 			var searchArray = [];
-			var size = 20;
+			var size = req.length;
 			var offset = 0;
 			var color;
 			for(i = 0; i < size; i++) {
 				if(i%2==0){
-					color ="red";
+					color = "#002145";
+					text = "#E9E9E9"
 				}
 				else{
-					color ="blue";
+					color = "transparent";
+					text = "black";
 				}
 				var searchItem = {
 					id: req[i].id,
@@ -23,7 +26,8 @@ angular.module("index.search", ["ngRoute"]).controller("search", function($scope
 					poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
 					rating: req[i].vote_average,
 					overview: req[i].overview,
-					bColor: color
+					bColor: color,
+					tColor: text
 				};
 				if(req[i].poster_path !== null){
 					searchArray[i-offset] = searchItem;
@@ -32,8 +36,6 @@ angular.module("index.search", ["ngRoute"]).controller("search", function($scope
 					offset++;
 				}
 			}
-			console.log(searchArray);
-			console.log(searchArray[0].bColor);
 			$scope.$broadcast("searchUpdate", searchArray);
 		});
 	});

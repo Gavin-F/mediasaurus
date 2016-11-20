@@ -22,15 +22,16 @@
 						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
 					</span>
 			</div> <br>
-			<div class="container MovieContainer" ng-repeat="sResult in searchResult" ng-style="background:{{sResult.bColour}};" style="border:1px solid black;">
+			<td ng-style="{'color':(payment.number>50?'red':'blue')}">{{payment.number}}</td>
+			<div class="container MovieContainer" ng-repeat="sResult in searchResult" ng-style="{'background':(sResult.bColor)}" >
 				<div class="moviePosterPosition" ng-click="gotoMovie(sResult.id)" >
 					<br><br>
 					<a><img src="{{sResult.poster}}" class="tooltip-custom moviePosterSearch" data-tooltip-content=".tooltipInfo"/></a>
 				</div>
 				<div class=" containter movieTitle">
-					<a class="MovieTitleText" ng-click="gotoMovie(sResult.id)"><h4>{{sResult.title}}</h4></a>
+					<a  ng-click="gotoMovie(sResult.id)" ng-style="{'color':(sResult.tColor)}"><h4>{{sResult.title}}</h4></a>
 					<div class="movieDescription">
-						<p class="description">
+						<p class="description" ng-style="{'color':(sResult.tColor)}">
 							{{sResult.overview}}
 						</p>
 					</div>
