@@ -38,18 +38,7 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 					// Send back now playing movies
 					$http.get("/api/movies/recommendations/" + obj[1]).success(function(req) {
 						var recMovies = [];
-						if(req.length == 0) {
-							for(i = 0; i < 20; i++) {
-								var movie = {
-									id: "",
-									title: "",
-									poster: "",
-									rating: 0
-								};
-								recMovies.push(movie);
-							}
-						}
-						else {
+						if(req.length != 0) {
 							for(i = 0; i < 20; i++) {
 								var movie = {
 									id: req[i].id,
@@ -73,7 +62,7 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 							poster: "",
 							rating: 0
 						};
-						recMovies.push(movie);
+						filler.push(movie);
 					}
 					returnMovies.push(filler);
 					$scope.$broadcast("dashboardUpdate", returnMovies);

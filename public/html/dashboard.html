@@ -13,7 +13,7 @@
 			{{userID}}
 			<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
 
-			<h3>Dashboard</h3>
+			<h1>Dashboard</h1>
 
 			<div class="form-group">
 				<label class="control-label">Search</label>
@@ -30,26 +30,27 @@
 	<div class="container" ng-controller="dashboard">
 		<div ng-controller="dashboard-controller">
 
-			<h2 ng-show="recShow">Recommended</h2>
+			<h2 ng-show="recShow">Your Recommendations</h2>
 			<div class="movie-box" ng-show="recShow">
-				<div class="button-col">
+				<div class="button-col" ng-show="recGet">
 					<a ng-click="scrollLeft('rec')" style="align:left">
 						<img src="../images/left-arrow.png" height="120px" width="120px"/>
 					</a>
 				</div>
-				<div class="movie-col">
+				<div class="movie-col" ng-show="recGet">
 					<div class="movie" ng-repeat="movie in recMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/>
-							<p>{{movie.title}}</p>
+							<p class="movieTitle">{{movie.title}}</p>
 						</a>
 					</div>
 				</div>
-				<div class="button-col">
+				<div class="button-col" ng-show="recGet">
 					<a ng-click="scrollRight('rec')">
 						<img src="../images/right-arrow.png" height="120px" width="120px"/>
 					</a>
 				</div>
+				<h2 ng-show="!recGet"><br/><br/>No preferences set up! <br/><br/> Go like a movie or set up your preferences in your profile!</h2>
 			</div>
 
 			<h2>Popular</h2>
@@ -63,7 +64,7 @@
 					<div class="movie" ng-repeat="movie in popMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/>
-							<p>{{movie.title}}</p>
+							<p class="movieTitle">{{movie.title}}</p>
 						</a>
 					</div>
 				</div>

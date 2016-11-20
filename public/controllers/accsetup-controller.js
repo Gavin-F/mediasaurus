@@ -6,23 +6,25 @@
 * 	to server when childsends the array to this controlller
 */
 angular.module("index.accsetup", ["ngRoute"]).controller("accsetup", function($scope, $http) {
-	$scope.$on("prefEvent", function(event, moviePrefs) { // receive from child controller
-		$http.put("/api/movies/preferences/" + moviePrefs);
-		$scope.$broadcast("prefUpdate", "done"); // redirect
+	$scope.$on("prefEvent", function(event, obj) { // receive from child controller
+		$http.put("/api/movies/preferences/" + obj.userID , obj);
 	});
 
-	$scope.$on("genreEvent", function(event, genre_id) {
+	$scope.$on("genreEvent", function(event, genres) {
 		var movies = [];
-		$http.get("/api/movies/genre/" + genre_id).success(function(req) {
-			for(i = 0; i < 20; i++) {
-				var movie = {
-					id: req[i].id,
-					title: req[i].title,
-					poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
-					rating: req[i].vote_average,
-					clicked: false
-				};
-				movies.push(movie);
+		$http.post("/api/movies/genres", genres).success(function(req) {
+			for(i = 0; i < req.length; i++) {
+				var movieSubset = [];
+				for(j = 0; j < 20; j++) {
+					var movie = {
+						id: req[i][j].id,
+						title: req[i][j].title,
+						poster: "https://image.tmdb.org/t/p/w500" + req[i][j].poster_path,
+						rating: req[i][j].vote_average
+					};
+					movieSubset.push(movie);
+				}
+				movies.push(movieSubset);
 			}
 			$scope.$broadcast("genreUpdate", movies);
 		});

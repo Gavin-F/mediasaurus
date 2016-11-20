@@ -129,6 +129,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	}
 
 	$scope.recShow = false;
+	$scope.recGet = true;
 	if($localStorage.userID !== undefined) {
 		$scope.recShow = true;
 	}
@@ -180,7 +181,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 			case "rec":
 				if($scope.recScrollCount > 0) $scope.recScrollCount--;
 				else if($scope.recScrollCount == 0) $scope.recScrollCount = $scope.recMovieStore.length-1;
-				$scope.recMovieDisplay = $scope.recMovieStore[$scope.reecScrollCount];
+				$scope.recMovieDisplay = $scope.recMovieStore[$scope.recScrollCount];
 				break;
 			default: break;
 		}
@@ -215,6 +216,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	$scope.$emit("dashboardEvent", [1, $localStorage.userID]);
 
 	$scope.$on("dashboardUpdate", function(event, returnMovies) {
+		if(returnMovies[2].length == 0) $scope.recGet = false;
 		for(i = 0; i < 20; i += 5) {
 			$scope.popMovieStore.push(returnMovies[0].slice(i,i+5));
 			$scope.nowMovieStore.push(returnMovies[1].slice(i,i+5));
@@ -315,11 +317,10 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 // ACCOUNT SETUP CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("accsetup-controller", function($scope, $location, $http, $localStorage) {
-	// if the user isn't signed in, send them back to signup splash
-	if($localStorage.userID === undefined) {
+	if($localStorage.userID === undefined) { // if the user isn't signed in, send them back to signup splash
 		$location.url("/");
 	}
-	else if($localStorage.setupDone === true) {
+	else if($localStorage.setupDone === true) { // if user has setup already, send to dash
 		$location.url("/dashboard");
 	}
 
@@ -342,11 +343,11 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		else { // else add genre to array
 			$scope.genres.push(genre);
 		}
-		updateGenre(genre);
+		updateGenre(genre); // update button
 	};
 
 	$scope.movieClick = function(movie) {
-		movie.clicked = !movie.clicked;
+		movie.clicked = !movie.clicked; // toggle border
 		var index = $scope.moviePrefs.indexOf(movie.id);
 		if(index > -1) { // if array contains movie id
 			$scope.moviePrefs.splice(index, 1);
@@ -354,7 +355,6 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		else { // else add movie id to array
 			$scope.moviePrefs.push(movie.id);
 		}
-		console.log($scope.moviePrefs);
 	}
 
 	// swap boxes
@@ -362,10 +362,11 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		$scope.genreShow = false;
 		$scope.movieShow = true;
 		if($scope.genres.length == 0) {
-			$scope.skip();
+			$scope.skip(); // if no genres were selected, end the preference setup
 		}
 		else {
-			$scope.$emit("genreEvent", $scope.genres[0]);
+			var obj = {genres: $scope.genres};
+			$scope.$emit("genreEvent", obj);
 		}
 	}
 
@@ -373,37 +374,29 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 	$scope.nextMovies = function() {
 		$scope.count++;
 		if($scope.count == $scope.movieStore.length) { // if no more, send them to dashboard
-			//$localStorage.setupDone = true;
-			$scope.$emit("prefEvent", $scope.moviePrefs);
+			$localStorage.setupDone = true; // lock so user can't enter setup again
+			var obj = {userID: $localStorage.userID, movie_ids: $scope.moviePrefs.sort(function() { return 0.5 - Math.random() })};
+			$scope.$emit("prefEvent", obj); // send list of pref movies to server
+			$location.url("/dashboard"); // finish and redirect
 		}
 		else { // otherwise show new list of movies
-			$scope.movieBuffer = $scope.movieStore[$scope.count];
+			$scope.scramble($scope.count);
 		}
 	}
 
+	// scramble the 5 lists movies from store
 	$scope.scramble = function() {
 		scrambleGet5($scope.count);
 	}
 
+	// skip out of preference selection
 	$scope.skip = function() {
 		$location.url("/dashboard");
 	}
 
-	// FOR TESTING ONLY, CHANGE TO ARRAY OF MOVIES
-	// $scope.$emit("genreEvent", 28);
-
-	// if sign up was successful, update id and send to new page
-	$scope.$on("prefUpdate", function(event, setup) {
-		$location.url("/dashboard");
-	});
-
 	// receieve array of movies from genre array
 	$scope.$on("genreUpdate", function(event, movies) {
-		$scope.movieStore.push(movies);
-		// for(i = 0; i <= movies.length-1; i++ {
-		// 	$scope.movieStore.push(movies);
-		// }
-		// set buffer to first list of movies
+		$scope.movieStore = movies;
 		scrambleGet5(0);
 	});
 
@@ -432,6 +425,7 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		}
 	};
 
+	// Helper to get new 5 movies for movieBuffer
 	function scrambleGet5(i) {
 		$scope.movieStore[i].sort(function() { return 0.5 - Math.random() });
 		$scope.movieBuffer = $scope.movieStore[i].slice(0,5);
