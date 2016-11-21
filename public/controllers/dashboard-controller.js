@@ -41,7 +41,7 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 						if(req.length != 0) {
 							for(i = 0; i < 20; i++) {
 								var movie = {
-									id: req[i].id,
+									id: req[i].movie_id,
 									title: req[i].title,
 									poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
 									rating: req[i].vote_average

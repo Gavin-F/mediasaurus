@@ -101,7 +101,7 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 
 	// continue without logging in
 	$scope.continue = function(){
-		$location.url("http://google.com");
+		$location.url("/dashboard");
 	}
 });
 
@@ -112,6 +112,7 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 ///////////////////////////////////////////////////////
 index.controller("dashboard-controller", function($scope,$location, $http, $timeout, $localStorage,$sessionStorage) {
 	// logout user for debugging only!!
+	$localStorage.setupDone = false;
 	if($localStorage.userID !== undefined) {
 		$scope.userID = "Logged in!";
 		$scope.loggedin = true;
@@ -122,7 +123,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		$scope.userID = "Not logged in!";
 		$scope.loggedin = false;
 	}
-	
+
 	$scope.recShow = false;
 	$scope.recGet = true;
 	if($localStorage.userID !== undefined) {
@@ -369,7 +370,7 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 	$scope.nextMovies = function() {
 		$scope.count++;
 		if($scope.count == $scope.movieStore.length) { // if no more, send them to dashboard
-			$localStorage.setupDone = true; // lock so user can't enter setup again
+			//$localStorage.setupDone = true; // lock so user can't enter setup again
 			var obj = {userID: $localStorage.userID, movie_ids: $scope.moviePrefs.sort(function() { return 0.5 - Math.random() })};
 			$scope.$emit("prefEvent", obj); // send list of pref movies to server
 			$location.url("/dashboard"); // finish and redirect
@@ -592,26 +593,6 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
     });
 
     // route for other movies
-	$scope.gotoMovie = function(id){
-		//$location.url("/movie");
-		$location.url("/movies/" + id);
-	}
-
-	$scope.relatedMovies = [];
-
-	$scope.$on("relatedMovieUpdate", function(event, relatedMovies) {
-		for(i = 0; i < relatedMovies.length; i++) {
-			//console.log(relatedMovies[i]);
-			var relatedMovie = {
-				id: relatedMovies[i].id,
-				title: relatedMovies[i].title,
-				poster: "https://image.tmdb.org/t/p/w500" + relatedMovies[i].poster_path,
-				rating: relatedMovies[i].vote_average
-			};
-			$scope.relatedMovies.push(relatedMovie);
-		}
-	});
-
 	$scope.gotoMovie = function(id){
 		//$location.url("/movie");
 		$location.url("/movies/" + id);
