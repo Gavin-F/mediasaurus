@@ -21,14 +21,14 @@
 						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
 					</span>
 			</div> <br>
-			<div class="container MovieContainer" ng-repeat="sResult in searchResult" ng-style="{'background':(sResult.bColor)}" >
-				<div class="moviePosterPosition" ng-click="gotoMovie(sResult.id)" >
+			<div class="container MovieSearchContainer" ng-repeat="sResult in searchResult" ng-style="{'background':(sResult.bColor)}" >
+				<div class="movieSearchPosterPosition" ng-click="gotoMovie(sResult.id)" >
 					<br><br>
 					<a><img src="{{sResult.poster}}" class="tooltip-custom moviePosterSearch" data-tooltip-content=".tooltipInfo"/></a>
 				</div>
-				<div class=" containter movieTitle">
+				<div class=" containter movieSearchTitle">
 					<a  ng-click="gotoMovie(sResult.id)" ng-style="{'color':(sResult.tColor)}"><h4>{{sResult.title}}</h4></a>
-					<div class="movieDescription">
+					<div class="movieSearchDescription">
 						<p class="description" ng-style="{'color':(sResult.tColor)}">
 							{{sResult.overview}}
 						</p>

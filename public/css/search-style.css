@@ -41,7 +41,7 @@
 	width: 100px;
 }
 
-.movieTitle{
+.movieSearchTitle{
     position: relative;
     float:left;
     min-height: 1px;
@@ -49,14 +49,14 @@
     padding-right: 15px;
     width: 900px;
 }
-.movieDescription{
+.movieSearchDescription{
     position: relative;
     float:left;
     min-height: 1px;
     padding-right: 15px;
     width: 900px;
 }
-.moviePosterPosition{
+.movieSearchPosterPosition{
     position: relative;
     float:left;
     min-height: 1px;
@@ -64,14 +64,14 @@
     padding-right: 15px;
 }
 
-.MovieTitleText{
+.MovieSearchTitleText{
 	color: black;
 }
-.MovieTitleText hover,
-.MovieTitleText focus{
+.MovieSearchTitleText hover,
+.MovieSearchTitleText focus{
 	color: white;
 }
-.MovieContainer{
+.MovieSearchContainer{
 	height: 230px;
 	display: block;
 	width: 100%;
