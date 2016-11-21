@@ -15,14 +15,12 @@
 			<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
 
 			<h3>Search</h3>
-			<div class="input-group">	
-					<input type="text" name="searchString" ng-model="searchString" class="form-control"/> 
-					<!-- <form><input type="text" name="searchString" ng-model="searchString" class="form-control"/></form> -->
+			<div class="input-group">
+					<input type="text" name="searchString" ng-model="searchString" ng-keyup="$event.keyCode == 13 ? search() : null" class="form-control"/> 
 					<span class="input-group-btn">
 						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
 					</span>
 			</div> <br>
-			<td ng-style="{'color':(payment.number>50?'red':'blue')}">{{payment.number}}</td>
 			<div class="container MovieContainer" ng-repeat="sResult in searchResult" ng-style="{'background':(sResult.bColor)}" >
 				<div class="moviePosterPosition" ng-click="gotoMovie(sResult.id)" >
 					<br><br>

@@ -5,14 +5,13 @@
 */
 angular.module("index.search", ["ngRoute"]).controller("search", function($scope, $http) {
 	$scope.$on("searchEvent", function(event, searchObject) { // receive from child controller
-		$http.post(("/api/movies/search/"+1),searchObject).success(function(req) { // authenticate user login
-			console.log(req);
+		$http.post(("/api/movies/search/"+1),searchObject).success(function(req) { 
 			var searchArray = [];
 			var size = req.length;
 			var offset = 0;
 			var color;
 			for(i = 0; i < size; i++) {
-				if(i%2==0){
+				if((i-offset)%2==0){
 					color = "#002145";
 					text = "#E9E9E9"
 				}

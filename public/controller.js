@@ -26,10 +26,6 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/search.html",
 		controller: "search-controller"
 	})
-	.when("/testpage", {
-		templateUrl: "/html/TestPage.html",
-		controller: "testpage-controller"
-	})
 	.when("/account", {
 		templateUrl: "/html/account.html",
 		controller: "account-controller"
@@ -124,7 +120,6 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		$scope.userID = "Not logged in!";
 		$scope.loggedin = false;
 	}
-
 	$scope.searchResult = [];
 	$scope.search = function() {
 		var searchObject = {
@@ -243,7 +238,6 @@ index.controller("search-controller", function($scope,$route,$location, $timeout
 		}
 		$location.url("/search");
 	});
-	
 
 	$scope.searchNext = function() {
 		$location.url("/search");
@@ -385,24 +379,6 @@ index.controller("login-controller", function($scope, $location, $http, $localSt
 	$scope.$on("loginError", function(event, error) {
 		$scope.loginError = error;
 	});
-});
-
-
-
-///////////////////////////////////////////////////////
-// TEST CONTROLLER
-///////////////////////////////////////////////////////
-index.controller("testpage-controller", function($scope,$location) {
-
-	$scope.message = "hello";
-
-	$scope.setText = function() {
-		$scope.test = "Hello world!";
-	}
-	// adding comment to make sure merge went as planned.
-	$scope.goHome = function(){
-		$location.url("/");
-	}
 });
 
 
