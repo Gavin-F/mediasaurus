@@ -13,20 +13,24 @@
 		<title>MRE</title>
 	</head>
 
-	<nav class="navbar navbar-default navbar-static-top" ng-app="index">
+	<nav class="navbar navbar-default navbar-static-top" ng-controller="index-controller">
 		<div class="container" ng-controller="index-controller">	
 			<ul class="nav navbar-nav">
-				<li ng-class="{ active: isActive('/')}" ><img src="/images/MRELogo2.png" style="height:38px; padding-top: 2px; width: 70px; "></li>
-				<li ng-class="{ active: isActive('/')}"><a href="#/">About</a></li>
-				<li ng-class="{ active: isActive('/Dashboard')}"><a href="#/dashboard">Dashboard</a></li>
+				<li ng-class="{ active: isActive('/')}" >
+					<a ng-click="goHome()" style="padding-top: 2px; ">
+						<img src="/images/MRELogo2.png" style="height:36px; width: 70px; ">
+					</a>
+				</li>
+				<li ng-class="{ active: isActive('/')}"><a ng-click="goHome()">About</a></li>
+				<li ng-class="{ active: isActive('/Dashboard')}"><a ng-click="goDashboard()">Dashboard</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right custom-button">
 				<li class="dropdown" >
 					<a class="glyphicon glyphicon-cog" data-toggle="dropdown"></a>
 					<ul class="dropdown-menu">
-						<li><a href="#/account">Account Settings</a></li>
-						<li><a href="#/">User Preferences</a></li>
-						<li ng-click="reset()"><a >Logout</a></li>
+						<li><a ng-click="goAccountSettings()">Account Settings</a></li>
+						<li><a ng-click="goHome()">User Preferences</a></li>
+						<li><a ng-click="reset()">Logout</a></li>
 					</ul>
 				</li>
 			</ul>
