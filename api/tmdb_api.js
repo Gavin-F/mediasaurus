@@ -1,6 +1,8 @@
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var xhr = new XMLHttpRequest();
 
+var genreList = require(('../models/genres.json'));
+
 
 // API key goes here
 APIKEY = "8f9caf52038412780f3c4037b2b114ca";
@@ -136,21 +138,38 @@ module.exports = {
 
         this.httpGetAsync(consAPI_URL, callback);
     },
+	
+	discoverPopularByGenre: function(genre_id, callback) {
+		consAPI_URL = API_BASE + 'discover/movie?api_key=' + APIKEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&with_genres=' + genre_id;
+		this.httpGetAsync(consAPI_URL, callback);
+	},
 
     searchMovies: function (req, callback) {
-      consAPI_URL = API_BASE + API_SEARCH + "&query=" + req.body.query + '&page=' + req.params.page;
-
-      this.httpGetAsync(consAPI_URL, callback);
+		console.log(req.body.query);
+		//var query = req.body.query.replace(/ /g, '\%20');
+		//console.log(query)
+		consAPI_URL = API_BASE + API_SEARCH + "&query=" + req.body.query + '&page=' + req.params.page;
+		this.httpGetAsync(consAPI_URL, callback);
     },
 
 	 getMovieDetails: function(id, callback) {
 		consAPI_URL = API_BASE + 'movie/' + id + '?api_key=' + APIKEY;
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
+	 
+	 getMovieCredits: function(id, callback) {
+		consAPI_URL = API_BASE + 'movie/' + id + '/credits?api_key=' + APIKEY;
+		this.httpGetAsync(consAPI_URL, callback);
+	 },
 
 	 getMovieRecommendations: function(id, callback){
 		consAPI_URL = API_BASE + 'movie/' + id + '/recommendations?api_key=' + APIKEY;
 		this.httpGetAsync(consAPI_URL, callback);
+	 },
+	 
+	 getMovieRecommendationsSync: function(id){
+		consAPI_URL = API_BASE + 'movie/' + id + '/recommendations?api_key=' + APIKEY;
+		return this.httpGetSync(consAPI_URL); 
 	 },
 
 	 getSimilarMovies: function(req, callback){
@@ -171,8 +190,8 @@ module.exports = {
     // http://stackoverflow.com/questions/247483/http-get-request-in-javascript
 
     httpGetAsync: function (theUrl, callback) {
-        // var xmlHttp = new XMLHttpRequest();
-        var xmlHttp = xhr;
+        var xmlHttp = new XMLHttpRequest();
+        // var xmlHttp = xhr;
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                 callback(xmlHttp.responseText);
@@ -181,16 +200,12 @@ module.exports = {
         xmlHttp.send(null);
     },
 
-    httpGetRequest: function (theURL) {
-       var xmlHttp = xhr;
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                return xmlHttp.responseText;
-        };
-        xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    httpGetSync: function (theUrl) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
         xmlHttp.send(null);
+        return xmlHttp.responseText;
     },
-
 
     printThis: function (value) {
       console.log(value);

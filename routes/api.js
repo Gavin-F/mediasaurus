@@ -57,7 +57,7 @@ router.route('/movies/preferences/:id')
 	 * Response: TBD
 	 */
 	.post(function(req, res){
-		if(req.body.movieTitle === null)
+		if(req.body.movie_id === null)
 			return res.send(505, 'nothing to set');
 		User.findById(req.params.id)
 		.populate('movieProfile')
@@ -66,16 +66,27 @@ router.route('/movies/preferences/:id')
 				return res.send(506, err);
 			}
 			var prefItem = {movie_id: req.body.movie_id, liked: req.body.liked};
-			user.movieProfile.preferences.push(prefItem);
+			user.movieProfile.preferences.unshift(prefItem);
+			algorithms.updateRecommendedMovies(user.movieProfile, req.body.movie_id, res);
+		});
+		
+	})
+	
+	.put(function(req, res) {
+		if(req.body.movie_ids === null)
+			return res.send(511, 'nothing in ids');
+		User.findById(req.params.id)
+		.populate('movieProfile')
+		.exec(function(err,user){
+			if(err) return res.send(512, err);
 			
-			// recalculate suggestions
-			algorithms.findSuggestedMovies(user.movieProfile, function(updatedSuggestions){
-				user.movieProfile.suggestions = updatedSuggestions;
-				user.movieProfile.save(function(err){
-					if(err) return res.send(506, err);
-					return res.send(user.movieProfile);
-				});
-			});
+			for(var i = 0; i < req.body.movie_ids.length; i++){
+				var prefItem = {movie_id: req.body.movie_ids[i], liked: true};
+				user.movieProfile.preferences.unshift(prefItem);
+			}
+			
+			algorithms.massUpdateRecommendedMovies(user.movieProfile, req.body.movie_ids, res);
+			
 		});
 		
 	})
@@ -97,22 +108,20 @@ router.route('/movies/preferences/:id')
 			// remove all movies with movieTitle from preferences
 			var preferencesArr = user.movieProfile.preferences;
 			for(var i = user.movieProfile.preferences.length-1; i>=0; i--)
-				if(preferencesArr[i].movie_id === req.body.movie_id)
+				if(preferencesArr[i].movie_id == req.body.movie_id){
 					preferencesArr.splice(i, 1);
+					if(i < 4)
+						user.movieProfile.recommendations.splice(i*5, 5);
+				}
 
-				// recalculate suggestions
-				algorithms.findSuggestedMovies(user.movieProfile, function(updatedSuggestions){
-				user.movieProfile.suggestions = updatedSuggestions;
-				user.movieProfile.save(function(err){
-					if(err) return res.send(508, err);
-					return res.send(user.movieProfile);
-				});
+			user.movieProfile.save(function(err){
+				if(err) return res.send(508, err);
+				return res.send(user.movieProfile);
 			});	
 		});
-		
 	});
 
-router.route('/movies/suggestions/:id')
+router.route('/movies/recommendations/:id')
 	.get(function(req, res){
 		User.findById(req.params.id)
 		.populate('movieProfile')
@@ -120,7 +129,7 @@ router.route('/movies/suggestions/:id')
 			if(err) {
 				return res.send(509, err);
 			}
-				return res.send(user.movieProfile.suggestions);
+				return res.send(user.movieProfile.recommendations);
 			});
 	});
 
@@ -146,11 +155,23 @@ router.route('/movies/now_playing/:page')
 		});
 	});
 	
+router.route('/movies/genre/:genre_id')
+	.get(function(req, res) {
+		tmdb.discoverPopularByGenre(req.params.genre_id, function(results){
+			return res.send(JSON.parse(results).results);
+		});
+	});
+	
 router.route('/movies/:id')
 	.get(function(req, res){
 		tmdb.getMovieDetails(req.params.id, function(details){
-			jsonDetails = JSON.parse(details);
-			return res.send(jsonDetails.status_code ? null : jsonDetails);
+			var jsonDetails = JSON.parse(details);
+			if(jsonDetails.status_code) return res.send(null);
+			tmdb.getMovieCredits(req.params.id, function(credits){
+				var jsonCredits = JSON.parse(credits);
+				var results = [{details: jsonDetails, cast: jsonCredits.cast, crew: jsonCredits.crew}];
+				return res.send(results);
+			});
 		});
 	});
 
@@ -167,7 +188,8 @@ router.route('/movies/search/:page')
 	.post(function(req, res){
 		//TODO call search from TMDB
 		tmdb.searchMovies(req, function(results){
-			return res.send((JSON.parse(results)).results);
+			console.log(JSON.parse(results).results);
+			return res.send(JSON.parse(results).results);
 		});
 	});
 	

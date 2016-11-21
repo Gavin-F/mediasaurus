@@ -41,6 +41,7 @@
 					<div class="movie" ng-repeat="movie in popMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/>
+							<p>{{movie.title}}</p>
 						</a>
 					</div>
 				</div>
@@ -61,6 +62,7 @@
 					<div class="movie" ng-repeat="movie in nowMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/>
+							<p>{{movie.title}}</p>
 						</a>
 					</div>
 				</div>
