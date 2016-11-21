@@ -56,10 +56,10 @@ index.config(function($routeProvider) {
 ///////////////////////////////////////////////////////
 // INDEX CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("index-controller", ["$scope", "$http", "$location", "$window", function($scope, $http, $location, $window) {
-	$scope.isActive = function (viewLocation) {
-		return viewLocation === $location.path();
-	};
+index.controller("index-controller", function($scope, $localStorage, $http, $location, $window) {
+	// $scope.isActive = function (viewLocation) {
+	// 	return viewLocation === $location.path();
+	// };
 	$scope.isActive2 = function() {
 	    if(($location.path()=='/account')||($location.path()=='/password')){
 	    	return 1;
@@ -74,11 +74,18 @@ index.controller("index-controller", ["$scope", "$http", "$location", "$window",
 	}
 	
 	$scope.goHome = function(){
-		$location.url("/home");
-		console.log("goHome");
+		$location.url("/");
 	}
 
-}]);
+	$scope.goDashboard = function(){
+		$location.url("/dashboard");
+	}
+
+	$scope.goAccountSettings = function(){
+		$location.url("/account");
+	}
+
+});
 
 ///////////////////////////////////////////////////////
 // HOME CONTROLLER
