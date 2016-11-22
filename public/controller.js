@@ -91,7 +91,6 @@ index.controller("index-controller", function($scope,$route, $localStorage, $htt
 	$scope.reset = function() {
 		delete $localStorage.userID;
 		$location.url("/");
-		location.reload();
 
 	}
 
