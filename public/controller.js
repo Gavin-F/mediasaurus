@@ -91,7 +91,7 @@ index.controller("index-controller", function($scope,$route, $localStorage, $htt
 	$scope.reset = function() {
 		delete $localStorage.userID;
 		$location.url("/");
-
+		location.reload();
 	}
 
 	$scope.goHome = function(){
@@ -321,7 +321,6 @@ index.controller("search-controller", function($scope,$route,$location, $timeout
 		delete $localStorage.userID;
 	}
 	$scope.gotoMovie = function(id){
-		//$location.url("/movie");
 		$location.url("/movies/" + id);
 	}
 });
