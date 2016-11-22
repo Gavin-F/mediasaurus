@@ -28,9 +28,11 @@
 				<li class="dropdown" >
 					<a class="glyphicon glyphicon-cog" data-toggle="dropdown"></a>
 					<ul class="dropdown-menu">
-						<li><a ng-click="goAccountSettings()">Account Settings</a></li>
-						<li><a ng-click="goHome()">User Preferences</a></li>
-						<li><a ng-click="reset()">Logout</a></li>
+						<li><a ng-show="isActive4()" align="right" ng-click="goLogin()">Login</a></li>
+						<li><a ng-show="isActive4()" align="right" ng-click="goSignup()">Sign up</a></li>
+						<li><a ng-show="isActive3()" align="right" ng-click="goAccountSettings()">Account Settings</a></li>
+						<li><a ng-show="isActive3()" align="right" ng-click="goHome()">User Preferences</a></li>
+						<li><a ng-show="isActive3()" align="right" ng-click="reset()">Logout</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -42,8 +44,8 @@
 			<div class="navbar navbar-inverse navbar-fixed-left" ng-show="isActive2()">
 				<a class="navbar-brand" href="/"></a>
 				<ul class="nav navbar-nav">
-					<li><a href="/account">Account Settings</a></li>
-					<li><a href="/password">Reset Password</a></li>
+					<li><a ng-click="goAccountSettings()">Account Settings</a></li>
+					<li><a ng-click="goResetPassword()">Reset Password</a></li>
 				</ul>
 			</div>
 		</div>

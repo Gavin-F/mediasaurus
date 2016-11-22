@@ -68,6 +68,22 @@ index.controller("index-controller", function($scope, $localStorage, $http, $loc
 			return 0;
 		}
 	};
+	$scope.isActive3 = function() {
+	    if($localStorage.userID !== undefined){
+	    	return 1;
+		}
+		else{
+			return 0;
+		}
+	};
+	$scope.isActive4 = function() {
+	    if($localStorage.userID !== undefined){
+	    	return 0;
+		}
+		else{
+			return 1;
+		}
+	};
 	$scope.reset = function() {
 		delete $localStorage.userID;
 		location.reload();
@@ -83,6 +99,15 @@ index.controller("index-controller", function($scope, $localStorage, $http, $loc
 
 	$scope.goAccountSettings = function(){
 		$location.url("/account");
+	}
+	$scope.goResetPassword = function(){
+		$location.url("/password");
+	}
+	$scope.goLogin = function(){
+		$location.url("/login");
+	}
+	$scope.goSignup = function(){
+		$location.url("/signup");
 	}
 
 });
