@@ -60,7 +60,7 @@ index.config(function($routeProvider) {
 ///////////////////////////////////////////////////////
 // INDEX CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("index-controller", function($scope, $localStorage, $http, $location, $window) {
+index.controller("index-controller", function($scope,$route, $localStorage, $http, $location, $window) {
 	// $scope.isActive = function (viewLocation) {
 	// 	return viewLocation === $location.path();
 	// };
@@ -91,6 +91,7 @@ index.controller("index-controller", function($scope, $localStorage, $http, $loc
 	$scope.reset = function() {
 		delete $localStorage.userID;
 		$location.url("/");
+		location.reload();
 
 	}
 
@@ -494,7 +495,10 @@ index.controller("login-controller", function($scope, $location, $http, $localSt
 	// if login was successful, update id and send to new page
 	$scope.$on("loginUpdate", function(event, userID) {
 		$localStorage.userID = userID;
+		$scope.userID=$localStorage.userID;
+		
 		$location.url("/dashboard");
+		
 	});
 
 	// if login failed, update page
@@ -666,16 +670,20 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 // Account CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("account-controller", function($scope,$location,$localStorage) {
+	if($localStorage.userID === undefined) { // if the user isn't signed in, send them back to signup splash
+		$location.url("/");
+	}
+	else if($localStorage.setupDone === true) { // if user has setup already, send to dash
+		$location.url("/dashboard");
+	}
+
 	$scope.userID=$localStorage.userID;
 	var user = {
 		id: $scope.userID
 	};
 	$scope.$emit("accountEvent", user);
-	// if login was successful, update id and send to new page
 	$scope.$on("accountUpdate", function(event, userInfo) {
 		$scope.username = userInfo.username;
 		$scope.email = userInfo.email;
-		console.log(userInfo);
 	});
-
 });
