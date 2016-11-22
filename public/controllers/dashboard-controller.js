@@ -57,6 +57,7 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 					});
 				}
 				else {
+					// fallback filler for when user is not logged in
 					var filler = [];
 					for(i = 0; i < 20; i++) {
 						var movie = {

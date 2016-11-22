@@ -261,10 +261,14 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 
 	$scope.$on("dashboardUpdate", function(event, returnMovies) {
 		if(returnMovies[2].length == 0) $scope.recGet = false;
-		for(i = 0; i < 20; i += 5) {
-			$scope.popMovieStore.push(returnMovies[0].slice(i,i+5));
-			$scope.nowMovieStore.push(returnMovies[1].slice(i,i+5));
-			$scope.recMovieStore.push(returnMovies[2].slice(i,i+5));
+		for(i = 0; i < returnMovies[0].length/5; i++) {
+			$scope.popMovieStore.push(returnMovies[0].slice(5*i,5*i+5));
+		}
+		for(i = 0; i < returnMovies[1].length/5; i++) {
+			$scope.nowMovieStore.push(returnMovies[1].slice(5*i,5*i+5));
+		}
+		for(i = 0; i < returnMovies[2].length/5; i++) {
+			$scope.recMovieStore.push(returnMovies[2].slice(5*i,5*i+5));
 		}
 		$scope.popMovieDisplay = $scope.popMovieStore[0];
 		$scope.nowMovieDisplay = $scope.nowMovieStore[0];
@@ -418,7 +422,10 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		$scope.count++;
 		if($scope.count == $scope.movieStore.length) { // if no more, send them to dashboard
 			//$localStorage.setupDone = true; // lock so user can't enter setup again
-			var obj = {userID: $localStorage.userID, movie_ids: $scope.moviePrefs.sort(function() { return 0.5 - Math.random() })};
+			var obj = {
+				userID: $localStorage.userID,
+				movie_ids: $scope.moviePrefs.sort(function() { return 0.5 - Math.random() })
+			};
 			$scope.$emit("prefEvent", obj); // send list of pref movies to server
 			$location.url("/dashboard"); // finish and redirect
 		}
