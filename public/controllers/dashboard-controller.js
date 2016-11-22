@@ -9,7 +9,8 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 		var returnMovies = [];
 		$http.get("/api/movies/popular/" + obj[0]).success(function(req) {
 			var popMovies = [];
-			for(i = 0; i < 20; i++) {
+			var size = req.length;
+			for(i = 0; i < size; i++) {
 				var movie = {
 					id: req[i].id,
 					title: req[i].title,
@@ -23,7 +24,8 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 			// Send back now playing movies
 			$http.get("/api/movies/now_playing/" + obj[0]).success(function(req) {
 				var nowMovies = [];
-				for(i = 0; i < 20; i++) {
+				var size2 = req.length;
+				for(i = 0; i < size2; i++) {
 					var movie = {
 						id: req[i].id,
 						title: req[i].title,
@@ -38,8 +40,9 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 					// Send back now playing movies
 					$http.get("/api/movies/recommendations/" + obj[1]).success(function(req) {
 						var recMovies = [];
+						var size3 = req.length;
 						if(req.length != 0) {
-							for(i = 0; i < 20; i++) {
+							for(i = 0; i < size3; i++) {
 								var movie = {
 									id: req[i].movie_id,
 									title: req[i].title,
@@ -55,7 +58,7 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 				}
 				else {
 					var filler = [];
-					for(i = 0; i < 20; i++) {
+					for(i = 0; i < size3; i++) {
 						var movie = {
 							id: "",
 							title: "",

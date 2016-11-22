@@ -90,7 +90,7 @@ index.controller("index-controller", function($scope, $localStorage, $http, $loc
 	};
 	$scope.reset = function() {
 		delete $localStorage.userID;
-		location.reload();
+		location.url("/");
 	}
 
 	$scope.goHome = function(){
