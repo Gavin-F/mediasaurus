@@ -18,6 +18,10 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/home.html",
 		controller: "home-controller"
 	})
+	.when("/about", {
+		templateUrl: "/html/about.html",
+		controller: "about-controller"
+	})
 	.when("/dashboard", {
 		templateUrl: "/html/dashboard.html",
 		controller: "dashboard-controller"
@@ -109,6 +113,9 @@ index.controller("index-controller", function($scope, $localStorage, $http, $loc
 	$scope.goSignup = function(){
 		$location.url("/signup");
 	}
+	$scope.goAbout = function(){
+		$location.url("/about");
+	}
 
 });
 
@@ -137,6 +144,14 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 	}
 });
 
+
+
+///////////////////////////////////////////////////////
+// ABOUT CONTROLLER
+///////////////////////////////////////////////////////
+index.controller("about-controller", function($scope, $location, $localStorage) {
+
+});
 
 
 ///////////////////////////////////////////////////////
