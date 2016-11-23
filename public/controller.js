@@ -178,7 +178,6 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		$scope.recShow = true;
 	}
 
-	$scope.searchResult = [];
 	$scope.search = function() {
 		var searchObject = {
 			query: $scope.searchString
@@ -292,9 +291,8 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 ///////////////////////////////////////////////////////
 index.controller("search-controller", function($scope,$route,$location,$timeout, $localStorage, $sessionStorage) {
 	$scope.searchResult = [];
+	$scope.searchString = $sessionStorage.sString;
 	$scope.searchResult = $sessionStorage.searchResult;
-	$scope.searchString= $sessionStorage.sString;
-	
 
 	$scope.search = function() {
 		var searchObject = {
@@ -303,30 +301,14 @@ index.controller("search-controller", function($scope,$route,$location,$timeout,
 		$sessionStorage.sString=$scope.searchString;
 		$scope.$emit("searchEvent", searchObject);
 	}
-
-
 	$scope.$on("searchUpdate", function(event, searchArray) {
-		// if($sessionStorage.searchResult !== undefined) {
-		// 	$scope.searchResult = $sessionStorage.searchResult;
-		// 	delete $sessionStorage.searchResult;
-		// }
-		// else{
-		// 	$scope.searchResult = searchArray;
-		// 	$sessionStorage.searchResult = $scope.searchResult;
-		// }
 		$scope.searchResult = searchArray;
+		$sessionStorage.searchResult = searchArray;
+		$sessionStorage.sString = $scope.searchString;
 		$location.url("/search");
+
 	});
 
-
-	$scope.searchNext = function() {
-		$location.url("/search");
-		$route.reload();
-	}
-	$scope.searchPrevious = function() {
-		$location.url("/search");
-		$route.reload();
-	}
 
 	$scope.reset = function() {
 		delete $localStorage.userID;
