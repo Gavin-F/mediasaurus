@@ -11,12 +11,12 @@
 
 <body>
 	<div class="container" ng-controller="search">
-		<div ng-controller="search-controller">
+		<div ng-controller="search-controller ">
 			<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
 
 			<h3>Search</h3>
 			<div class="input-group">
-					<input type="text" name="searchString" ng-model="searchString" ng-keyup="$event.keyCode == 13 ? search() : null" class="form-control"/> 
+					<input type="text" name="searchString" ng-model="searchString" ng-keyup="$event.keyCode == 13 ? search() : null" class="form-control" autofocus=""/> 
 					<span class="input-group-btn">
 						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
 					</span>
@@ -36,6 +36,15 @@
 				</div>
 			</div>
 		</div>
+		<div class="container" ng-show="!searchResult.length" ng-hide="searchResult.length>0">
+			<h4>Your search - "{{searchString}}" did return any results.</h4><br>
+			<h5>Suggestions:</h5>
+			<ul>
+				<li>Make sure that all words are spelled correctly.</li>
+				<li>Try different keywords.</li>
+				<li>Try more general keywords.</li>
+			</ul>
+		</div>	
 	</div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>

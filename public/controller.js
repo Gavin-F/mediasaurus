@@ -290,11 +290,12 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 ///////////////////////////////////////////////////////
 // SEARCH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("search-controller", function($scope,$route,$location, $timeout, $localStorage, $sessionStorage) {
-
+index.controller("search-controller", function($scope,$route,$location,$timeout, $localStorage, $sessionStorage) {
 	$scope.searchResult = [];
 	$scope.searchResult = $sessionStorage.searchResult;
-	$scope.searchString=$sessionStorage.sString;
+	$scope.searchString= $sessionStorage.sString;
+	
+
 	$scope.search = function() {
 		var searchObject = {
 			query: $scope.searchString
@@ -302,16 +303,21 @@ index.controller("search-controller", function($scope,$route,$location, $timeout
 		$sessionStorage.sString=$scope.searchString;
 		$scope.$emit("searchEvent", searchObject);
 	}
+
+
 	$scope.$on("searchUpdate", function(event, searchArray) {
-		if($sessionStorage.searchResult !== undefined) {
-			$scope.searchResult = $sessionStorage.searchResult;
-			delete $sessionStorage.searchResult;
-		}
-		else{
-			$scope.searchResult = searchArray;
-		}
+		// if($sessionStorage.searchResult !== undefined) {
+		// 	$scope.searchResult = $sessionStorage.searchResult;
+		// 	delete $sessionStorage.searchResult;
+		// }
+		// else{
+		// 	$scope.searchResult = searchArray;
+		// 	$sessionStorage.searchResult = $scope.searchResult;
+		// }
+		$scope.searchResult = searchArray;
 		$location.url("/search");
 	});
+
 
 	$scope.searchNext = function() {
 		$location.url("/search");
@@ -321,9 +327,11 @@ index.controller("search-controller", function($scope,$route,$location, $timeout
 		$location.url("/search");
 		$route.reload();
 	}
+
 	$scope.reset = function() {
 		delete $localStorage.userID;
 	}
+
 	$scope.gotoMovie = function(id){
 		$location.url("/movies/" + id);
 	}

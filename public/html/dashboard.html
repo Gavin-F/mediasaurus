@@ -13,7 +13,7 @@
 			<div class="form-group">
 				<label class="control-label">Search</label>
 				<div class="input-group">
-					<input type="text" name="searchString" ng-model="searchString" ng-keyup="$event.keyCode == 13 ? search() : null" class="form-control"/> 
+					<input type="text" name="searchString" ng-model="searchString" ng-src="{{searchString}}" ng-keyup="$event.keyCode == 13 ? search() : null" class="form-control" autofocus="" /> 
 					<span class="input-group-btn">
 						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
 					</span>
