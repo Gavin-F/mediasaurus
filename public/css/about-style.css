@@ -1,0 +1,14 @@
+.logoAlign{
+	width: 200px;
+	display: block;
+    margin: 0 auto;
+}
+
+.aboutSearchDescription{
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    width: 900px;
+    display: block;
+    margin: 0 auto;
+}

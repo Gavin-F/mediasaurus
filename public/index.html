@@ -1,51 +1,56 @@
 <!DOCTYPE>
 
-<html ng-app="index">
+<html>
 
-<head>
-	<link rel="stylesheet" href="/css/superhero-style.css">
-	<link rel="stylesheet" href="/css/index-style.css">
-	<link rel="stylesheet" href="/css/tooltips-style.css">
-	<link rel="stylesheet" href="/css/bootstrap.min.css">
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+	<head>
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="/css/superhero-style.css">
+		<link rel="stylesheet" href="/css/index-style.css">
+		<link rel="stylesheet" href="/css/tooltips-style.css">
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
 
-	<title>MRE</title>
-</head>
+		<title>MRE</title>
+	</head>
 
-<nav class="navbar navbar-default navbar-static-top">
-	<div class="container">
-		<ul class="nav navbar-nav">
-			<li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
-			<li ng-class="{ active: isActive('/Dashboard')}"><a href="#/dashboard">Dashboard</a></li>
-			<li ng-class="{ active: isActive('/TestPage')}"><a href="#/testpage">TestPage</a></li>
-		</ul>
-		<ul class="nav navbar-nav navbar-right custom-button">
-			<li class="dropdown">
-				<a class="glyphicon glyphicon-cog" data-toggle="dropdown"></a>
-				<ul class="dropdown-menu">
-					<li><a href="#/account">Account Settings</a></li>
-					<li><a href="#/">User Preferences</a></li>
-					<li><a href="#/">Logout</a></li>
-				</ul>
-			</li>
-		</ul>
-	</div>
-</nav>
+	<nav class="navbar navbar-default navbar-static-top" ng-controller="index-controller">
+		<div class="container" ng-controller="index-controller">	
+			<ul class="nav navbar-nav">
+				<li ng-class="{ active: isActive('/')}" >
+					<a ng-click="goHome()" style="padding-top: 2px; ">
+						<img src="/images/MRELogo2.png" style="height:36px; width: 70px; ">
+					</a>
+				</li>
+				<li ng-class="{ active: isActive('/')}"><a ng-click="goAbout()">About</a></li>
+				<li ng-class="{ active: isActive('/Dashboard')}"><a ng-click="goDashboard()">Dashboard</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right custom-button">
+				<li class="dropdown" >
+					<a class="glyphicon glyphicon-cog" data-toggle="dropdown"></a>
+					<ol class="dropdown-menu">
+						<li><a ng-show="isActive4()" align="right" ng-click="goLogin()">Login</a></li>
+						<li><a ng-show="isActive4()" align="right" ng-click="goSignup()">Sign up</a></li>
+						<li><a ng-show="isActive3()" align="right" ng-click="goAccountSettings()">Account Settings</a></li>
+						<li><a ng-show="isActive3()" align="right" ng-click="goHome()">User Preferences</a></li>
+						<li><a ng-show="isActive3()" align="right" ng-click="reset()">Logout</a></li>
+					</ol>
+				</li>
+			</ul>
+		</div>
+	</nav>
 
-
-	<body>
+	<body ng-app="index">
 		<div ng-controller="index-controller">
 			<div class="navbar navbar-inverse navbar-fixed-left" ng-show="isActive2()">
-				<a class="navbar-brand" href="#"></a>
+				<a class="navbar-brand" href="/"></a>
 				<ul class="nav navbar-nav">
-					<li><a href="#/account">Account Settings</a></li>
-					<li><a href="#/password">Reset Password</a></li>
+					<li><a ng-click="goAccountSettings()">Account Settings</a></li>
+					<li><a ng-click="goResetPassword()">Reset Password</a></li>
 				</ul>
 			</div>
 		</div>
 		<div ng-view></div>
-
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
 		<script src="https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js"></script>
@@ -62,6 +67,10 @@
 		<script src="controllers/login-controller.js"></script>
 		<script src="controllers/accsetup-controller.js"></script>
 		<script src="controllers/movie-controller.js"></script>
+		<script src="controllers/dashboard-controller.js"></script>
+		<script src="controllers/search-controller.js"></script>
+		<script src="controllers/account-controller.js"></script>
+
 
 	</body>
 

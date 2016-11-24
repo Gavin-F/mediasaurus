@@ -1,96 +1,112 @@
 <html ng-app="accsetup">
-  <head>
-  	<link rel="stylesheet" href="../css/superhero-style.css">
-    <link rel="stylesheet" href="../css/accsetup-style.css">
-  </head>
 
-  <body >
-		<div class="container" ng-controller="accsetup">
-			<div ng-controller="accsetup-controller">
+<head>
+	<link rel="stylesheet" href="../css/superhero-style.css">
+	<link rel="stylesheet" href="../css/accsetup-style.css">
+</head>
 
-				<!-- Modal -->
-				<div class="modal fade" id="skipModal" tabindex="0" role="dialog" aria-labelledby="myModalLabel">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <!-- <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-				      </div> -->
-				      <div class="modal-body">
-				        Are you sure you would like to skip this set up? <br/><br />
+<body>
+	<div class="container" ng-controller="accsetup">
+		<div ng-controller="accsetup-controller">
 
-						Without your preferences, you will be missing out on some cool features of our website.
-				      </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn" id="close" data-dismiss="modal">Close</button>
-				        <button type="button" class="btn" id="skip" data-dismiss="modal" ng-click="skip()">Skip</button>
-				      </div>
-				    </div>
-				  </div>
-			   </div> <!-- modal -->
-
-				<div class="message-one">
-					<h1>welcome to MRE!</h2>
-				</div>
-
-				<div class="message-two">
-					<h1>let's get started</h2>
-				</div>
-
-				<div class="selection-box">
-					<h2 id="genre-header">pick some genres you like</h2>
-
-					<div class="selection-divider"></div>
-
-					<table class="genre-table">
-						<tr>
-							<td><button class="btn genre-btn" ng-click=genreClick("action") ng-class="actionState ? 'clicked' : 'unclicked'">Action</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("adventure") ng-class="adventureState ? 'clicked' : 'unclicked'">Adventure</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("animation") ng-class="animationState ? 'clicked' : 'unclicked'">Animation</td>
-						</tr>
-						<tr>
-							<td><button class="btn genre-btn" ng-click=genreClick("biography") ng-class="biographyState ? 'clicked' : 'unclicked'">Biography</td>
-	                        <td><button class="btn genre-btn" ng-click=genreClick("comedy") ng-class="comedyState ? 'clicked' : 'unclicked'">Comedy</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("crime") ng-class="crimeState ? 'clicked' : 'unclicked'">Crime</td>
-						</tr>
-						<tr>
-							<td><button class="btn genre-btn" ng-click=genreClick("drama") ng-class="dramaState ? 'clicked' : 'unclicked'">Drama</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("family") ng-class="familyState ? 'clicked' : 'unclicked'">Family</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("fantasy") ng-class="fantasyState ? 'clicked' : 'unclicked'">Fantasy</td>
-						</tr>
-						<tr>
-							<td><button class="btn genre-btn" ng-click=genreClick("filmnoir") ng-class="filmnoirState ? 'clicked' : 'unclicked'">Film-Noir</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("history") ng-class="historyState ? 'clicked' : 'unclicked'">History</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("horror") ng-class="horrorState ? 'clicked' : 'unclicked'">Horror</td>
-						</tr>
-						<tr>
-							<td><button class="btn genre-btn" ng-click=genreClick("music") ng-class="musicState ? 'clicked' : 'unclicked'">Music</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("musical") ng-class="musicalState ? 'clicked' : 'unclicked'">Musical</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("mystery") ng-class="mysteryState ? 'clicked' : 'unclicked'">Mystery</td>
-						</tr>
-						<tr>
-							<td><button class="btn genre-btn" ng-click=genreClick("romance") ng-class="romanceState ? 'clicked' : 'unclicked'">Romance</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("scifi") ng-class="scifiState ? 'clicked' : 'unclicked'">Sci-Fi</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("sport") ng-class="sportState ? 'clicked' : 'unclicked'">Sport</td>
-						</tr>
-						<tr>
-							<td><button class="btn genre-btn" ng-click=genreClick("thriller") ng-class="thrillerState ? 'clicked' : 'unclicked'">Thriller</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("war") ng-class="warState ? 'clicked' : 'unclicked'">War</td>
-							<td><button class="btn genre-btn" ng-click=genreClick("western") ng-class="westernState ? 'clicked' : 'unclicked'">Western</td>
-						</tr>
-					</table>
-
-					<div class="selection-divider"></div>
-
-					<div class="completion-buttons">
-						<button class="btn btn-default" id="next" ng-click="next()">Next</button>
-						<div class="button-divider"> </div>
-						<a id="continue" data-toggle="modal" data-target="#skipModal" >or skip</a>
+			<!-- Modal -->
+			<div class="modal fade" id="skipModal" tabindex="0" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<!-- <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			      </div> -->
+						<div class="modal-body">
+							Are you sure you would like to skip this set up? <br/><br /> Without your preferences, you will be missing out on some cool features of our website.
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn" id="close" data-dismiss="modal">Close</button>
+							<button type="button" class="btn" id="skip" data-dismiss="modal" ng-click="genreSkip()">Skip</button>
+						</div>
 					</div>
+				</div>
+			</div>
+			<!-- modal -->
 
+			<div class="message-one">
+				<h1>welcome to MRE!</h2>
+			</div>
+
+			<div class="message-two">
+				<h1>let's get started</h2>
+			</div>
+
+			<div class="selection-box box-1" ng-show="genreShow">
+				<h2 class="header">pick some genres you like</h2>
+
+				<div class="selection-divider-upper"></div>
+
+				<table class="genre-table">
+					<tr>
+						<td><button class="btn genre-btn" ng-click=genreClick(28) ng-class="actionState ? 'clicked' : 'unclicked'">Action</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(12) ng-class="adventureState ? 'clicked' : 'unclicked'">Adventure</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(16) ng-class="animationState ? 'clicked' : 'unclicked'">Animation</td>
+					</tr>
+					<tr>
+            			<td><button class="btn genre-btn" ng-click=genreClick(35) ng-class="comedyState ? 'clicked' : 'unclicked'">Comedy</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(80) ng-class="crimeState ? 'clicked' : 'unclicked'">Crime</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(18) ng-class="dramaState ? 'clicked' : 'unclicked'">Drama</td>
+					</tr>
+					<tr>
+						<td><button class="btn genre-btn" ng-click=genreClick(10751) ng-class="familyState ? 'clicked' : 'unclicked'">Family</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(14) ng-class="fantasyState ? 'clicked' : 'unclicked'">Fantasy</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(36) ng-class="historyState ? 'clicked' : 'unclicked'">History</td>
+					</tr>
+					<tr>
+						<td><button class="btn genre-btn" ng-click=genreClick(27) ng-class="horrorState ? 'clicked' : 'unclicked'">Horror</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(10402) ng-class="musicState ? 'clicked' : 'unclicked'">Music</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(9648) ng-class="mysteryState ? 'clicked' : 'unclicked'">Mystery</td>
+					</tr>
+					<tr>
+						<td><button class="btn genre-btn" ng-click=genreClick(10749) ng-class="romanceState ? 'clicked' : 'unclicked'">Romance</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(878) ng-class="scifiState ? 'clicked' : 'unclicked'">Sci-Fi</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(53) ng-class="thrillerState ? 'clicked' : 'unclicked'">Thriller</td>
+					</tr>
+					<tr>
+						<td><button class="btn genre-btn" ng-click=genreClick(10770) ng-class="tvmovieState ? 'clicked' : 'unclicked'">TV Movie</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(10752) ng-class="warState ? 'clicked' : 'unclicked'">War</td>
+						<td><button class="btn genre-btn" ng-click=genreClick(37) ng-class="westernState ? 'clicked' : 'unclicked'">Western</td>
+					</tr>
+				</table>
+
+				<div class="completion-buttons">
+					<div class="selection-divider-lower"></div>
+					<button class="btn btn-default" id="next" ng-click="genreNext()">Next</button>
+					<div class="button-divider"> </div>
+					<a id="continue" data-toggle="modal" data-target="#skipModal">or skip</a>
+				</div>
+			</div>
+
+			<div class="selection-box box-2" ng-show="movieShow">
+				<h2 class="header">pick some movies you like from below</h2>
+
+				<div class="selection-divider-upper"></div>
+
+				<div class="movie-box">
+					<div class="movie" ng-repeat="movie in movieBuffer">
+						<a ng-click="movieClick(movie)">
+							<img src="{{movie.poster}}" class="moviePoster" ng-class="{movieClicked : movie.clicked}"/>
+							<br/>
+							<p class="movieTitle">{{movie.title}}</p>
+						</a>
+					</div>
+				</div>
+
+				<div class="completion-buttons">
+					<div class="selection-divider-lower"></div>
+					<button class="btn btn-default" id="next" ng-click="nextMovies()">Next</button>
+					<div class="button-divider"> </div>
+					<button class="btn btn-default" id="next" ng-click="scramble()">Scramble</button>
 				</div>
 			</div>
 		</div>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-  </body>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+</body>
 </html>

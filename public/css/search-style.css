@@ -1,0 +1,86 @@
+.navbar-fixed-left {
+	width: 120px;
+	position: fixed;
+	border-radius: 0;
+	height: 100%;
+	background-color: #A7A8AC;
+}
+.navbar-fixed-left .navbar-nav > li {
+	float: none;  /* Cancel default li float: left */
+	width: 120px;
+}
+
+.navbar-fixed-left + .container {
+	padding-left: 160px;
+}
+
+/* On using dropdown menu (To right shift popuped) */
+/*.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+	margin-top: -50px;
+	margin-left: 140px;
+}*/
+
+.right{
+	 float: left;
+    margin-left: 200px;
+}
+
+.horizonal-line{
+	color: grey;
+}
+
+.edit-icon{
+	color: #002145;
+}
+.edit-icon: hover,
+.edit-icon: focus{
+	color: white;
+}
+
+.moviePosterSearch {
+	width: 100px;
+}
+
+.movieSearchTitle{
+    position: relative;
+    float:left;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 900px;
+}
+.movieSearchDescription{
+    position: relative;
+    float:left;
+    min-height: 1px;
+    padding-right: 15px;
+    width: 900px;
+}
+.movieSearchPosterPosition{
+    position: relative;
+    float:left;
+    min-height: 1px;
+    padding-left: 40px;
+    padding-right: 15px;
+}
+
+.MovieSearchTitleText{
+	color: black;
+}
+.MovieSearchTitleText hover,
+.MovieSearchTitleText focus{
+	color: white;
+}
+.MovieSearchContainer{
+	height: 230px;
+	display: block;
+	width: 100%;
+	padding: 8px 16px;
+	font-size: 15px;
+	line-height: 1.42857143;
+}
+
+
+
+
+
