@@ -678,7 +678,9 @@ index.controller("account-controller", function($scope,$location,$localStorage) 
 	else if($localStorage.setupDone === true) { // if user has setup already, send to dash
 		$location.url("/dashboard");
 	}
-
+	$scope.goResetPassword = function(){
+		$location.url("/password");
+	}
 	$scope.userID=$localStorage.userID;
 	var user = {
 		id: $scope.userID
