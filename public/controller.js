@@ -308,7 +308,14 @@ index.controller("search-controller", function($scope,$route,$location,$timeout,
 		$location.url("/search");
 
 	});
-
+	$scope.searchReturn = function(){
+		if($sessionStorage.searchResult.length === 0){
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
 
 	$scope.reset = function() {
 		delete $localStorage.userID;
