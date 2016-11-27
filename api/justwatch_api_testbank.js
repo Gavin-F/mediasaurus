@@ -5,9 +5,47 @@ function printThis(value) {
   console.log(typeof value);
 }
 
-justwatch_api.searchForProviders('the matrix', printThis);
-justwatch_api.searchForProviders('frozen', printThis);
-justwatch_api.searchForProviders('twilight', printThis);
+function printResults() {
+    if(results.amount = 0) {
+        console.log("" + results.passed + " Tests passed, out of " + results.amount);
+    }
+    if(results.failed > 0) {
+        console.log("WARNING, " + results.failed + " TESTS FAILLED!");
+    } else {
+        console.log("All tests passed.");
+    }
+}
+
+results = {
+    amount: 0,
+    passed: 0,
+    failed: 0
+};
 
 
-// printThis(justwatch_api.searchForProviders('the matrix', printThis));
+function test(expected, actual) {
+    results.amount++;
+    if (expected === actual) {
+        results.passed++;
+    } else {
+        results.failed++;
+        console.log("Expected: " + expected + " but got: " + actual);
+    }
+}
+
+justwatch_api.searchForProviders('the matrix', function(val) {;
+    test(17, val.length);
+});
+
+
+justwatch_api.searchForProviders('frozen', function(val) {;
+    test(16, val.length);
+});
+
+
+justwatch_api.searchForProviders('twilight', function(val) {;
+    test(3, val.length);
+});
+
+
+printResults();
