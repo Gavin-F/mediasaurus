@@ -53,7 +53,7 @@ module.exports = {
     getGenreID: function (genre) {
         consAPI_URL = API_BASE + "genre/movie/list?api_key=" + APIKEY + "&language=en-US";
 
-        var response = httpGetSync(consAPI_URL);
+        var response = this.httpGetSync(consAPI_URL);
 
         var JSONObj = JSON.parse(response);
 

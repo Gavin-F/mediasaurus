@@ -9,5 +9,5 @@ function printThis(value) {
 // tmdb_api.discoverMovies("2017", null, null, null, null, printThis);
 console.log(tmdb_api.getGenreID("action") + "All done!");
 
-printThis(tmdb_api.discoverTrendingMovies(return));
+// printThis(tmdb_api.discoverTrendingMovies());
 // console.log(tmdb_api.getKeywordID("blood"));
