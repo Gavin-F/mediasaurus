@@ -147,9 +147,6 @@ module.exports = {
 	},
 
     searchMovies: function (req, callback) {
-		console.log(req.body.query);
-		//var query = req.body.query.replace(/ /g, '\%20');
-		//console.log(query)
 		consAPI_URL = API_BASE + API_SEARCH + "&query=" + req.body.query + '&page=' + req.params.page;
 		this.httpGetAsync(consAPI_URL, callback);
     },
