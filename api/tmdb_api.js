@@ -43,9 +43,17 @@ module.exports = {
 
         consAPI_URL = API_BASE + "search/keyword?api_key=" + APIKEY + "&query=" + keyword;
 
-        this.printThis(this.httpGetAsync(consAPI_URL, this.returnThis));
+        var response = this.httpGetSync(consAPI_URL);
+        var JSONObj = JSON.parse(response);
+        var JSONArr = JSONObj.results;
 
-        // return ;
+        for (var i = JSONArr.length - 1; i >= 0; i--) {
+            if(JSONArr[i].name.toLowerCase() === keyword.toLowerCase()) {
+                return JSONArr[i].id;
+            }
+        }
+
+        return -1;
     },
 
     // This function consumes a String of a name of a Genre
@@ -54,9 +62,7 @@ module.exports = {
         consAPI_URL = API_BASE + "genre/movie/list?api_key=" + APIKEY + "&language=en-US";
 
         var response = this.httpGetSync(consAPI_URL);
-
         var JSONObj = JSON.parse(response);
-
         var JSONArr = JSONObj.genres;
 
         for (var i = JSONArr.length - 1; i >= 0; i--) {
@@ -129,15 +135,16 @@ module.exports = {
             }
         }
 
-        if (castArray !== null) {
-            cast_url = "&with_genres=";
-            for (i = castArray.length - 1; i >= 0; i--) {
-                cast_url += castArray[i];
-                if (i !== 0) {
-                    cast_url += ",";
-                }
-            }
-        }
+        // Depreciated
+        // if (castArray !== null) {
+        //     cast_url = "&with_cast=";
+        //     for (i = castArray.length - 1; i >= 0; i--) {
+        //         cast_url += castArray[i];
+        //         if (i !== 0) {
+        //             cast_url += ",";
+        //         }
+        //     }
+        // }
 
         consAPI_URL = API_BASE + API_DISCOVER1 + APIKEY + API_DISCOVER2 + year_url + keyword_url + genre_url + not_genre_url + cast_url;
 
