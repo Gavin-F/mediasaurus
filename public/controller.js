@@ -38,6 +38,10 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/resetpassword.html",
 		controller: "password-controller"
 	})
+	.when("/email" , {
+		templateUrl: "/html/resetEmail.html",
+		controller: "email-controller"
+	})
 	.when("/signup", {
 		templateUrl: "/html/signup.html",
 		controller: "signup-controller"
@@ -91,7 +95,6 @@ index.controller("index-controller", function($scope,$route, $localStorage, $htt
 	$scope.reset = function() {
 		delete $localStorage.userID;
 		$location.url("/");
-		location.reload();
 	}
 
 	$scope.goHome = function(){
@@ -512,25 +515,41 @@ index.controller("login-controller", function($scope, $location, $http, $localSt
 
 
 ///////////////////////////////////////////////////////
-// Reset Controller CONTROLLER
+// Reset Password CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("password-controller", function($scope,$location) {
-
-	$scope.message = "hello";
-
-	$scope.setText = function() {
-		$scope.test = "Hello world!";
+index.controller("password-controller", function($scope,$location,$localStorage) {
+	
+	if($localStorage.userID === undefined) {
+		$location.url("/");
 	}
 	$scope.goDashboard = function(){
 		$location.url("/dashboard");
 	}
 	$scope.goAccountSettings = function(){
 		$location.url("/account");
-	}
-	$scope.goResetPassword = function(){
-		$location.url("/password");
+		console.log("test");
 	}
 });
+
+
+///////////////////////////////////////////////////////
+// Reset email CONTROLLER
+///////////////////////////////////////////////////////
+index.controller("email-controller", function($scope,$location,$localStorage) {
+
+	if($localStorage.userID === undefined) {
+		$location.url("/");
+	}
+	$scope.goDashboard = function(){
+		$location.url("/dashboard");
+	}
+	$scope.goAccountSettings = function(){
+		$location.url("/account");
+		console.log("test");
+	}
+});
+
+
 
 ///////////////////////////////////////////////////////
 // Movie CONTROLLER
@@ -681,6 +700,11 @@ index.controller("account-controller", function($scope,$location,$localStorage) 
 	$scope.goResetPassword = function(){
 		$location.url("/password");
 	}
+	
+	$scope.goResetEmail = function(){
+		$location.url("/email");
+	}
+
 	$scope.userID=$localStorage.userID;
 	var user = {
 		id: $scope.userID

@@ -13,7 +13,13 @@
 .navbar-fixed-left + .container {
 	padding-left: 160px;
 }
-
+a:hover,
+a:focus{
+	color: white;
+}
+a{
+	color: #002145;
+}
 /* On using dropdown menu (To right shift popuped) */
 /*.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
 	margin-top: -50px;
