@@ -16,11 +16,6 @@ var API_DISCOVER1 = "discover/movie?api_key=";
 var API_DISCOVER2 = "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=1";
 var API_SEARCH = "search/movie?api_key=" + APIKEY;
 
-
-// https://api.themoviedb.org/3/movie/405?api_key=8f9caf52038412780f3c4037b2b114ca&language=en-US
-
-// https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=1&with_genres=99
-
 // getMovieWithID consumes an integer
 // integer is the movie ID requested
 module.exports = {
@@ -35,7 +30,6 @@ module.exports = {
     // Returns a JSON object that contains the movies in an array to the callback as an argument
 
     discoverMovieswithGenre: function (genre, callback) {
-
         // TODO: Parse the genre, use the API to retrieve the list of Movies
         genreID = getGenreID(genre);
 
@@ -49,19 +43,36 @@ module.exports = {
 
         consAPI_URL = API_BASE + "search/keyword?api_key=" + APIKEY + "&query=" + keyword;
 
-        jsonObj = this.httpGetRequest(consAPI_URL);
+        var response = this.httpGetSync(consAPI_URL);
+        var JSONObj = JSON.parse(response);
+        var JSONArr = JSONObj.results;
 
-        // return ;
+        for (var i = JSONArr.length - 1; i >= 0; i--) {
+            if(JSONArr[i].name.toLowerCase() === keyword.toLowerCase()) {
+                return JSONArr[i].id;
+            }
+        }
+
+        return -1;
     },
 
     // This function consumes a String of a name of a Genre
     // Returns the GenreID of the given string from the mongodb server
     getGenreID: function (genre) {
-        // STUB
-        // https://api.themoviedb.org/3/genre/movie/list?api_key=<<api_key>>&language=en-US
-        // consAPI_URL = API_BASE +
+        consAPI_URL = API_BASE + "genre/movie/list?api_key=" + APIKEY + "&language=en-US";
 
-        return 0;
+        var response = this.httpGetSync(consAPI_URL);
+        var JSONObj = JSON.parse(response);
+        var JSONArr = JSONObj.genres;
+
+        for (var i = JSONArr.length - 1; i >= 0; i--) {
+            if(JSONArr[i].name.toLowerCase() === genre.toLowerCase()) {
+                return JSONArr[i].id;
+            }
+        }
+
+
+        return -1;
     },
 
     // discoverTrendingMovies returns a JSON object containing the currently trending movies
@@ -124,15 +135,16 @@ module.exports = {
             }
         }
 
-        if (castArray !== null) {
-            cast_url = "&with_genres=";
-            for (i = castArray.length - 1; i >= 0; i--) {
-                cast_url += castArray[i];
-                if (i !== 0) {
-                    cast_url += ",";
-                }
-            }
-        }
+        // Depreciated
+        // if (castArray !== null) {
+        //     cast_url = "&with_cast=";
+        //     for (i = castArray.length - 1; i >= 0; i--) {
+        //         cast_url += castArray[i];
+        //         if (i !== 0) {
+        //             cast_url += ",";
+        //         }
+        //     }
+        // }
 
         consAPI_URL = API_BASE + API_DISCOVER1 + APIKEY + API_DISCOVER2 + year_url + keyword_url + genre_url + not_genre_url + cast_url;
 
@@ -145,9 +157,6 @@ module.exports = {
 	},
 
     searchMovies: function (req, callback) {
-		console.log(req.body.query);
-		//var query = req.body.query.replace(/ /g, '\%20');
-		//console.log(query)
 		consAPI_URL = API_BASE + API_SEARCH + "&query=" + req.body.query + '&page=' + req.params.page;
 		this.httpGetAsync(consAPI_URL, callback);
     },
@@ -209,8 +218,13 @@ module.exports = {
 
     printThis: function (value) {
       console.log(value);
-    }
+      console.log("Hello");
+    },
 
+    returnThis: function (value) {
+        console.log("Hi");
+        return value;
+    }
 };
 
 

@@ -6,7 +6,11 @@ var userSchema = new Schema({
     username: String,
     password: String, //hash created from password
 	email: String,
-    //created_at: {type: Date, default: Date.now}
+    created_at: {type: Date, default: Date.now},
+	
+	firstName: String,
+	lastName: String,
+	
 	movieProfile: {type: Schema.ObjectId, ref: 'MovieProfile'}
 
     // suggestedMovies: {
@@ -31,8 +35,9 @@ var movieProfileSchema = new Schema({
 	rating: Number,
 	length: Number,
 
+	isSetup: {type: Boolean, default: false},
 	preferences: [{movie_id: Number, liked: Boolean}],
-	recommendations: [{movie_id: Number, title: String, poster_path: String}]
+	recommendations: [{movie_id: Number, title: String, poster_path: String, vote_average: Number}]
 });
 
 
