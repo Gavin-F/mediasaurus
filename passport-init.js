@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');   
 var User = mongoose.model('User');
 var MovieProfile = mongoose.model('MovieProfile');
-var LocalStrategy   = require('passport-local').Strategy;
-var bCrypt = require('bcrypt-nodejs');
+var LocalStrategy = require('passport-local').Strategy;
+var authHelper = require('./helpers/authHelper');
 
 module.exports = function(passport){
 
@@ -36,7 +36,7 @@ module.exports = function(passport){
                         return done(null, false);                 
                     }
                     // User exists but wrong password, log the error 
-                    if (!isValidPassword(user, password)){
+                    if (!authHelper.isValidPassword(user, password)){
                         console.log('Invalid Password');
                         return done(null, false); // redirect back to login page
                     }
@@ -79,10 +79,17 @@ module.exports = function(passport){
 					
 						// set the user's local credentials
 						newUser.username = username;
-						newUser.password = createHash(password);
+						newUser.password = authHelper.createHash(password);
 						newUser.email = req.body.email;
 						newUser.movieProfile = movieProfile;
-					
+						
+						// set name if exists
+						if(req.body.firstName != null && req.body.lastName != null) {
+							newUser.firstName = req.body.firstName;
+							newUser.lastName = req.body.lastName;
+						}
+						
+						// save movie profile for this user
 						movieProfile.save(function(err){
 						if(err) {
 							console.log('Error generating new MovieProfile' + err);
@@ -104,7 +111,7 @@ module.exports = function(passport){
             });
         })
     );
-
+	/*
     var isValidPassword = function(user, password){
         return bCrypt.compareSync(password, user.password);
     };
@@ -112,5 +119,5 @@ module.exports = function(passport){
     var createHash = function(password){
         return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
     };
-
+	*/
 };

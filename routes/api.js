@@ -8,7 +8,7 @@ var router = express.Router();
 var Post = mongoose.model('Post');
 
 var tmdb = require('../api/tmdb_api');
-var algorithms = require('./algorithms');
+var algorithms = require('../helpers/movieRecAlgorithms');
 
 //Used for routes that must be authenticated.
 function isAuthenticated (req, res, next) {
@@ -90,6 +90,20 @@ router.route('/movies/preferences/:id')
 		});
 		
 	})
+	
+	.patch(function(req, res){
+		User.findById(req.params.id)
+		.populate('movieProfile')
+		.exec(function(err,user){
+			if(err) return res.status(400).send({error:err});
+			user.movieProfile.isSetup = req.body.isSetup;
+			user.movieProfile.save(function(err){
+				if(err) 
+					return res.status(304).send({error:{message:'problem adjusting flag, make sure \'isSetup\' is a boolean'}});
+				return res.send(200);
+			});
+		});
+	})
 
 	/*
 	 * Removes the user's ratings on movie with title movieTitle.
@@ -120,6 +134,7 @@ router.route('/movies/preferences/:id')
 			});	
 		});
 	});
+	
 
 router.route('/movies/recommendations/:id')
 	.get(function(req, res){
@@ -164,12 +179,12 @@ router.route('/movies/genres')
 		return res.send(results);
 	});
 	
-router.route('/movies/:id')
+router.route('/movies/:movie_id')
 	.get(function(req, res){
-		tmdb.getMovieDetails(req.params.id, function(details){
+		tmdb.getMovieDetails(req.params.movie_id, function(details){
 			var jsonDetails = JSON.parse(details);
 			if(jsonDetails.status_code) return res.send(null);
-			tmdb.getMovieCredits(req.params.id, function(credits){
+			tmdb.getMovieCredits(req.params.movie_id, function(credits){
 				var jsonCredits = JSON.parse(credits);
 				var results = [{details: jsonDetails, cast: jsonCredits.cast, crew: jsonCredits.crew}];
 				return res.send(results);
@@ -188,9 +203,8 @@ router.route('/movies/search/:page')
 	 *
 	 */
 	.post(function(req, res){
-		//TODO call search from TMDB
 		tmdb.searchMovies(req, function(results){
-			console.log(JSON.parse(results).results);
+			//console.log(JSON.parse(results).results);
 			return res.send(JSON.parse(results).results);
 		});
 	});
@@ -201,9 +215,11 @@ router.route('/users/:id')
 			if(err) return res.send(510, err);
 			var userInfo = {
 				username: user.username,
-				email: user.email
+				email: user.email,
+				firstName: user.firstName,
+				lastName: user.lastName
 			};
-			res.send(userInfo);
+			return res.send(userInfo);
 		});
 	});
 //Register the authentication middleware
