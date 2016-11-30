@@ -89,6 +89,7 @@ index.controller("index-controller", function($scope,$route, $localStorage, $htt
 		}
 	};
 	$scope.reset = function() {
+		// TODO detele $localStorage.user;
 		delete $localStorage.userID;
 		$location.url("/");
 		location.reload();
@@ -159,21 +160,9 @@ index.controller("about-controller", function($scope, $location, $localStorage) 
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("dashboard-controller", function($scope,$location, $http, $timeout, $localStorage,$sessionStorage) {
-	// logout user for debugging only!!
-	$localStorage.setupDone = false;
-	if($localStorage.userID !== undefined) {
-		$scope.userID = "Logged in!";
-		$scope.loggedin = true;
-		$scope.recShow = true;
-	}
-	else {
-		$scope.recShow = false;
-		$scope.userID = "Not logged in!";
-		$scope.loggedin = false;
-	}
-
-	$scope.recShow = false;
-	$scope.recGet = true;
+	$scope.recShow = false; // show pref box if user is logged in
+	$scope.recGet = true; // show recs if get request is successful
+	// TODO replace with $localStorage.user.userID
 	if($localStorage.userID !== undefined) {
 		$scope.recShow = true;
 	}
@@ -194,8 +183,8 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		delete $localStorage.userID;
 		location.reload();
 	}
-	// logout user for debugging only!!
 
+	// Storage arrays and counters for movie boxes
 	$scope.popMovieDisplay = [];
 	$scope.popMovieStore = [];
 	$scope.popScrollCount = 0;
@@ -252,6 +241,7 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		}
 	}
 
+	// movie redirect
 	$scope.gotoMovie = function(id){
 		$location.url("/movies/" + id);
 	}
@@ -345,6 +335,7 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 
 	// if sign up was successful, update id and send to new page
 	$scope.$on("signupUpdate", function(event, userID) {
+		// TODO $localStorage.user = user; (user contains ID and setupDone)
 		$localStorage.userID = userID;
 		$location.url("/setup");
 	});
@@ -361,6 +352,7 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 // ACCOUNT SETUP CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("accsetup-controller", function($scope, $location, $http, $localStorage) {
+	// TODO replace with $localStorage.user.userID and $localStorage.user.setupDone
 	if($localStorage.userID === undefined) { // if the user isn't signed in, send them back to signup splash
 		$location.url("/");
 	}
@@ -424,6 +416,7 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 				movie_ids: $scope.moviePrefs.sort(function() { return 0.5 - Math.random() })
 			};
 			$scope.$emit("prefEvent", obj); // send list of pref movies to server
+			// TODO add $localStorage.user.setupDone = true;
 			$location.url("/dashboard"); // finish and redirect
 		}
 		else { // otherwise show new list of movies
@@ -496,11 +489,12 @@ index.controller("login-controller", function($scope, $location, $http, $localSt
 	}
 	// if login was successful, update id and send to new page
 	$scope.$on("loginUpdate", function(event, userID) {
+		// replace with $localStorage.user = user;
 		$localStorage.userID = userID;
 		$scope.userID=$localStorage.userID;
-		
+
 		$location.url("/dashboard");
-		
+
 	});
 
 	// if login failed, update page

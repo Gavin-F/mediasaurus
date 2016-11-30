@@ -26,6 +26,7 @@ angular.module("index.accsetup", ["ngRoute"]).controller("accsetup", function($s
 				}
 				movies.push(movieSubset);
 			}
+			// TODO http req to tell server the user has signed up
 			$scope.$broadcast("genreUpdate", movies);
 		});
 	});
