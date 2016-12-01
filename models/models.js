@@ -11,6 +11,7 @@ var userSchema = new Schema({
 	firstName: String,
 	lastName: String,
 	
+	movieSetup: {type: Boolean, default: false},
 	movieProfile: {type: Schema.ObjectId, ref: 'MovieProfile'}
 
     // suggestedMovies: {
@@ -34,8 +35,7 @@ var movieProfileSchema = new Schema({
 	genres: {type: [{genre_id: Number, weight: Number}], default: generateDefaultGenres()},
 	rating: Number,
 	length: Number,
-
-	isSetup: {type: Boolean, default: false},
+	
 	preferences: [{movie_id: Number, liked: Boolean}],
 	recommendations: [{movie_id: Number, title: String, poster_path: String, vote_average: Number}]
 });

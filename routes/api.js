@@ -90,20 +90,6 @@ router.route('/movies/preferences/:id')
 		});
 		
 	})
-	
-	.patch(function(req, res){
-		User.findById(req.params.id)
-		.populate('movieProfile')
-		.exec(function(err,user){
-			if(err) return res.status(400).send({error:err});
-			user.movieProfile.isSetup = req.body.isSetup;
-			user.movieProfile.save(function(err){
-				if(err) 
-					return res.status(304).send({error:{message:'problem adjusting flag, make sure \'isSetup\' is a boolean'}});
-				return res.send(200);
-			});
-		});
-	})
 
 	/*
 	 * Removes the user's ratings on movie with title movieTitle.
@@ -219,9 +205,31 @@ router.route('/users/:id')
 				firstName: user.firstName,
 				lastName: user.lastName
 			};
-			return res.send(userInfo);
+			return res.status(200).send(userInfo);
 		});
 	});
+	
+router.route('/users/:id/setups')
+	.get(function(req,res){
+		User.findById(req.params.id)
+		.exec(function(err,user){
+			if(err) return res.status.send(400, {error:err});
+			return res.send(200, {movieSetup: user.movieSetup});
+		});
+	})
+	
+	.patch(function(req, res){
+		User.findById(req.params.id)
+		.exec(function(err,user){
+			if(err) return res.send(400, {error:err});
+			user.movieSetup = req.body.movieSetup;
+			user.save(function(err){
+				if(err) 
+					return res.status.send(304, {error:{message:'problem adjusting flag(s), make sure \'xSetup\' is a boolean'}});
+				return res.send(200);
+			});
+		});
+	})
 //Register the authentication middleware
 //router.use('/posts', isAuthenticated);
 
