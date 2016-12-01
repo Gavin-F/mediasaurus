@@ -4,13 +4,10 @@
 * 	to server when childsends the array to this controlller
 */
 angular.module("index.accsetup", ["ngRoute"]).controller("accsetup", function($scope, $http) {
-	$scope.$on("prefEvent", function(event, obj) { // receive from child controller
-		$http.put("/api/movies/preferences/" + obj.userID , obj);
-	});
-
-	$scope.$on("genreEvent", function(event, genres) {
+	// send list of genres to server, get back a array containing array of movies
+	$scope.$on("genreEvent", function(event, obj) {
 		var movies = [];
-		$http.post("/api/movies/genres", genres).success(function(req) {
+		$http.post("/api/movies/genres", obj).success(function(req) {
 			for(i = 0; i < req.length; i++) {
 				var movieSubset = [];
 				for(j = 0; j < 20; j++) {
@@ -24,8 +21,16 @@ angular.module("index.accsetup", ["ngRoute"]).controller("accsetup", function($s
 				}
 				movies.push(movieSubset);
 			}
-			// TODO http req to tell server the user has signed up
 			$scope.$broadcast("genreUpdate", movies);
 		});
 	});
+
+	// send the list of pref'd movies to database
+	$scope.$on("prefEvent", function(event, obj) { // receive from child controller
+		$http.put("/api/movies/preferences/" + obj.userID , obj).success(function(req) {
+			setup = {movieSetup: true};
+			$http.patch("/api/users/" + obj.userID + "/setups", setup);
+		});
+	});
+
 });
