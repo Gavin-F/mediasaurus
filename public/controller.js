@@ -42,6 +42,10 @@ index.config(function($routeProvider) {
 		templateUrl: "/html/resetEmail.html",
 		controller: "email-controller"
 	})
+	.when("/name" , {
+		templateUrl: "/html/resetname.html",
+		controller: "name-controller"
+	})
 	.when("/signup", {
 		templateUrl: "/html/signup.html",
 		controller: "signup-controller"
@@ -527,7 +531,6 @@ index.controller("password-controller", function($scope,$location,$localStorage)
 	}
 	$scope.goAccountSettings = function(){
 		$location.url("/account");
-		console.log("test");
 	}
 });
 
@@ -545,10 +548,23 @@ index.controller("email-controller", function($scope,$location,$localStorage) {
 	}
 	$scope.goAccountSettings = function(){
 		$location.url("/account");
-		console.log("test");
 	}
 });
+///////////////////////////////////////////////////////
+// Reset Name CONTROLLER
+///////////////////////////////////////////////////////
+index.controller("name-controller", function($scope,$location,$localStorage) {
 
+	if($localStorage.userID === undefined) {
+		$location.url("/");
+	}
+	$scope.goDashboard = function(){
+		$location.url("/dashboard");
+	}
+	$scope.goAccountSettings = function(){
+		$location.url("/account");
+	}
+});
 
 
 ///////////////////////////////////////////////////////
@@ -704,7 +720,12 @@ index.controller("account-controller", function($scope,$location,$localStorage) 
 	$scope.goResetEmail = function(){
 		$location.url("/email");
 	}
-
+	$scope.goResetName = function(){
+		$location.url("/name");
+	}
+	$scope.editFirstName = function(){
+		return 1;
+	}
 	$scope.userID=$localStorage.userID;
 	var user = {
 		id: $scope.userID

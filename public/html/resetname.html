@@ -1,0 +1,21 @@
+	<html ng-app="index">
+<head>
+	<link rel="stylesheet" href="../css/superhero-style.css">
+	<link rel="stylesheet" href="/css/account-style.css">
+	<link rel="stylesheet" href="/css/resetPassword-style.css">
+
+</head>
+
+<body>
+	<div class="container" >
+		<h3>Change Name</h3>
+		<span class="col-md-2">First Name</span>
+		<input class="col-md-2" type="text" ng-model="firstName"><br><br>
+		<span class="col-md-2">Last Name</span>
+		<input class="col-md-2" type="text" ng-model="lastName"><br><br>
+		<button class="waves-effect waves-light btn pull-right">Save</button>
+		<button class="waves-effect waves-light btn pull-right" ng-click="goAccountSettings()">Cancel</button>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+</body>
+</html>
