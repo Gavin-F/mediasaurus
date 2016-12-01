@@ -1,0 +1,23 @@
+<html ng-app="index">
+<head>
+	<link rel="stylesheet" href="../css/superhero-style.css">
+	<link rel="stylesheet" href="/css/account-style.css">
+	<link rel="stylesheet" href="/css/resetEmail-style.css">
+
+</head>
+
+<body>
+	<div class="container" >
+		<h3>Change Email</h3>
+		<span class="col-md-2">Old Email</span>
+		<input class="col-md-2" type="text" ng-model="oldEmail"><br><br>
+		<span class="col-md-2">New Email</span>
+		<input class="col-md-2" type="text" ng-model="newEmail"><br><br>
+		<span class="col-md-2">Confirm Email</span>
+		<input class="col-md-2" type="text" ng-model="confirmEmail"><br><br>
+		<button class="waves-effect waves-light btn pull-right">Save</button>
+		<button class="waves-effect waves-light btn pull-right" ng-click="goAccountSettings()">Cancel</button>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+</body>
+</html>
