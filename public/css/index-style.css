@@ -2,6 +2,11 @@ html {
   position: relative;
   min-height: 100%;
 }
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
 body {
   margin-bottom: 90px;
 }

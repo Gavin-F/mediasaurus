@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet" href="../css/superhero-style.css">
 	<link rel="stylesheet" href="../css/accsetup-style.css">
+	<link rel="stylesheet" href="../css/loader-style.css">
 </head>
 
 <body>
@@ -13,10 +14,6 @@
 			<div class="modal fade" id="skipModal" tabindex="0" role="dialog" aria-labelledby="myModalLabel">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
-						<!-- <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-			      </div> -->
 						<div class="modal-body">
 							Are you sure you would like to skip this set up? <br/><br /> Without your preferences, you will be missing out on some cool features of our website.
 						</div>
@@ -87,6 +84,8 @@
 				<h2 class="header">pick some movies you like from below</h2>
 
 				<div class="selection-divider-upper"></div>
+
+				<div class="loader setup" ng-show="movieStore.length == 0"></div>
 
 				<div class="movie-box">
 					<div class="movie" ng-repeat="movie in movieBuffer">

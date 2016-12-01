@@ -185,6 +185,10 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	}
 
 	// Storage arrays and counters for movie boxes
+	$scope.recMovieDisplay = [];
+	$scope.recMovieStore = [];
+	$scope.recScrollCount = 0;
+
 	$scope.popMovieDisplay = [];
 	$scope.popMovieStore = [];
 	$scope.popScrollCount = 0;
@@ -192,10 +196,6 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	$scope.nowMovieDisplay = [];
 	$scope.nowMovieStore = [];
 	$scope.nowScrollCount = 0;
-
-	$scope.recMovieDisplay = [];
-	$scope.recMovieStore = [];
-	$scope.recScrollCount = 0;
 
 	// scrollLeft shifts displayed movies to the left
 	$scope.scrollLeft = function(section) {

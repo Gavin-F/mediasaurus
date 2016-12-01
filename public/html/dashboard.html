@@ -2,6 +2,7 @@
 <head>
 	<link rel="stylesheet" href="../css/superhero-style.css">
 	<link rel="stylesheet" href="../css/dashboard-style.css">
+	<link rel="stylesheet" href="../css/loader-style.css">
 	<link rel="stylesheet" href="../css/tooltips-style.css">
 	<link rel="stylesheet" href="../css/tooltipster-borderless.css">
 
@@ -13,7 +14,7 @@
 			<div class="form-group">
 				<label class="control-label">Search</label>
 				<div class="input-group">
-					<input type="text" name="searchString" ng-model="searchString" ng-src="{{searchString}}" ng-keyup="$event.keyCode == 13 ? search() : null" class="form-control" autofocus/> 
+					<input type="text" name="searchString" ng-model="searchString" ng-src="{{searchString}}" ng-keyup="$event.keyCode == 13 ? search() : null" class="form-control" autofocus/>
 					<span class="input-group-btn">
 						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
 					</span>
@@ -33,6 +34,7 @@
 					</a>
 				</div>
 				<div class="movie-col" ng-show="recGet">
+					<div class="loader dash" ng-show="recMovieStore.length == 0"></div>
 					<div class="movie" ng-repeat="movie in recMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/>
@@ -56,6 +58,7 @@
 					</a>
 				</div>
 				<div class="movie-col">
+					<div class="loader dash" ng-show="popMovieStore.length == 0"></div>
 					<div class="movie" ng-repeat="movie in popMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/>
@@ -78,6 +81,7 @@
 					</a>
 				</div>
 				<div class="movie-col">
+					<div class="loader dash" ng-show="nowMovieStore.length == 0"></div>
 					<div class="movie" ng-repeat="movie in nowMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/>
