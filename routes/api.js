@@ -68,14 +68,14 @@ router.route('/movies/preferences/:id')
 			var prefItem = {movie_id: req.body.movie_id, liked: req.body.liked};
 			user.movieProfile.preferences.unshift(prefItem);
 			algorithms.updateRecommendedMovies(user.movieProfile, req.body.movie_id, res);
-		});
+		}); 
 		
 	})
 	
 	.put(function(req, res) {
 		if(req.body.movie_ids === null)
 			return res.send(511, 'nothing in ids');
-		User.findById(req.params.id)
+		User.findById(req.params.id) 
 		.populate('movieProfile')
 		.exec(function(err,user){
 			if(err) return res.send(512, err);
@@ -99,7 +99,7 @@ router.route('/movies/preferences/:id')
 	 *		movieTitle: string; name of movie
 	 * Response: TBD
 	 */
-	.delete(function(req, res) {
+	.patch(function(req, res) {
 		User.findById(req.params.id)
 		.populate('movieProfile')
 		.exec(function(err, user){
@@ -107,12 +107,12 @@ router.route('/movies/preferences/:id')
 
 			// remove all movies with movieTitle from preferences
 			var preferencesArr = user.movieProfile.preferences;
-			for(var i = user.movieProfile.preferences.length-1; i>=0; i--)
+			for(var i = user.movieProfile.preferences.length-1; i>=0; i--) {
 				if(preferencesArr[i].movie_id == req.body.movie_id){
 					preferencesArr.splice(i, 1);
 					if(i < 4)
 						user.movieProfile.recommendations.splice(i*5, 5);
-				}
+				}}
 
 			user.movieProfile.save(function(err){
 				if(err) return res.send(508, err);
