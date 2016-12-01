@@ -8,7 +8,7 @@ module.exports = function(passport){
 
     //sends successful login state back to angular
     router.get('/success', function(req, res){
-        return res.send({state: 'success', user: req.user ? req.user._id : null, profileSetups: {movieSetup: user.movieSetup}});
+		return res.send({state: 'success', user: req.user ? req.user._id : null, profileSetups: {movieSetup: req.user.movieSetup});
     });
 
     //sends failure login state back to angular
