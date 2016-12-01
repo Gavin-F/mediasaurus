@@ -565,18 +565,24 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 	// when the user clicks like or unlike, its emits an event and changed the look
 	// of the button
 	$scope.like = function() {
-		var like = {
-			movie_id: ids.movie_id,
-			userID: ids.user_id,
-		}
 		$scope.likeState = !$scope.likeState;
 		if ($scope.likeText == "Like") {
+			var likeInfo = {
+				movie_id: ids.movie_id,
+				userID: ids.user_id,
+				like: true
+			}
+			$scope.$emit("likeEvent", likeInfo);
 			$scope.likeText = "Liked";
-			$scope.$emit("likeEvent", like);
 		}
 		else {
+			var likeInfo = {
+				movie_id: ids.movie_id,
+				userID: ids.user_id,
+				like: false
+			}
+			$scope.$emit("likeEvent", likeInfo);
 			$scope.likeText = "Like";
-			$scope.$emit("unlikeEvent", like);
 		}
 	}
 
@@ -610,12 +616,24 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 		runtime = obj_movie[0].details.runtime + " min";
 		$scope.duration = runtime;
 
-		for (i = 0; i < 10; i++) {
-			if (i == 9) {
-				obj_cast += obj_movie[0].cast[i].name;
+		if (obj_movie[0].cast.length >= 10) {
+			for (i = 0; i < 10; i++) {
+				if (i == 9) {
+					obj_cast += obj_movie[0].cast[i].name + " ...";
+				}
+				else {
+	    			obj_cast += obj_movie[0].cast[i].name + ", ";
+				}
 			}
-			else {
-    			obj_cast += obj_movie[0].cast[i].name + ", ";
+		}
+		else {
+			for (i = 0; i < obj_movie[0].cast.length; i++) {
+				if ((i+1) == obj_movie[0].cast.length) {
+					obj_cast += obj_movie[0].cast[i].name;
+				}
+				else {
+	    			obj_cast += obj_movie[0].cast[i].name + ", ";
+				}
 			}
 		}
 
