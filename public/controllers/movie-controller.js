@@ -5,6 +5,7 @@ angular.module("index.moviepage", ["ngRoute"]).controller("movie", function($sco
 	$scope.$on("movieEvent", function(event, ids) { // receive from child controller
 
 		$http.get("/api/movies/" + ids.movie_id).success(function(req) { 
+			console.log(req);
 			$scope.$broadcast("movieUpdate", req); 
 
 			$http.get("/api/movies/similar/" + ids.movie_id + "/" + 1).success(function(req2) {
