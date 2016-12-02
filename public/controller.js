@@ -699,12 +699,6 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 // Account CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("account-controller", function($scope,$location,$localStorage) {
-	if($localStorage.userID === undefined) { // if the user isn't signed in, send them back to signup splash
-		$location.url("/");
-	}
-	else if($localStorage.setupDone === true) { // if user has setup already, send to dash
-		$location.url("/dashboard");
-	}
 	$scope.goResetPassword = function(){
 		$location.url("/password");
 	}

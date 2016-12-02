@@ -12,8 +12,6 @@
 <body>
 	<div class="container" ng-controller="search">
 		<div ng-controller="search-controller ">
-			<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
-
 			<h3>Search</h3>
 			<div class="input-group">
 					<input type="text" name="searchString" ng-model="searchString" ng-keyup="$event.keyCode == 13 ? search() : null" class="form-control" autofocus/> 
