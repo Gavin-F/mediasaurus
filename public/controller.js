@@ -11,7 +11,6 @@ var index = angular.module("index",
 	"index.account"
 	]);
 
-//Branch Comment
 index.config(function($routeProvider) {
 	$routeProvider
 	.when("/", {
@@ -69,6 +68,7 @@ index.config(function($routeProvider) {
 // INDEX CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("index-controller", function($scope,$route, $localStorage, $http, $location, $window) {
+
 	// $scope.isActive = function (viewLocation) {
 	// 	return viewLocation === $location.path();
 	// };
@@ -125,7 +125,6 @@ index.controller("index-controller", function($scope,$route, $localStorage, $htt
 	$scope.goAbout = function(){
 		$location.url("/about");
 	}
-
 });
 
 ///////////////////////////////////////////////////////

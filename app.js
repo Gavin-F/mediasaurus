@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 	// non default middleware
 var passport = require('passport');
-var session = require('express-session'); 
+var session = require('express-session');
 
 var mongoose = require('mongoose');                         //add for Mongo support
 mongoose.connect('mongodb://localhost/testdb');              //connect to Mongo
@@ -15,8 +15,6 @@ var models = require('./models/models');
 
 var api = require('./routes/api');
 var authenticate = require('./routes/authenticate')(passport);
-
-
 
 var app = express();
 
@@ -31,7 +29,7 @@ app.use(logger('dev'));
 app.use(session({
 	secret: 'session secret'
 }));
-	
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
