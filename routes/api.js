@@ -173,7 +173,22 @@ router.route('/movies/:movie_id')
 			tmdb.getMovieCredits(req.params.movie_id, function(credits){
 				var jsonCredits = JSON.parse(credits);
 				var results = [{details: jsonDetails, cast: jsonCredits.cast, crew: jsonCredits.crew}];
-				return res.status(200).send(results);
+				//return res.status(200).send(results);
+				
+				justwatch.searchForProviders(jsonDetails.title, function(providers) {;
+					for(var i = providers.length - 1; i >= 0; i--)
+						if(providers[i].provider_id !== 2 &&
+							providers[i].provider_id !== 3 && 
+							providers[i].provider_id !== 8 &&
+							providers[i].provider_id !== 18 &&
+							providers[i].provider_id !== 68 ||
+							providers[i].monetization_type === 'rent' ||
+							providers[i].presentation_type === 'hd') providers.splice(i, 1);
+					
+					results.push({providers: providers});
+					return res.status(200).send(results);
+				});
+				
 			});
 		});
 	});
