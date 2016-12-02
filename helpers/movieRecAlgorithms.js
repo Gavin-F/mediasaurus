@@ -41,8 +41,8 @@ module.exports = {
 			}
 			//movieProfile.recommendations = [];
 			movieProfile.save(function(err){
-				if(err) return res.send(err);
-				return res.send(movieProfile.recommendations);
+				if(err) return res.send(304, err);
+				return res.send(200, movieProfile.recommendations);
 			});
 			
 		});
@@ -66,8 +66,8 @@ module.exports = {
 		}
 		
 		movieProfile.save(function(err){
-			if(err) return res.send(err);
-			return res.send(movieProfile.recommendations);
+			if(err) return res.send(304, err);
+			return res.send(200, movieProfile.recommendations);
 		});
 	}
 	

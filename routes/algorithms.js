@@ -40,8 +40,8 @@ module.exports = {
 			}
 			//movieProfile.recommendations = [];
 			movieProfile.save(function(err){
-				if(err) return res.send(err);
-				return res.send(movieProfile.recommendations);
+				if(err) return res.status(304).send({error:err});
+				return res.status(200).send(null);
 			});
 			
 		});
@@ -51,7 +51,6 @@ module.exports = {
 		var movieIDs = movie_ids.slice(Math.max(movie_ids.length - 4, 0));
 		for(var i = 0; i < movieIDs.length; i++){
 			var results = tmdb.getMovieRecommendationsSync(movieIDs[i]);
-			//console.log(results);
 			var jsonResults = JSON.parse(results);
 			for (var j = Math.min(4, jsonResults.total_results); j >= 0; j--){
 				var entry = {
@@ -64,8 +63,8 @@ module.exports = {
 		}
 		
 		movieProfile.save(function(err){
-			if(err) return res.send(err);
-			return res.send(movieProfile.recommendations);
+			if(err) return res.status(304).send({error:err});
+			return res.status(200).send(movieProfile.recommendations);
 		});
 	}
 	
