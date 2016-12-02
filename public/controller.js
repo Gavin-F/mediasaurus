@@ -610,6 +610,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 	}
 
 	// populating the moviepage
+	$scope.doneload = false;
 	var movie_rating;
 	var runtime;
 	var obj_genres = "";
@@ -674,6 +675,8 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 		}
 
 		$scope.director = obj_dir;
+		$scope.doneload = true;
+		console.log($scope.doneload);
 	});
 
 	$scope.$on("movieError", function(event, error) {

@@ -43,7 +43,7 @@
 }
 
 .like_button {
-	margin: 5px 0px 50px 145px;
+	margin: 5px 0px 20px 145px;
 }
 #rating_div {
 	color: #33CCCC;
@@ -110,4 +110,16 @@ body {
 
 .clicked:hover {
   background-color: #33CCCC`;
+}
+
+.getiton {
+	padding:  0 10px 0 10px;
+	display: table-cell;
+}
+
+.table1 {
+	background-color: green;
+	float: center;
+	display: block;
+    margin: 0 auto;
 }
