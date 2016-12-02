@@ -19,27 +19,37 @@
   display: none !important;
 }
 
+body {
+  margin-bottom: 90px;
+}
+
+h1 {
+	font-family: 'Lane', sans-serif;
+	font-weight: 600;
+	color: white;
+}
+
 #headdiv {
-	margin-top: 100px;
+	margin-top: 70px;
 	text-align: center;
 
-  animation-name: fadeInDown;
-  animation-duration: 1.5s;
+	animation-name: fadeInDown;
+	animation-duration: 1.5s;
 }
 
 #mrediv {
 	margin-top: 15px;
 	text-align: center;
 
-  animation-name: fadeInDown;
+  	animation-name: fadeInDown;
 	opacity: 0;
 	animation-delay: 0.5s;
-  animation-duration: 1.5s;
+  	animation-duration: 1.5s;
 	animation-fill-mode: forwards;
 }
+
 #header {
 	font-size: 100px;
-	color: #004693;
 }
 
 #descript {
@@ -61,23 +71,31 @@
   animation-name: fadeIn;
 	opacity: 0;
 	animation-delay: 2.0s;
-  animation-duration: 1.5s;
+    animation-duration: 1.5s;
 	animation-fill-mode: forwards;
 
 }
+
 .btn {
 	height:75px;
     width:200px;
 	font-size: 25px;
 	box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19);
+	background-color:transparent;
+	border:2px solid #ffffff;
+}
+.btn:hover {
+	border:2px solid #ffffff;
+	background-color: #000000;
+	opacity: 0.6;
 }
 
 #signup {
-	background-color: #002145;
+	background-color: transparent;
 
 }
 #login {
-	background-color: #CDCDCD;
+	background-color: transparent;
 }
 
 #contdiv {
@@ -89,12 +107,13 @@
     animation-duration: 2.5s;
 	animation-fill-mode: forwards;
 }
+
 #link {
-	color: black;
+	font-family: sans-serif;
+	color: white;
 	text-align: center;
 	cursor: pointer;
 }
-
 
 .divider{
     width:10px;

@@ -4,20 +4,21 @@
 	<link rel="stylesheet" href="../css/dashboard-style.css">
 	<link rel="stylesheet" href="../css/loader-style.css">
 	<link rel="stylesheet" href="../css/tooltips-style.css">
+	<link rel="stylesheet" href="../css/fonts.css">
 	<link rel="stylesheet" href="../css/tooltipster-borderless.css">
 
 </head>
 
 <body>
 	<div class="container" ng-controller="search">
-		<div class="container" ng-controller="dashboard-controller">
+		<div ng-controller="dashboard-controller">
 			<div class="form-group">
-				<label class="control-label">Search</label>
 				<div class="input-group">
-					<input type="text" name="searchString" ng-model="searchString" ng-src="{{searchString}}" ng-keyup="$event.keyCode == 13 ? search() : null" class="form-control" autofocus/>
-					<span class="input-group-btn">
+					<input class="form-control" type="text" name="searchString" placeholder="Search for a movie here.."
+					ng-model="searchString" ng-src="{{searchString}}" ng-keyup="$event.keyCode == 13 ? search() : null" />
+					<!-- <span class="input-group-btn">
 						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
-					</span>
+					</span> -->
 				</div>
 			</div>
 		</div>
@@ -25,7 +26,6 @@
 
 	<div class="container" ng-controller="dashboard">
 		<div ng-controller="dashboard-controller">
-
 			<h2 ng-show="recShow">Your Recommendations</h2>
 			<div class="movie-box" ng-show="recShow">
 				<div class="button-col" ng-show="recGet">
