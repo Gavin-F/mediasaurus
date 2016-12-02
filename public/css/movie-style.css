@@ -43,7 +43,7 @@
 }
 
 .like_button {
-	margin: 5px 0px 50px 145px;
+	margin: 5px 0px 30px 145px;
 }
 #rating_div {
 	color: #33CCCC;
@@ -76,7 +76,9 @@
 .tooltip_templates {
   display:none;
 }
-
+img:hover{
+	cursor: pointer;
+}
 body {
   margin-bottom: 90px;
 }
@@ -110,4 +112,20 @@ body {
 
 .clicked:hover {
   background-color: #33CCCC`;
+}
+
+.getiton {
+	padding:  0 10px 0 10px;
+	display: table-cell;
+}
+
+.getiton: hover {
+	cursor: pointer;
+}
+
+.table1 {
+	float: center;
+	display: block;
+    margin: 0 auto;
+    margin-bottom: 50px; 
 }

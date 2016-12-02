@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="../css/superhero-style.css">
 	<link rel="stylesheet" href="../css/movie-style.css">
 	<link rel="stylesheet" href="../css/tooltips-style.css">
+	<link rel="stylesheet" href="../css/loader-style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.2.0/jquery.rateyo.min.css">
 
 </head>
@@ -11,11 +12,17 @@
 <body>
 
 	<div class="container" ng-controller="movie">
+
 		<div ng-controller="movie-controller">
+
+		<div class="loader center" ng-show="doneload == false"></div>
+
+		<div ng-hide="doneload == false">
 
 			<p class="movie_title"><b>{{title}}</b> ({{date}})</p>
 
 			<div class="background">
+			
 
 				<div id="left">
 					<div id="rating_div">
@@ -74,6 +81,19 @@
 					</div>
 				</div>
 
+				<div style="clear:both"></div>
+				
+
+				<div class="table1" style="display: table;">
+					<div style=" display: table-row">
+						<div class="getiton" ng-click="gotoMicrosoft()" ng-show="microsoft.button"> <img src="../images/microsoft.png" width="100px"> </div>
+						<div class="getiton" ng-click="gotoNetflix()" ng-show="netflix.button"> <img src="../images/netflix.png" width="100px"></div>
+						<div class="getiton" ng-click="gotoGoogle()" ng-show="google.button"> <img src="../images/googleplay.png" width="120px"></div>
+						<div class="getiton" ng-click="gotoItunes()" ng-show="itunes.button"> <img src="../images/itunes.svg" width="100px"></div>
+						<div style="filter: invert(100%)" class="getiton" ng-click="gotoPlaystation()" ng-show="playstation.button"> <img src="../images/playstation.png" width="150px"></div>
+					</div>
+				</div>
+
 			</div>
 
 			<h3>Related Movies</h3>
@@ -86,13 +106,10 @@
 
 			</div>
 
-			<div class="tooltip_templates">
-				<div class="tooltipInfo" >
-					Rating: {{relatedMovie.rating}}
-				</div>
-			</div>
+		</div>
 
 		</div>
+
 	</div>
 
 </body>

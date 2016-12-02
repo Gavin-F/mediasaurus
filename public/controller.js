@@ -618,13 +618,37 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 	}
 
 	// populating the moviepage
+	$scope.doneload = false;
+	$scope.movie;
 	var movie_rating;
 	var runtime;
 	var obj_genres = "";
 	var obj_cast = "";
 	var obj_dir = "";
 
+	$scope.netflix = {
+		url: "",
+		button: false
+	}
+	$scope.microsoft = {
+		url: "",
+		button: false
+	}
+	$scope.google = {
+		url: "",
+		button: false
+	}
+	$scope.playstation = {
+		url: "",
+		button: false
+	}
+	$scope.itunes = {
+		url: "",
+		button: false
+	}
+
 	$scope.$on("movieUpdate", function(event, obj_movie) {
+		$scope.movie = obj_movie;
 		$scope.overview = obj_movie[0].details.overview;
 		$scope.title = obj_movie[0].details.title;
 		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie[0].details.poster_path;
@@ -682,10 +706,51 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 		}
 
 		$scope.director = obj_dir;
+		$scope.doneload = true;
+
+		if (obj_movie[1].providers.length !== 0) {
+			for (i = 0; i < obj_movie[1].providers.length; i++) {
+				if (obj_movie[1].providers[i].provider_id == 68) {
+					$scope.microsoft.button = true;
+					$scope.microsoft.url = obj_movie[1].providers[i].urls.standard_web;
+				}
+				if (obj_movie[1].providers[i].provider_id == 2) {
+					$scope.itunes.button = true;
+					$scope.itunes.url = obj_movie[1].providers[i].urls.standard_web;
+				}
+				if (obj_movie[1].providers[i].provider_id == 3) {
+					$scope.google.button = true;
+					$scope.google.url = obj_movie[1].providers[i].urls.standard_web;
+				}
+				if (obj_movie[1].providers[i].provider_id == 18) {
+					$scope.playstation.button = true;
+					$scope.playstation.url = obj_movie[1].providers[i].urls.standard_web;
+				}
+				if (obj_movie[1].providers[i].provider_id == 8) {
+					$scope.netflix.button = true;
+					$scope.netflix.url = obj_movie[1].providers[i].urls.standard_web;
+				}
+			}
+		}
 	});
 
-	$scope.$on("movieError", function(event, error) {
+	$scope.gotoNetflix = function() {
+		window.location.href = $scope.netflix.url;
+	}
+	$scope.gotoMicrosoft = function() {
+		window.location.href = $scope.microsoft.url;
+	}
+	$scope.gotoGoogle = function() {
+		window.location.href = $scope.google.url;
+	}
+	$scope.gotoItunes = function() {
+		window.location.href = $scope.itunes.url;
+	}
+	$scope.gotoPlaystation = function() {
+		window.location.href = $scope.playstation.url;
+	}
 
+	$scope.$on("movieError", function(event, error) {
 	});
 
 	// initiating the star ratings
