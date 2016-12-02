@@ -1,0 +1,2 @@
+background: #202020 (dark gray)
+accent: #336699 (light blue)

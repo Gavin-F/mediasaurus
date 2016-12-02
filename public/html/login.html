@@ -2,6 +2,7 @@
 	<head>
 		<link rel="stylesheet" href="../css/superhero-style.css">
 		<link rel="stylesheet" href="../css/login-style.css">
+		<link rel="stylesheet" href="../css/fonts.css">
 	</head>
 
 	<body>
@@ -29,12 +30,11 @@
 
 					<div class="divider"></div>
 
-					<div class="space-top text-center">
-						<button ng-disabled="login.$invalid" class="waves-effect waves-light btn done" ng-click="loginAcc()">
-						Login
-						</button>
-						</button>
-					</div>
+					<button ng-disabled="login.$invalid" class="btn" ng-click="loginAcc()">Log In</button>
+
+					<div style="margin-top:20px"></div>
+
+					<button class="btn-off" ng-click="signup()">Go to Sign Up</button>
 				</form>
 
 				<!-- <div class="form-divider"></div>

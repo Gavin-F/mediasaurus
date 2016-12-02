@@ -340,6 +340,10 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 		$scope.$emit("signupEvent", user);
 	}
 
+	$scope.login = function() {
+		$location.url("/login");
+	}
+
 	// if sign up was successful, update id and send to new page
 	$scope.$on("signupUpdate", function(event, user) {
 		$localStorage.userID = user.userID;
@@ -490,9 +494,13 @@ index.controller("login-controller", function($scope, $location, $http, $localSt
 			username: $scope.username,
 			password: $scope.password
 		};
-
 		$scope.$emit("loginEvent", user);
 	}
+
+	$scope.signup = function() {
+		$location.url("/signup");
+	}
+
 	// if login was successful, update id and send to new page
 	$scope.$on("loginUpdate", function(event, user) {
 		// replace with $localStorage.user = user;
@@ -514,7 +522,7 @@ index.controller("login-controller", function($scope, $location, $http, $localSt
 // Reset Password CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("password-controller", function($scope,$location,$localStorage) {
-	
+
 	if($localStorage.userID === undefined) {
 		$location.url("/");
 	}
@@ -702,13 +710,10 @@ index.controller("account-controller", function($scope,$location,$localStorage) 
 	if($localStorage.userID === undefined) { // if the user isn't signed in, send them back to signup splash
 		$location.url("/");
 	}
-	else if($localStorage.setupDone === true) { // if user has setup already, send to dash
-		$location.url("/dashboard");
-	}
 	$scope.goResetPassword = function(){
 		$location.url("/password");
 	}
-	
+
 	$scope.goResetEmail = function(){
 		$location.url("/email");
 	}
