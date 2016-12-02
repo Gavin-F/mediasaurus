@@ -760,7 +760,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
     		numStars: 10,
     		readOnly: true,
     		rating: "0%",
-    		ratedFill: "#33CCCC"
+    		ratedFill: "#ffffff"
     	});
     });
 

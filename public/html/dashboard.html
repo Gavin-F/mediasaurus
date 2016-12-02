@@ -85,7 +85,7 @@
 					<div class="movie" ng-repeat="movie in nowMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/>
-							<p>{{movie.title}}</p>
+							<p class="movieTitle">{{movie.title}}</p>
 						</a>
 					</div>
 				</div>
@@ -95,7 +95,7 @@
 					</a>
 				</div>
 			</div><br />
-			
+
 			<div class="tooltip_templates">
 				<div class="tooltipInfo">
 					<p style="font-size:24px; margin-top:5px"> m0.title </p>

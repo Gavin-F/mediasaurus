@@ -22,19 +22,6 @@ h1, h2 {
 	border: 5px solid #336699;
 }
 
-/*.btn {
-  width:50px;
-	color:white;
-	font-size: 1.25em;
-	background-color:transparent;
-	border:2px solid #ffffff;
-}
-
-.btn:hover {
-	border:2px solid #ffffff;
-	background-color: #5B84AD;
-}*/
-
 .movie-box {
   background-color: #336699;
   color: white;
@@ -64,7 +51,7 @@ h1, h2 {
   margin-right: 10px;
 }
 
-.movie > a  {
+.movie > a {
   text-decoration: none;
   color: white;
 }

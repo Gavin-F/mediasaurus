@@ -3,8 +3,8 @@
 
 	<link rel="stylesheet" href="../css/superhero-style.css">
 	<link rel="stylesheet" href="../css/movie-style.css">
-	<link rel="stylesheet" href="../css/tooltips-style.css">
 	<link rel="stylesheet" href="../css/loader-style.css">
+	<link rel="stylesheet" href="../css/fonts.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.2.0/jquery.rateyo.min.css">
 
 </head>
@@ -19,10 +19,9 @@
 
 		<div ng-hide="doneload == false">
 
-			<p class="movie_title"><b>{{title}}</b> ({{date}})</p>
+			<h1 class="movie_title"><b>{{title}}</b> ({{date}})</h1>
 
 			<div class="background">
-			
 
 				<div id="left">
 					<div id="rating_div">
@@ -82,7 +81,7 @@
 				</div>
 
 				<div style="clear:both"></div>
-				
+
 
 				<div class="table1" style="display: table;">
 					<div style=" display: table-row">
@@ -93,14 +92,13 @@
 						<div style="filter: invert(100%)" class="getiton" ng-click="gotoPlaystation()" ng-show="playstation.button"> <img src="../images/playstation.png" width="150px"></div>
 					</div>
 				</div>
-
 			</div>
 
-			<h3>Related Movies</h3>
+			<h1>Related Movies</h1>
 			<div class="horizontal_scroll jumbotron">
 
 				<a ng-click="gotoMovie(relatedMovie.id)" ng-repeat="relatedMovie in relatedMovies">
-					<img src="{{relatedMovie.poster}}" class="tooltip-custom moviePoster" data-tooltip-content=".tooltipInfo"/>
+					<img src="{{relatedMovie.poster}}" class="moviePoster"/>
 					&emsp;
 				</a>
 
