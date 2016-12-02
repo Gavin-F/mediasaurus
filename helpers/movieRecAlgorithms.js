@@ -17,7 +17,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var MovieProfile = mongoose.model('MovieProfile');
 var express = require('express');
-var tmdb = require('../api/tmdb_api');
+var tmdb = require('./tmdb/tmdb_api');
 
 
 module.exports = {
@@ -39,7 +39,6 @@ module.exports = {
 				};
 				movieProfile.recommendations.unshift(entry);
 			}
-			//movieProfile.recommendations = [];
 			movieProfile.save(function(err){
 				if(err) return res.send(304, err);
 				return res.send(200, movieProfile.recommendations);

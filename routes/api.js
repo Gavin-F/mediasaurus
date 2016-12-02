@@ -7,9 +7,9 @@ var express = require('express');
 var router = express.Router();
 var Post = mongoose.model('Post');
 
-var tmdb = require('../api/tmdb_api');
+var tmdb = require('../helpers/tmdb/tmdb_api');
 var algorithms = require('../helpers/movieRecAlgorithms');
-var justwatch = require('../api/justwatch_api');
+var justwatch = require('../helpers/just_watch/justwatch_api');
 
 //Used for routes that must be authenticated.
 function isAuthenticated (req, res, next) {

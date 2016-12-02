@@ -41,7 +41,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //// Initialize Passport
-var initPassport = require('./passport-init');
+var initPassport = require('./helpers/passport-init');
 initPassport(passport);
 
 app.use('/api', api);		// any path that starts with /api give to api router
