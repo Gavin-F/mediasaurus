@@ -8,12 +8,12 @@ module.exports = function(passport){
 
     //sends successful login state back to angular
     router.get('/success', function(req, res){
-		return res.send({state: 'success', user: req.user ? req.user._id : null, profileSetups: {movieSetup: req.user.movieSetup}});
+		return res.status(200).send({state: 'success', user: req.user ? req.user._id : null, profileSetups: {movieSetup: req.user.movieSetup}});
     });
 
     //sends failure login state back to angular
     router.get('/failure', function(req, res){
-        return res.send({state: 'failure', user: null, message: "Invalid username or password"});
+        return res.status(200).send({state: 'failure', user: null, message: "Invalid username or password"});
     });
 
     //log in
@@ -54,7 +54,6 @@ module.exports = function(passport){
 					return res.send(200);
 				})
 			});
-
 		});
 
     return router;
