@@ -254,9 +254,21 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 
 	$scope.$emit("dashboardEvent", [1, $localStorage.userID]);
 
+	$scope.numberofMovies = 5;
+	$(window).resize(function(){
+    	if(window.innerWidth <= 1200)
+    		$scope.numberofMovies = 4;
+    	else if(window.innerWidth <= 991)
+    		$scope.numberofMovies = 3;
+    	else if (window.innerWidth <= 721)
+			$scope.numberofMovies = 2;
+		else 
+			$scope.numberofMovies = 5;    		
+	});
+
 	$scope.$on("dashboardUpdate", function(event, returnMovies) {
 		if(returnMovies[2].length == 0) $scope.recGet = false;
-		for(i = 0; i < returnMovies[0].length/5; i++) {
+		for(i = 0; i < returnMovies[0].length/$scope.numberofMovies; i++) {
 			$scope.popMovieStore.push(returnMovies[0].slice(5*i,5*i+5));
 		}
 		for(i = 0; i < returnMovies[1].length/5; i++) {
