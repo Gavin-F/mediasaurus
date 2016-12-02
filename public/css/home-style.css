@@ -81,7 +81,6 @@ h1 {
     width:200px;
 	font-size: 25px;
 	box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19);
-	background-color:transparent;
 	border:2px solid #ffffff;
 }
 .btn:hover {
@@ -91,7 +90,8 @@ h1 {
 }
 
 #signup {
-	background-color: transparent;
+	background-color: white;
+	color:black;
 
 }
 #login {

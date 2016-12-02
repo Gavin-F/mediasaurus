@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="../css/superhero-style.css">
 	<link rel="stylesheet" href="../css/accsetup-style.css">
 	<link rel="stylesheet" href="../css/loader-style.css">
+	<link rel="stylesheet" href="../css/fonts.css">
 </head>
 
 <body>
@@ -18,8 +19,8 @@
 							Are you sure you would like to skip this set up? <br/><br /> Without your preferences, you will be missing out on some cool features of our website.
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn" id="close" data-dismiss="modal">Close</button>
-							<button type="button" class="btn" id="skip" data-dismiss="modal" ng-click="genreSkip()">Skip</button>
+							<button type="button" class="menu-btn" id="close" data-dismiss="modal">Close</button>
+							<button type="button" class="menu-btn" id="skip" data-dismiss="modal" ng-click="genreSkip()">Skip</button>
 						</div>
 					</div>
 				</div>
@@ -74,7 +75,7 @@
 
 				<div class="completion-buttons">
 					<div class="selection-divider-lower"></div>
-					<button class="btn btn-default" id="next" ng-click="genreNext()">Next</button>
+					<button class="menu-btn" ng-click="genreNext()">Next</button>
 					<div class="button-divider"> </div>
 					<a id="continue" data-toggle="modal" data-target="#skipModal">or skip</a>
 				</div>
@@ -99,9 +100,9 @@
 
 				<div class="completion-buttons">
 					<div class="selection-divider-lower"></div>
-					<button class="btn btn-default" id="next" ng-click="nextMovies()">Next</button>
+					<button class="menu-btn" ng-click="nextMovies()">Next</button>
 					<div class="button-divider"> </div>
-					<button class="btn btn-default" id="next" ng-click="scramble()">Scramble</button>
+					<button class="menu-btn" ng-click="scramble()">Scramble</button>
 				</div>
 			</div>
 		</div>

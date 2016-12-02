@@ -6,13 +6,12 @@ body {
 h1, h2 {
     font-family: 'Lane';
     font-weight: 600;
-    text-align: center;
     color: white;
 }
 
 .input-group {
   margin: auto;
-  width: 55%;
+  width: 100%;
 }
 
 .form-control {

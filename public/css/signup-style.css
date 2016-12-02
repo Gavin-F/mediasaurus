@@ -71,17 +71,16 @@ h1 {
 	border:2px solid #ffffff;
 }
 
-.btn-off {
-	height:40px;
-	width:120px;
-	color:white;
-	background-color:transparent;
-	border:2px solid #ffffff;
-}
-
-.btn:hover, .btn-off:hover {
+.btn:hover {
 	border:2px solid #ffffff;
 	background-color: #5B84AD;
+}
+
+.link-off, .link-off:hover {
+	font-family: sans-serif;
+	color: white;
+	text-align: center;
+	cursor: pointer;
 }
 
 /* Error Box */
