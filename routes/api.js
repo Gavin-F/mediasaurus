@@ -9,6 +9,7 @@ var Post = mongoose.model('Post');
 
 var tmdb = require('../api/tmdb_api');
 var algorithms = require('../helpers/movieRecAlgorithms');
+var justwatch = require('../api/justwatch_api');
 
 //Used for routes that must be authenticated.
 function isAuthenticated (req, res, next) {
@@ -42,8 +43,8 @@ router.route('/movies/preferences/:id')
 		User.findById(req.params.id)
 		.populate('movieProfile')
 		.exec(function(err, user){
-			if(err) res.send(504, err);
-			return res.send(user.movieProfile.preferences);
+			if(err) res.status(400).send({error: err});
+			return res.status(200).send(user.movieProfile.preferences);
 		});
 	})
 
@@ -58,27 +59,27 @@ router.route('/movies/preferences/:id')
 	 */
 	.post(function(req, res){
 		if(req.body.movie_id === null)
-			return res.send(505, 'nothing to set');
+			return res.status(400).send({error: {message: 'nothing to set'}});
 		User.findById(req.params.id)
 		.populate('movieProfile')
 		.exec(function(err,user){
 			if(err) {
-				return res.send(506, err);
+				return res.status(400).send({error:err});
 			}
 			var prefItem = {movie_id: req.body.movie_id, liked: req.body.liked};
 			user.movieProfile.preferences.unshift(prefItem);
 			algorithms.updateRecommendedMovies(user.movieProfile, req.body.movie_id, res);
-		});
+		}); 
 		
 	})
 	
 	.put(function(req, res) {
 		if(req.body.movie_ids === null)
-			return res.send(511, 'nothing in ids');
+			return res.send(400).send({error:{message: 'nothing in ids'}});
 		User.findById(req.params.id)
 		.populate('movieProfile')
 		.exec(function(err,user){
-			if(err) return res.send(512, err);
+			if(err) return res.status(400).send({error:err});
 			
 			for(var i = 0; i < req.body.movie_ids.length; i++){
 				var prefItem = {movie_id: req.body.movie_ids[i], liked: true};
@@ -99,24 +100,24 @@ router.route('/movies/preferences/:id')
 	 *		movieTitle: string; name of movie
 	 * Response: TBD
 	 */
-	.delete(function(req, res) {
+	.patch(function(req, res) {
 		User.findById(req.params.id)
 		.populate('movieProfile')
 		.exec(function(err, user){
-			if(err) return res.send(507, err);
+		if(err) return res.status(400).send({error:err});
 
 			// remove all movies with movieTitle from preferences
 			var preferencesArr = user.movieProfile.preferences;
-			for(var i = user.movieProfile.preferences.length-1; i>=0; i--)
+			for(var i = user.movieProfile.preferences.length-1; i>=0; i--) {
 				if(preferencesArr[i].movie_id == req.body.movie_id){
 					preferencesArr.splice(i, 1);
 					if(i < 4)
 						user.movieProfile.recommendations.splice(i*5, 5);
-				}
+				}}
 
 			user.movieProfile.save(function(err){
-				if(err) return res.send(508, err);
-				return res.send(user.movieProfile);
+				if(err) return res.status(304).send({error:err});
+				return res.status(200).send(user.movieProfile);
 			});	
 		});
 	});
@@ -127,32 +128,31 @@ router.route('/movies/recommendations/:id')
 		User.findById(req.params.id)
 		.populate('movieProfile')
 		.exec(function(err,user){
-			if(err) {
-				return res.send(509, err);
-			}
-				return res.send(user.movieProfile.recommendations);
-			});
+			if(err) return res.status(400).send({error:err});
+			return res.status(200).send(user.movieProfile.recommendations);
+		});
 	});
 
 router.route('/movies/similar/:movie_id/:page')
 	.get(function(req, res){
 		tmdb.getSimilarMovies(req, function(results){
 			jsonResults = JSON.parse(results);
-			return res.send(jsonResults.status_code ? null : jsonResults.results);
+			if(jsonResults.status_code) return res.status(400).send(null);
+			return res.status(200).send(jsonResults.results);
 		});
 	});
 	
 router.route('/movies/popular/:page')
 	.get(function(req, res){
 		tmdb.getPopularMovies(req.params.page, function(results){
-			return res.send(JSON.parse(results).results);
+			return res.status(200).send(JSON.parse(results).results);
 		});
 	});
 
 router.route('/movies/now_playing/:page')
 	.get(function(req, res){
 		tmdb.getNowPlayingMovies(req.params.page, function(results){
-			return res.send(JSON.parse(results).results);
+			return res.status(200).send(JSON.parse(results).results);
 		});
 	});
 	
@@ -162,18 +162,33 @@ router.route('/movies/genres')
 		for(var i = 0; i < req.body.genres.length; i++){
 			results.push( JSON.parse( tmdb.discoverPopularByGenreSync(req.body.genres[i]) ).results );
 		}
-		return res.send(results);
+		return res.status(200).send(results);
 	});
 	
 router.route('/movies/:movie_id')
 	.get(function(req, res){
 		tmdb.getMovieDetails(req.params.movie_id, function(details){
 			var jsonDetails = JSON.parse(details);
-			if(jsonDetails.status_code) return res.send(null);
+			if(jsonDetails.status_code) return res.status(400).send(null);
 			tmdb.getMovieCredits(req.params.movie_id, function(credits){
 				var jsonCredits = JSON.parse(credits);
 				var results = [{details: jsonDetails, cast: jsonCredits.cast, crew: jsonCredits.crew}];
-				return res.send(results);
+				//return res.status(200).send(results);
+				
+				justwatch.searchForProviders(jsonDetails.title, function(providers) {;
+					for(var i = providers.length - 1; i >= 0; i--)
+						if(providers[i].provider_id !== 2 &&
+							providers[i].provider_id !== 3 && 
+							providers[i].provider_id !== 8 &&
+							providers[i].provider_id !== 18 &&
+							providers[i].provider_id !== 68 ||
+							providers[i].monetization_type === 'rent' ||
+							providers[i].presentation_type === 'hd') providers.splice(i, 1);
+					
+					results.push({providers: providers});
+					return res.status(200).send(results);
+				});
+				
 			});
 		});
 	});
@@ -190,15 +205,32 @@ router.route('/movies/search/:page')
 	 */
 	.post(function(req, res){
 		tmdb.searchMovies(req, function(results){
-			//console.log(JSON.parse(results).results);
-			return res.send(JSON.parse(results).results);
+			return res.status(200).send(JSON.parse(results).results);
+		});
+	});
+	
+router.route('/movies/providers/:movie_title')
+	.get(function(req,res){
+		justwatch.searchForProviders(req.params.movie_title, function(providers) {;
+			console.log(providers);
+			console.log(providers.length);
+			for(var i = providers.length - 1; i >= 0; i--)
+				if(providers[i].provider_id !== 2 &&
+					providers[i].provider_id !== 3 && 
+					providers[i].provider_id !== 8 &&
+					providers[i].provider_id !== 18 &&
+					providers[i].provider_id !== 68 ||
+					providers[i].monetization_type === 'rent' ||
+					providers[i].presentation_type === 'hd') providers.splice(i, 1);
+			
+			return res.status(200).send(providers);
 		});
 	});
 	
 router.route('/users/:id')
 	.get(function(req, res){
 		User.findById(req.params.id, function(err, user){
-			if(err) return res.send(510, err);
+		if(err) return res.status(400).send({error:err});
 			var userInfo = {
 				username: user.username,
 				email: user.email,
@@ -213,20 +245,20 @@ router.route('/users/:id/setups')
 	.get(function(req,res){
 		User.findById(req.params.id)
 		.exec(function(err,user){
-			if(err) return res.status.send(400, {error:err});
-			return res.send(200, {movieSetup: user.movieSetup});
+			if(err) return res.status(400).send({error:err});
+			return res.status(304).send({movieSetup: user.movieSetup});
 		});
 	})
 	
 	.patch(function(req, res){
 		User.findById(req.params.id)
 		.exec(function(err,user){
-			if(err) return res.send(400, {error:err});
+			if(err) return res.status(400).send({error:err});
 			user.movieSetup = req.body.movieSetup;
 			user.save(function(err){
 				if(err) 
-					return res.status.send(304, {error:{message:'problem adjusting flag(s), make sure \'xSetup\' is a boolean'}});
-				return res.send(200);
+					return res.status(304).send({error:{message:'problem adjusting flag(s), make sure \'xSetup\' is a boolean'}});
+				return res.status(200).send(null);
 			});
 		});
 	})
