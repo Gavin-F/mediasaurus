@@ -44,17 +44,25 @@ module.exports = function(passport){
 				if( !authHelper.isValidPassword(user, req.body.password) )
 					return res.status(401).send({error: {message:'bad password'}});
 
-				// set the user's new credentials
-				user.password = authHelper.createHash(req.body.newPassword);
-				user.email = req.body.email;
-				user.firstName = req.body.firstName;
-				user.lastName = req.body.lastName;
+				User.findOne({'email' : req.body.email}, function(errE, userE){
+					if(errE) return res.status(400).send({error:err});
+					
+					// check if email has already been taken
+					if(userE.username != user.username) return res.status(409).send({error:{message:'email already taken'}});
+					
+					// set the user's new credentials
+					user.password = authHelper.createHash(req.body.newPassword);
+					user.email = req.body.email;
+					user.firstName = req.body.firstName;
+					user.lastName = req.body.lastName;
 
-				user.save(function(err){
-					if(err) return res.status(304).send({error: {message:'problem saving user info'}});
-					return res.send(200);
-				})
+					user.save(function(err){
+						if(err) return res.status(304).send({error: {message:'problem saving user info'}});
+						return res.send(200);
+					})
+				});
 			});
+			
 		});
 
     return router;
