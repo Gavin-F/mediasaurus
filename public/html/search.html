@@ -10,18 +10,8 @@
 </head>
 
 <body>
-	<div class="container" ng-controller="search">
-
+	<div class="container" ng-controller="index-controller">
 		<div ng-controller="search-controller ">
-			<button ng-show="loggedin" class="btn done" ng-click="reset()">Log out</button>
-
-			<h3>Search</h3>
-			<div class="input-group">
-					<input type="text" name="searchString" ng-model="searchString" ng-keyup="$event.keyCode == 13 ? search() : null" class="form-control" autofocus/>
-					<span class="input-group-btn">
-						<button class="btn btn-default" ng-click="search()" type="button">Search</button>
-					</span>
-			</div> <br>
 			<div class="container MovieSearchContainer" ng-repeat="sResult in searchResult" ng-style="{'background':(sResult.bColor)}" >
 				<div class="movieSearchPosterPosition" ng-click="gotoMovie(sResult.id)" >
 					<br><br>
@@ -37,7 +27,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="container" ng-show="searchReturn()">
+		<div class="container" ng-show="searchReturn()" style="color:#E9E9E9;">
 			<h4>Your search did not return any results.</h4><br>
 			<h5>Suggestions:</h5>
 			<ul>

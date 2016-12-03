@@ -3,7 +3,7 @@
 var bCrypt = require('bcrypt-nodejs');
 
 module.exports = {
-	
+	// Checks password validity
 	isValidPassword: function(user, password){
         return bCrypt.compareSync(password, user.password);
     },

@@ -33,7 +33,8 @@ module.exports = function(passport){
         req.logout();
         res.redirect('/');
     });
-
+	
+	//change user info
 	router.route('/users/:uid')
 		.put(function(req,res){
 			User.findById(req.params.uid, function(err, user){
@@ -43,7 +44,7 @@ module.exports = function(passport){
 				if( !authHelper.isValidPassword(user, req.body.password) )
 					return res.status(401).send({error: {message:'bad password'}});
 
-				// set the user's local credentials
+				// set the user's new credentials
 				user.password = authHelper.createHash(req.body.newPassword);
 				user.email = req.body.email;
 				user.firstName = req.body.firstName;

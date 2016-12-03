@@ -1,23 +1,59 @@
-<html ng-app="index">
-<head>
-	<link rel="stylesheet" href="../css/superhero-style.css">
-	<link rel="stylesheet" href="/css/account-style.css">
-	<link rel="stylesheet" href="/css/resetEmail-style.css">
+<html ng-app="signup">
+	<head>
+		<link rel="stylesheet" href="../css/superhero-style.css">
+		<link rel="stylesheet" href="../css/resetEmail-style.css">
+	</head>
 
-</head>
+	<body>
+		<div class="container" ng-controller="email">
+			<div class="signup-box" ng-controller="email-controller">
+				<h1>Change your email</h1>
 
-<body>
-	<div class="container" >
-		<h3>Change Email</h3>
-		<span class="col-md-2">Old Email</span>
-		<input class="col-md-2" type="text" ng-model="oldEmail"><br><br>
-		<span class="col-md-2">New Email</span>
-		<input class="col-md-2" type="text" ng-model="newEmail"><br><br>
-		<span class="col-md-2">Confirm Email</span>
-		<input class="col-md-2" type="text" ng-model="confirmEmail"><br><br>
-		<button class="waves-effect waves-light btn pull-right">Save</button>
-		<button class="waves-effect waves-light btn pull-right" ng-click="goAccountSettings()">Cancel</button>
-	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-</body>
+				<div class="divider"></div>
+
+				<form class="form-register" method="post" name="register" novalidate>
+
+					<div class="inputdiv" ng-class="{'has-error': register.email.$invalid && register.email.$dirty, 'has-success': !register.email.$invalid}" >
+						<input id="oldEmail" class="form-control" name="oldEmail" class="form-control" type="text" placeholder="old email"
+						ng-model="oldEmail" ng-focus="userFocus=true" ng-blur="userFocus=false" ng-pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/"  required />
+					</div>
+
+					<div>
+					
+					<!-- <p class="alert alert-danger" ng-show="(form-register.email.$error.email || form-register.email.$error.pattern) && !emailFocus">Your email is invalid.</p> -->
+
+					<div class="divider"></div>
+
+					<div class="inputdiv" ng-class="{'has-error': register.email.$invalid && register.email.$dirty, 'has-success': !register.email.$invalid}" >
+						<input type="email" class="form-control" name="email" placeholder="new email"
+						ng-model="email" ng-focus="emailFocus=true" ng-blur="emailFocus=false" ng-pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/" required/>
+					</div>
+
+					<!-- <p class="alert alert-danger" ng-show="(form-register.email.$error.email || form-register.email.$error.pattern) && !emailFocus">Your email is invalid.</p> -->
+
+					<div class="divider"></div>
+
+
+					<div class="inputdiv" ng-class="{'has-error': register.email.$invalid && register.email.$dirty, 'has-success': !register.email.$invalid}" >
+						<input type="confirmEmail" class="form-control" name="confirmEmail" placeholder="confirm email"
+						ng-model="confirmEmail" ng-focus="emailFocus=true" ng-blur="emailFocus=false" ng-pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/" required/>
+					</div>
+
+					<!-- <p class="alert alert-danger" ng-show="confirmpassword != password && register.confirmpassword.$dirty && !cpwFocus">Your emails must match.</p> -->
+
+					<div class="divider"></div>
+
+					<div class="space-top ">
+						<button ng-disabled="register.$invalid || confirmpassword != password || !register.confirmpassword.$dirty" class="waves-effect waves-light btn done" ng-click="signUp()">
+						Cancel
+						</button>
+						<button ng-disabled="register.$invalid || confirmpassword != password || !register.confirmpassword.$dirty" class="waves-effect waves-light btn done" ng-click="signUp()">
+						Save
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+	</body>
 </html>

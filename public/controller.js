@@ -67,7 +67,6 @@ index.config(function($routeProvider) {
 ///////////////////////////////////////////////////////
 // INDEX CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("index-controller", function($scope,$route, $localStorage, $http, $location, $window) {
 
 index.controller("index-controller", function($http, $scope, $route, $location, $timeout, $localStorage, $sessionStorage) {
 	$scope.search = function() {
@@ -116,7 +115,9 @@ index.controller("index-controller", function($http, $scope, $route, $location, 
 		delete $localStorage.setupDone;
 		$location.url("/");
 	}
-
+	$scope.gotoMovie = function(id){
+		$location.url("/movies/" + id);
+	}
 	$scope.goHome = function(){
 		$location.url("/");
 	}
@@ -143,7 +144,7 @@ index.controller("index-controller", function($http, $scope, $route, $location, 
 ///////////////////////////////////////////////////////
 // HOME CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("home-controller", function($scope, $location, $localStorage) {
+index.controller("home-controller", function($scope,$location, $http, $localStorage,$sessionStorage) {
 
 	if($localStorage.userID !== undefined) {
 		$location.url("/dashboard");
@@ -181,18 +182,6 @@ index.controller("dashboard-controller", function($scope, $location, $http, $tim
 	if($localStorage.userID !== undefined) {
 		$scope.recShow = true;
 	}
-
-	$scope.search = function() {
-		var searchObject = {
-			query: $scope.searchString
-		};
-		$sessionStorage.sString=$scope.searchString;
-		$scope.$emit("searchEvent", searchObject);
-	}
-	$scope.$on("searchUpdate", function(event, searchArray) {
-		$sessionStorage.searchResult = searchArray;
-		$location.url("/search");
-	});
 
 	$scope.reset = function() {
 		delete $localStorage.userID;
@@ -340,20 +329,6 @@ index.controller("search-controller", function($scope, $route,$location,$timeout
 	$scope.searchString = $sessionStorage.sString;
 	$scope.searchResult = $sessionStorage.searchResult;
 
-	$scope.search = function() {
-		var searchObject = {
-			query: $scope.searchString
-		};
-		$sessionStorage.sString=$scope.searchString;
-		$scope.$emit("searchEvent", searchObject);
-	}
-	$scope.$on("searchUpdate", function(event, searchArray) {
-		$scope.searchResult = searchArray;
-		$sessionStorage.searchResult = searchArray;
-		$sessionStorage.sString = $scope.searchString;
-		$location.url("/search");
-
-	});
 	$scope.searchReturn = function(){
 		if($sessionStorage.searchResult.length === 0){
 			return 1;
@@ -867,9 +842,6 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 // Account CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("account-controller", function($scope,$location,$localStorage) {
-	if($localStorage.userID === undefined) { // if the user isn't signed in, send them back to signup splash
-		$location.url("/");
-	}
 	$scope.goResetPassword = function(){
 		$location.url("/password");
 	}
