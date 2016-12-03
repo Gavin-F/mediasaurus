@@ -48,10 +48,12 @@ module.exports = function(passport){
 					if(errE) return res.status(400).send({error:err});
 					
 					// check if email has already been taken
-					if(userE.username != user.username) return res.status(409).send({error:{message:'email already taken'}});
+					
+					if(userE != null && userE.username != user.username) return res.status(409).send({error:{message:'email already taken'}});
 					
 					// set the user's new credentials
-					user.password = authHelper.createHash(req.body.newPassword);
+					if (req.body.newPassword)
+						user.password = authHelper.createHash(req.body.newPassword);
 					user.email = req.body.email;
 					user.firstName = req.body.firstName;
 					user.lastName = req.body.lastName;
