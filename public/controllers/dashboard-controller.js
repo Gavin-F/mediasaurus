@@ -16,7 +16,7 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 					title: req[i].title,
 					poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
 					rating: req[i].vote_average,
-					liked: true
+					liked: false
 				};
 				popMovies.push(movie);
 			}
@@ -32,7 +32,7 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 						title: req[i].title,
 						poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
 						rating: req[i].vote_average,
-						liked: true
+						liked: false
 					};
 					nowMovies.push(movie);
 				}
@@ -41,22 +41,37 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 				// check if user is logged in, dont get recs if not logged in
 				if(obj[1] !== undefined) {
 					// Send back now playing movies
-					$http.get("/api/movies/recommendations/" + obj[1]).success(function(req) {
+					$http.get("/api/movies/preferences/" + obj[1]).success(function(req) {
 						var recMovies = [];
-						var size3 = req.length;
-						if(req.length != 0) {
+						var prefMovies = req.preferences;
+						var size3 = req.recommendations.length;
+						if(size3 != 0) {
 							for(i = 0; i < size3; i++) {
 								var movie = {
-									id: req[i].movie_id,
-									title: req[i].title,
-									poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
-									rating: req[i].vote_average
+									id: req.recommendations[i].movie_id,
+									title: req.recommendations[i].title,
+									poster: "https://image.tmdb.org/t/p/w500" + req.recommendations[i].poster_path,
+									rating: req.recommendations[i].vote_average
 								};
 								recMovies.push(movie);
 							}
 						}
 						returnMovies.push(recMovies);
-						//returnMovies.push(req.preferences);
+						returnMovies.push(prefMovies);
+
+						for(i = 0; i < returnMovies[0].length - 1; i++) {
+							var movie0 = returnMovies[0][i];
+							var movie1 = returnMovies[1][i];
+							for(j = 0; j < prefMovies.length - 1; j++) {
+								if(prefMovies[j].movie_id == movie0.id) {
+									movie0.liked = true;
+								}
+								if(prefMovies[j].movie_id == movie1.id) {
+									movie1.liked = true;
+								}
+							}
+						}
+
 						$scope.$broadcast("dashboardUpdate", returnMovies);
 					});
 				}
