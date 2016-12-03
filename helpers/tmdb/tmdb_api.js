@@ -1,7 +1,7 @@
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var xhr = new XMLHttpRequest();
 
-var genreList = require(('../models/genres.json'));
+var genreList = require(('../../models/genres.json'));
 
 
 // API key goes here
@@ -182,7 +182,7 @@ module.exports = {
 	 },
 
 	 getSimilarMovies: function(req, callback){
-		consAPI_URL = API_BASE + 'movie/' + req.params.movie_id + '/similar?api_key=' + APIKEY + '&page=' + req.params.page;
+		consAPI_URL = API_BASE + 'movie/' + req.params.movie_id + '/similar?api_key=' + APIKEY + '&page=1';
 		this.httpGetAsync(consAPI_URL, callback);
 	 },
 
