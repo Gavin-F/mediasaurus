@@ -128,6 +128,13 @@ h1, h2 {
 	cursor: pointer;
 }
 
+.button-div {
+	display: table-cell;
+ 	text-align: center;
+	vertical-align: middle;
+	width: 75px;
+}
+
 .btn-table {
 	float: center;
 	display: block;
@@ -136,28 +143,57 @@ h1, h2 {
 }
 
 .movie {
-	display:inline-block;
-	text-align: center;
-	width: 160px;
-	margin-left: 10px;
-	margin-right: 10px;
+  display: table-cell;
+  text-align: center;
+  vertical-align: top;
+  padding-top: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .moviePoster {
   width: 150px;
   height: 225px;
+  z-index: 3;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .movieTitle {
-	text-decoration: none;
-	color: white;
   margin-top: 3px;
   width: 160px;
   height: 40px;
-	font-size: 20px;
+  margin: 3px auto;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+}
+
+.movie-table {
+	display: table;
+	width: 100%;
+	height: 310px;
+	background-color: #336699;
+}
+
+.movie-body {
+	display: table-row-group;
+}
+
+.movie-row {
+	display: table-row;
+}
+
+.movie > a {
+  text-decoration: none;
+  color: white;
+}
+
+.like-icon {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  margin-top: 8px;
+  margin-left: -45px;
+  z-index: 1;
 }

@@ -96,14 +96,28 @@
 			</div>
 
 			<h1>Related Movies</h1>
-			<div class="horizontal_scroll jumbotron">
-
-				<a ng-click="gotoMovie(relatedMovie.id)" ng-repeat="relatedMovie in relatedMovies">
-					<img src="{{relatedMovie.poster}}" class="moviePoster"/>
-					&emsp;
-				</a>
-
-			</div>
+			<div class="movie-table">
+				<div class="movie-body">
+					<div class="button-div" ng-show="relatedMovieStore.length != 0">
+						<a ng-click="scrollLeft()">
+							<img src="../images/left-arrow.png"/>
+						</a>
+					</div>
+					<div class="loader dash" ng-show="relatedMovieStore.length == 0"></div>
+					<div class="movie" ng-repeat="movie in relatedMovieDisplay">
+						<a ng-click="gotoMovie(movie.id)">
+							<img src="{{movie.poster_path}}" class="moviePoster"/>
+							<img src="../images/like.png" class="like-icon" ng-show="movie.liked"/>
+							<p class="movieTitle">{{movie.title}}</p>
+						</a>
+					</div>
+					<div class="button-div" ng-show="relatedMovieStore.length != 0">
+						<a ng-click="scrollRight()">
+							<img src="../images/right-arrow.png"/>
+						</a>
+					</div>
+				</div>
+			</div><br/>
 
 		</div>
 
