@@ -10,7 +10,7 @@
 </head>
 
 <body>
-	<div class="container" ng-controller="index-controller"> 
+	<div class="container" ng-controller="index-controller">
 		<div ng-controller="search-controller ">
 			<div class="container MovieSearchContainer" ng-repeat="sResult in searchResult" ng-style="{'background':(sResult.bColor)}" >
 				<div class="movieSearchPosterPosition" ng-click="gotoMovie(sResult.id)" >
@@ -35,7 +35,7 @@
 				<li>Try different keywords.</li>
 				<li>Try more general keywords.</li>
 			</ul>
-		</div>	
+		</div>
 	</div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>

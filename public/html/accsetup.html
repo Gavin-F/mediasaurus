@@ -20,7 +20,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="menu-btn" id="close" data-dismiss="modal">Close</button>
-							<button type="button" class="menu-btn" id="skip" data-dismiss="modal" ng-click="genreSkip()">Skip</button>
+							<button type="button" class="menu-btn" id="skip" data-dismiss="modal" ng-click="skip()">Skip</button>
 						</div>
 					</div>
 				</div>
@@ -85,18 +85,6 @@
 				<h2 class="header">pick some movies you like from below</h2>
 
 				<div class="selection-divider-upper"></div>
-
-				<!-- <div class="loader setup" ng-show="movieStore.length == 0"></div>
-
-				<div class="movie-box">
-					<div class="movie" ng-repeat="movie in movieBuffer">
-						<a ng-click="movieClick(movie)">
-							<img src="{{movie.poster}}" class="moviePoster" ng-class="{movieClicked : movie.clicked}"/>
-							<br/>
-							<p class="movieTitle">{{movie.title}}</p>
-						</a>
-					</div>
-				</div> -->
 
 				<div class="movie-table">
 					<div class="movie-body">

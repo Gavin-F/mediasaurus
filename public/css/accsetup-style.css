@@ -68,7 +68,7 @@ h2 {
   width: 65%;
   height: 600px;
   opacity: 0;
-  animation-delay: 0s; /* 5 */
+  animation-delay: 5s; /* 5 */
 }
 
 .box-2 {
