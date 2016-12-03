@@ -67,11 +67,18 @@ index.config(function($routeProvider) {
 ///////////////////////////////////////////////////////
 // INDEX CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("index-controller", function($scope,$route, $localStorage, $http, $location, $window) {
-
+index.controller("index-controller", function($scope,$route, $localStorage, $http, $location, $window, $timeout) {
 	// $scope.isActive = function (viewLocation) {
 	// 	return viewLocation === $location.path();
 	// };
+
+	$(window).ready(function() {
+    	$('html').hide();
+    	$(window).on('load', function(){
+        	$('html').show();
+    	});
+	});
+
 	$scope.isActive2 = function() {
 	    if(($location.path()=='/account')||($location.path()=='/password')){
 	    	return 1;
@@ -125,6 +132,7 @@ index.controller("index-controller", function($scope,$route, $localStorage, $htt
 	$scope.goAbout = function(){
 		$location.url("/about");
 	}
+
 });
 
 ///////////////////////////////////////////////////////
@@ -166,6 +174,7 @@ index.controller("about-controller", function($scope, $location, $localStorage) 
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("dashboard-controller", function($scope,$location, $http, $timeout, $localStorage,$sessionStorage) {
+
 	$scope.recShow = false; // show pref box if user is logged in
 	$scope.recGet = true; // show recs if get request is successful
 	if($localStorage.userID !== undefined) {
@@ -582,6 +591,7 @@ index.controller("name-controller", function($scope,$location,$localStorage) {
 // Movie CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("movie-controller", function($scope,$location,$routeParams,$http, $localStorage, $filter) {
+
 	var ids = {
 		movie_id: $routeParams.id,
 		user_id: $localStorage.userID

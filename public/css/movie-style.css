@@ -137,10 +137,10 @@ h1, h2 {
 
 .movie {
 	display:inline-block;
-  text-align: center;
-  width: 160px;
-  margin-left: 10px;
-  margin-right: 10px;
+	text-align: center;
+	width: 160px;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 
 .moviePoster {
