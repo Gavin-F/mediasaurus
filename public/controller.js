@@ -8,7 +8,8 @@ var index = angular.module("index",
 	"index.moviepage",
 	"index.dashboard",
 	"index.search",
-	"index.account"
+	"index.account",
+	"index.email"
 	]);
 
 index.config(function($routeProvider) {
@@ -591,6 +592,33 @@ index.controller("email-controller", function($scope,$location,$localStorage) {
 	if($localStorage.userID === undefined) {
 		$location.url("/");
 	}
+	$scope.emailError = false;
+
+	$scope.submit = function() {
+		// get form info
+		var user = {
+			password: $scope.password,
+			email: $scope.email,
+			newpassword: $scope.newpassword
+		};
+		// send to parent controller
+		$scope.$emit("signupEvent", user);
+	}
+
+	// if sign up was successful, update id and send to new page
+	$scope.$on("emailUpdate", function(event) {
+		$location.url("/account");
+	});
+
+	// if sign up failed, update page
+	$scope.$on("emailError", function(event, error) {
+		$scope.emailError = error;
+	});
+
+
+
+
+
 	$scope.goDashboard = function(){
 		$location.url("/dashboard");
 	}

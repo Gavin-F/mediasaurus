@@ -18,7 +18,7 @@ a:focus{
 	color: white;
 }
 a{
-	color: #002145;
+	color: #E9E9E9;
 }
 /* On using dropdown menu (To right shift popuped) */
 /*.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
@@ -36,7 +36,7 @@ a{
 }
 
 .edit-icon{
-	color: #002145;
+	color: #E9E9E9;
 }
 .edit-icon: hover,
 .edit-icon: focus{
