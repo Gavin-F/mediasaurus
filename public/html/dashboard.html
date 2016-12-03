@@ -24,74 +24,123 @@
 	<div class="container" ng-controller="dashboard">
 		<div ng-controller="dashboard-controller">
 			<h1 ng-show="recShow">Your Recommendations</h1>
-			<div class="movie-box" ng-show="recShow">
-				<div class="button-col" ng-show="recGet">
-					<a ng-click="scrollLeft('rec')" style="align:left">
-						<img src="../images/left-arrow.png" height="120px" width="120px"/>
-					</a>
-				</div>
-				<div class="movie-col" ng-show="recGet">
+
+			<div class="movie-table">
+				<div class="movie-body">
+					<div class="button-div" ng-show="recGet && recMovieStore.length != 0">
+						<a ng-click="scrollLeft('rec')">
+							<img src="../images/left-arrow.png"/>
+						</a>
+					</div>
 					<div class="loader dash" ng-show="recMovieStore.length == 0"></div>
+					<h2 ng-show="!recGet"><br/><br/>No preferences set up! <br/><br/> Go like a movie or set up your preferences in your profile!</h2>
 					<div class="movie" ng-repeat="movie in recMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/>
 							<p class="movieTitle">{{movie.title}}</p>
 						</a>
 					</div>
+					<div class="button-div" ng-show="recGet && recMovieStore.length != 0">
+						<a ng-click="scrollRight('rec')">
+							<img src="../images/right-arrow.png"/>
+						</a>
+					</div>
 				</div>
-				<div class="button-col" ng-show="recGet">
-					<a ng-click="scrollRight('rec')">
-						<img src="../images/right-arrow.png" height="120px" width="120px"/>
-					</a>
-				</div>
-				<h2 ng-show="!recGet"><br/><br/>No preferences set up! <br/><br/> Go like a movie or set up your preferences in your profile!</h2>
-			</div><br />
+			</div><br/>
 
 			<h1>Popular</h1>
-			<div class="movie-box">
-				<div class="button-col">
-					<a ng-click="scrollLeft('pop')" style="align:left">
-						<img src="../images/left-arrow.png" height="120px" width="120px"/>
-					</a>
-				</div>
-				<div class="movie-col">
+			<div class="movie-table">
+				<div class="movie-body">
+					<div class="button-div" ng-show="popMovieStore.length != 0">
+						<a ng-click="scrollLeft('pop')">
+							<img src="../images/left-arrow.png"/>
+						</a>
+					</div>
 					<div class="loader dash" ng-show="popMovieStore.length == 0"></div>
 					<div class="movie" ng-repeat="movie in popMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/>
+							<img src="../images/like.png" class="like-icon" ng-show="movie.liked"/>
+							<p class="movieTitle">{{movie.title}}</p>
+						</a>
+					</div>
+					<div class="button-div" ng-show="popMovieStore.length != 0">
+						<a ng-click="scrollRight('pop')">
+							<img src="../images/right-arrow.png"/>
+						</a>
+					</div>
+				</div>
+			</div><br/>
+
+			<!-- <div class="movie-box">
+				<div class="loader dash" ng-show="popMovieStore.length == 0"></div>
+				<div class="button-col" ng-show="popMovieStore.length != 0">
+					<a ng-click="scrollLeft('pop')">
+						<img src="../images/left-arrow.png"/>
+					</a>
+				</div>
+				<div class="movie-col">
+					<div class="movie" ng-repeat="movie in popMovieDisplay">
+						<a ng-click="gotoMovie(movie.id)">
+							<img src="{{movie.poster}}" class="moviePoster"/>
+							<img src="../images/like.png" class="like-icon" ng-show="movie.liked"/>
 							<p class="movieTitle">{{movie.title}}</p>
 						</a>
 					</div>
 				</div>
-				<div class="button-col">
+				<div class="button-col" ng-show="popMovieStore.length != 0">
 					<a ng-click="scrollRight('pop')">
-						<img src="../images/right-arrow.png" height="120px" width="120px"/>
+						<img src="../images/right-arrow.png"/>
 					</a>
 				</div>
-			</div><br />
+			</div><br /> -->
 
 			<h1>Now Playing</h1>
-			<div class="movie-box">
-				<div class="button-col">
+			<div class="movie-table">
+				<div class="movie-body">
+					<div class="button-div" ng-show="nowMovieStore.length != 0">
+						<a ng-click="scrollLeft('now')">
+							<img src="../images/left-arrow.png"/>
+						</a>
+					</div>
+					<div class="loader dash" ng-show="nowMovieStore.length == 0"></div>
+					<div class="movie" ng-repeat="movie in nowMovieDisplay">
+						<a ng-click="gotoMovie(movie.id)">
+							<img src="{{movie.poster}}" class="moviePoster"/>
+							<!-- <img src="../images/like.png" class="like-icon" ng-show="movie.liked"/> -->
+							<p class="movieTitle">{{movie.title}}</p>
+						</a>
+					</div>
+					<div class="button-div" ng-show="nowMovieStore.length != 0">
+						<a ng-click="scrollRight('now')">
+							<img src="../images/right-arrow.png"/>
+						</a>
+					</div>
+				</div>
+			</div><br/>
+
+			<!-- <div class="movie-box">
+				<div class="loader dash" ng-show="nowMovieStore.length == 0"></div>
+				<div class="button-col" ng-show="nowMovieStore.length != 0">
 					<a ng-click="scrollLeft('now')" style="align:left">
 						<img src="../images/left-arrow.png" height="120px" width="120px"/>
 					</a>
 				</div>
 				<div class="movie-col">
-					<div class="loader dash" ng-show="nowMovieStore.length == 0"></div>
 					<div class="movie" ng-repeat="movie in nowMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">
 							<img src="{{movie.poster}}" class="moviePoster"/>
+							<img src="../images/like.png" class="like-icon" ng-show="movie.liked"/>
 							<p class="movieTitle">{{movie.title}}</p>
 						</a>
 					</div>
 				</div>
-				<div class="button-col">
+				<div class="button-col" ng-show="nowMovieStore.length != 0">
 					<a ng-click="scrollRight('now')">
 						<img src="../images/right-arrow.png" height="120px" width="120px"/>
 					</a>
 				</div>
-			</div><br />
+			</div><br /> -->
 
 			<div class="tooltip_templates">
 				<div class="tooltipInfo">
