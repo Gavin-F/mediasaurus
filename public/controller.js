@@ -105,11 +105,9 @@ index.controller("index-controller", function($scope,$route, $localStorage, $htt
 	$scope.goHome = function(){
 		$location.url("/");
 	}
-
 	$scope.goDashboard = function(){
 		$location.url("/dashboard");
 	}
-
 	$scope.goAccountSettings = function(){
 		$location.url("/account");
 	}
@@ -152,8 +150,6 @@ index.controller("home-controller", function($scope, $location, $localStorage) {
 	}
 });
 
-
-
 ///////////////////////////////////////////////////////
 // ABOUT CONTROLLER
 ///////////////////////////////////////////////////////
@@ -161,11 +157,10 @@ index.controller("about-controller", function($scope, $location, $localStorage) 
 
 });
 
-
 ///////////////////////////////////////////////////////
 // DASH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("dashboard-controller", function($scope,$location, $http, $timeout, $localStorage,$sessionStorage) {
+index.controller("dashboard-controller", function($scope, $location, $http, $timeout, $localStorage,$sessionStorage) {
 	$scope.recShow = false; // show pref box if user is logged in
 	$scope.recGet = true; // show recs if get request is successful
 	if($localStorage.userID !== undefined) {
@@ -192,14 +187,17 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 
 	// Storage arrays and counters for movie boxes
 	$scope.recMovieDisplay = [];
+	$scope.recMovieSets = [];
 	$scope.recMovieStore = [];
 	$scope.recScrollCount = 0;
 
 	$scope.popMovieDisplay = [];
+	$scope.popMovieSets = [];
 	$scope.popMovieStore = [];
 	$scope.popScrollCount = 0;
 
 	$scope.nowMovieDisplay = [];
+	$scope.nowMovieSets = [];
 	$scope.nowMovieStore = [];
 	$scope.nowScrollCount = 0;
 
@@ -208,18 +206,18 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 		switch(section) {
 			case "pop":
 				if($scope.popScrollCount > 0) $scope.popScrollCount--;
-				else if($scope.popScrollCount == 0) $scope.popScrollCount = $scope.popMovieStore.length-1;
-				$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
+				else if($scope.popScrollCount == 0) $scope.popScrollCount = $scope.popMovieSets.length-1;
+				$scope.popMovieDisplay = $scope.popMovieSets[$scope.popScrollCount];
 				break;
 			case "now":
 				if($scope.nowScrollCount > 0) $scope.nowScrollCount--;
-				else if($scope.nowScrollCount == 0) $scope.nowScrollCount = $scope.nowMovieStore.length-1;
-				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
+				else if($scope.nowScrollCount == 0) $scope.nowScrollCount = $scope.nowMovieSets.length-1;
+				$scope.nowMovieDisplay = $scope.nowMovieSets[$scope.nowScrollCount];
 				break;
 			case "rec":
 				if($scope.recScrollCount > 0) $scope.recScrollCount--;
-				else if($scope.recScrollCount == 0) $scope.recScrollCount = $scope.recMovieStore.length-1;
-				$scope.recMovieDisplay = $scope.recMovieStore[$scope.recScrollCount];
+				else if($scope.recScrollCount == 0) $scope.recScrollCount = $scope.recMovieSets.length-1;
+				$scope.recMovieDisplay = $scope.recMovieSets[$scope.recScrollCount];
 				break;
 			default: break;
 		}
@@ -229,19 +227,19 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	$scope.scrollRight = function(section) {
 		switch(section) {
 			case "pop":
-				if($scope.popScrollCount < $scope.popMovieStore.length-1) $scope.popScrollCount++;
-				else if($scope.popScrollCount == $scope.popMovieStore.length-1) $scope.popScrollCount = 0;
-				$scope.popMovieDisplay = $scope.popMovieStore[$scope.popScrollCount];
+				if($scope.popScrollCount < $scope.popMovieSets.length-1) $scope.popScrollCount++;
+				else if($scope.popScrollCount == $scope.popMovieSets.length-1) $scope.popScrollCount = 0;
+				$scope.popMovieDisplay = $scope.popMovieSets[$scope.popScrollCount];
 				break;
 			case "now":
-				if($scope.nowScrollCount < $scope.nowMovieStore.length-1) $scope.nowScrollCount++;
-				else if($scope.nowScrollCount == $scope.nowMovieStore.length-1) $scope.nowScrollCount = 0;
-				$scope.nowMovieDisplay = $scope.nowMovieStore[$scope.nowScrollCount];
+				if($scope.nowScrollCount < $scope.nowMovieSets.length-1) $scope.nowScrollCount++;
+				else if($scope.nowScrollCount == $scope.nowMovieSets.length-1) $scope.nowScrollCount = 0;
+				$scope.nowMovieDisplay = $scope.nowMovieSets[$scope.nowScrollCount];
 				break;
 			case "rec":
-				if($scope.recScrollCount < $scope.recMovieStore.length-1) $scope.recScrollCount++;
-				else if($scope.recScrollCount == $scope.recMovieStore.length-1) $scope.recScrollCount = 0;
-				$scope.recMovieDisplay = $scope.recMovieStore[$scope.recScrollCount];
+				if($scope.recScrollCount < $scope.recMovieSets.length-1) $scope.recScrollCount++;
+				else if($scope.recScrollCount == $scope.recMovieSets.length-1) $scope.recScrollCount = 0;
+				$scope.recMovieDisplay = $scope.recMovieSets[$scope.recScrollCount];
 				break;
 			default: break;
 		}
@@ -254,44 +252,69 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 
 	$scope.$emit("dashboardEvent", [1, $localStorage.userID]);
 
-	$scope.numberofMovies = 5;
-	$(window).resize(function(){
-    	if(window.innerWidth <= 1200)
-    		$scope.numberofMovies = 4;
-    	else if(window.innerWidth <= 991)
-    		$scope.numberofMovies = 3;
-    	else if (window.innerWidth <= 721)
-			$scope.numberofMovies = 2;
-		else 
-			$scope.numberofMovies = 5;    		
-	});
+	$scope.numberOfMovies = getNumberOfMovies();
+	$scope.timeOut = null;
+	window.onresize = function(){
+	   if ($scope.timeOut != null)
+	       clearTimeout($scope.timeOut);
+
+	   $scope.timeOut = setTimeout(function(){
+		   var update = getNumberOfMovies();
+   			if($scope.numberOfMovies != update) {
+	   			$scope.numberOfMovies = update;
+	   			updateSets($scope.numberOfMovies);
+				$scope.$apply();
+			}
+	   }, 0);
+	};
 
 	$scope.$on("dashboardUpdate", function(event, returnMovies) {
 		if(returnMovies[2].length == 0) $scope.recGet = false;
-		for(i = 0; i < returnMovies[0].length/$scope.numberofMovies; i++) {
-			$scope.popMovieStore.push(returnMovies[0].slice(5*i,5*i+5));
-		}
-		for(i = 0; i < returnMovies[1].length/5; i++) {
-			$scope.nowMovieStore.push(returnMovies[1].slice(5*i,5*i+5));
-		}
-		for(i = 0; i < returnMovies[2].length/5; i++) {
-			$scope.recMovieStore.push(returnMovies[2].slice(5*i,5*i+5));
-		}
-		$scope.popMovieDisplay = $scope.popMovieStore[0];
-		$scope.nowMovieDisplay = $scope.nowMovieStore[0];
-		$scope.recMovieDisplay = $scope.recMovieStore[0];
+		$scope.popMovieStore = returnMovies[0];
+		$scope.nowMovieStore = returnMovies[1];
+		$scope.recMovieStore = returnMovies[2];
+		updateSets($scope.numberOfMovies);
 	});
 
-	$(document).ready(function() {
-		$('.tooltip-custom').tooltipster({
-			side: 'bottom',
-			interactive: false,
-			arrow: false,
-			theme: 'tooltipster-borderless',
-			//animation: 'fall',
-			contentCloning: true
-		});
-	});
+	function updateSets(x) {
+		$scope.popMovieSets = [];
+		$scope.nowMovieSets = [];
+		$scope.recMovieSets = [];
+		$scope.popMovieDisplay = [];
+		$scope.nowMovieDisplay = [];
+		$scope.recMovieDisplay = [];
+		for(i = 0; i < $scope.popMovieStore.length/x; i++) {
+			$scope.popMovieSets.push($scope.popMovieStore.slice(x*i,x*i+x));
+		}
+		for(i = 0; i < $scope.nowMovieStore.length/x; i++) {
+			$scope.nowMovieSets.push($scope.nowMovieStore.slice(x*i,x*i+x));
+		}
+		$scope.recMovieStore.sort(function() { return 0.5 - Math.random() });
+		for(i = 0; i < $scope.recMovieStore.length/x; i++) {
+			$scope.recMovieSets.push($scope.recMovieStore.slice(x*i,x*i+x));
+		}
+
+		if($scope.popScrollCount >= $scope.popMovieSets.length-1) $scope.popScrollCount = 0;
+		if($scope.nowScrollCount >= $scope.nowMovieSets.length-1) $scope.nowScrollCount = 0;
+		if($scope.recScrollCount >= $scope.recMovieSets.length-1) $scope.recScrollCount = 0;
+
+		$scope.popMovieDisplay = $scope.popMovieSets[$scope.popScrollCount];
+		$scope.nowMovieDisplay = $scope.nowMovieSets[$scope.nowScrollCount];
+		$scope.recMovieDisplay = $scope.recMovieSets[$scope.recScrollCount];
+	};
+
+	function getNumberOfMovies() {
+		if(window.innerWidth <= 1200 && window.innerWidth > 991)
+    		return 4;
+    	else if(window.innerWidth <= 991 && window.innerWidth > 721)
+    		return 3;
+    	else if(window.innerWidth <= 721 && window.innerWidth > 497)
+			return 2;
+		else if(window.innerWidth <= 497)
+			return 1;
+		else
+			return 5;
+	};
 });
 
 ///////////////////////////////////////////////////////
@@ -367,8 +390,6 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 		$scope.signupError = error;
 	});
 });
-
-
 
 ///////////////////////////////////////////////////////
 // ACCOUNT SETUP CONTROLLER
@@ -493,7 +514,6 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 	}
 });
 
-
 ///////////////////////////////////////////////////////
 // LOGIN CONTROLLER
 ///////////////////////////////////////////////////////
@@ -527,8 +547,6 @@ index.controller("login-controller", function($scope, $location, $http, $localSt
 	});
 });
 
-
-
 ///////////////////////////////////////////////////////
 // Reset Password CONTROLLER
 ///////////////////////////////////////////////////////
@@ -545,7 +563,6 @@ index.controller("password-controller", function($scope,$location,$localStorage)
 	}
 });
 
-
 ///////////////////////////////////////////////////////
 // Reset email CONTROLLER
 ///////////////////////////////////////////////////////
@@ -561,6 +578,7 @@ index.controller("email-controller", function($scope,$location,$localStorage) {
 		$location.url("/account");
 	}
 });
+
 ///////////////////////////////////////////////////////
 // Reset Name CONTROLLER
 ///////////////////////////////////////////////////////
@@ -576,7 +594,6 @@ index.controller("name-controller", function($scope,$location,$localStorage) {
 		$location.url("/account");
 	}
 });
-
 
 ///////////////////////////////////////////////////////
 // Movie CONTROLLER

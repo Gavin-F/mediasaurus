@@ -15,7 +15,8 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 					id: req[i].id,
 					title: req[i].title,
 					poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
-					rating: req[i].vote_average
+					rating: req[i].vote_average,
+					liked: true
 				};
 				popMovies.push(movie);
 			}
@@ -30,12 +31,14 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 						id: req[i].id,
 						title: req[i].title,
 						poster: "https://image.tmdb.org/t/p/w500" + req[i].poster_path,
-						rating: req[i].vote_average
+						rating: req[i].vote_average,
+						liked: true
 					};
 					nowMovies.push(movie);
 				}
 				returnMovies.push(nowMovies);
 
+				// check if user is logged in, dont get recs if not logged in
 				if(obj[1] !== undefined) {
 					// Send back now playing movies
 					$http.get("/api/movies/recommendations/" + obj[1]).success(function(req) {
@@ -53,6 +56,7 @@ angular.module("index.dashboard", ["ngRoute"]).controller("dashboard", function(
 							}
 						}
 						returnMovies.push(recMovies);
+						//returnMovies.push(req.preferences);
 						$scope.$broadcast("dashboardUpdate", returnMovies);
 					});
 				}
