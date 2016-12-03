@@ -306,11 +306,11 @@ index.controller("dashboard-controller", function($scope, $location, $http, $tim
 	function getNumberOfMovies() {
 		if(window.innerWidth <= 1200 && window.innerWidth > 991)
     		return 4;
-    	else if(window.innerWidth <= 991 && window.innerWidth > 721)
+    	else if(window.innerWidth <= 991 && window.innerWidth > 740)
     		return 3;
-    	else if(window.innerWidth <= 721 && window.innerWidth > 497)
+    	else if(window.innerWidth <= 740 && window.innerWidth > 560)
 			return 2;
-		else if(window.innerWidth <= 497)
+		else if(window.innerWidth <= 560)
 			return 1;
 		else
 			return 5;
@@ -394,7 +394,7 @@ index.controller("signup-controller", function($scope, $location, $http, $localS
 ///////////////////////////////////////////////////////
 // ACCOUNT SETUP CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("accsetup-controller", function($scope, $location, $http, $localStorage) {
+index.controller("accsetup-controller", function($scope, $location, $http, $localStorage, $timeout) {
 	if($localStorage.userID === undefined) { // if the user isn't signed in, send them back to signup splash
 		$location.url("/");
 	}
@@ -408,7 +408,8 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 
 	$scope.genres = []; // array to pass to server, contains all the genres the user has selected
 	$scope.movieStore = []; // return array from api get
-	$scope.movieBuffer = []; // buffer that is displayed on preferences
+	$scope.movieSets = []; // return array from api get
+	$scope.movieDisplay = []; // buffer that is displayed on preferences
 	$scope.moviePrefs = []; // preferences to pass to server
 	$scope.count = 0; // count for buffer
 
@@ -452,7 +453,6 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 	$scope.nextMovies = function() {
 		$scope.count++;
 		if($scope.count == $scope.movieStore.length) { // if no more, send them to dashboard
-			//$localStorage.setupDone = true; // lock so user can't enter setup again
 			var obj = {
 				userID: $localStorage.userID,
 				movie_ids: $scope.moviePrefs.sort(function() { return 0.5 - Math.random() })
@@ -462,13 +462,12 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 			$location.url("/dashboard"); // finish and redirect
 		}
 		else { // otherwise show new list of movies
-			$scope.scramble($scope.count);
+			scramble();
 		}
 	}
 
-	// scramble the 5 lists movies from store
 	$scope.scramble = function() {
-		scrambleGet5($scope.count);
+		scrambleGet($scope.count);
 	}
 
 	// skip out of preference selection
@@ -479,7 +478,7 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 	// receieve array of movies from genre array
 	$scope.$on("genreUpdate", function(event, movies) {
 		$scope.movieStore = movies;
-		scrambleGet5(0);
+		scrambleGet(0);
 	});
 
 	// Helper function to update the scope variables
@@ -507,11 +506,46 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 		}
 	};
 
-	// Helper to get new 5 movies for movieBuffer
-	function scrambleGet5(i) {
-		$scope.movieStore[i].sort(function() { return 0.5 - Math.random() });
-		$scope.movieBuffer = $scope.movieStore[i].slice(0,5);
+	$scope.numberOfMovies = getNumberOfMovies();
+	$scope.timeOut = null;
+	window.onresize = function(){
+		if($scope.movieStore.length != 0) {
+		    if ($scope.timeOut != null)
+		        clearTimeout($scope.timeOut);
+
+		    $scope.timeOut = setTimeout(function(){
+			    var update = getNumberOfMovies();
+	   			if($scope.numberOfMovies != update) {
+					$scope.numberOfMovies = update;
+		   			updateMovies();
+					$scope.$apply();
+				}
+		    }, 0);
+	   }
+	};
+
+	function updateMovies() {
+		$scope.movieDisplay = $scope.movieStore[$scope.count].slice(0, getNumberOfMovies());
 	}
+
+	// Helper to get new 5 movies for movieDisplay
+	function scrambleGet(i) {
+		$scope.movieStore[i].sort(function() { return 0.5 - Math.random() });
+		$scope.movieDisplay = $scope.movieStore[i].slice(0,getNumberOfMovies());
+	}
+
+	function getNumberOfMovies() {
+		if(window.innerWidth <= 1200 && window.innerWidth > 991)
+    		return 4;
+    	else if(window.innerWidth <= 991 && window.innerWidth > 740)
+    		return 3;
+    	else if(window.innerWidth <= 740 && window.innerWidth > 560)
+			return 2;
+		else if(window.innerWidth <= 560)
+			return 1;
+		else
+			return 5;
+	};
 });
 
 ///////////////////////////////////////////////////////
