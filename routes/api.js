@@ -238,21 +238,14 @@ router.route('/movies/:movie_id')
 	 *		200: {details, cast, crew, similarMovies, providers}
 	 */
 	.get(function(req, res){
-		var results = [];
 		tmdb.getMovieDetails(req.params.movie_id, function(details){
 			var jsonDetails = JSON.parse(details);
 			if(jsonDetails.status_code) return res.status(400).send();
 			
-			// push details
-			results.push({details: jsonDetails});
 			tmdb.getMovieCredits(req.params.movie_id, function(credits){
 				var jsonCredits = JSON.parse(credits);
-				results.push({cast: jsonCredits.cast});
-				results.push({crew: jsonCredits.crew});
 				
 				tmdb.getSimilarMovies(req, function(similarMovies){
-					// push similarMovies
-					results.push({similarMovies: JSON.parse(similarMovies).results});
 					
 					justwatch.searchForProviders(jsonDetails.title, function(providers) {;
 						// filter provider results
@@ -265,9 +258,13 @@ router.route('/movies/:movie_id')
 								providers[i].monetization_type === 'rent' ||
 								providers[i].presentation_type === 'hd') providers.splice(i, 1);
 							
-							// push providers
-							results.push({providers: providers});
-							return res.status(200).send(results);
+							return res.status(200).send({
+								details: jsonDetails, 
+								cast: jsonCredits.cast, 
+								crew: jsonCredits.crew, 
+								similarMovies: JSON.parse(similarMovies).results,
+								providers: providers
+							});
 					});
 				});
 			});

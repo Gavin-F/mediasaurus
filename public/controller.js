@@ -626,6 +626,7 @@ index.controller("name-controller", function($scope,$location,$localStorage) {
 ///////////////////////////////////////////////////////
 index.controller("movie-controller", function($scope,$location,$routeParams,$http, $localStorage, $filter) {
 
+	$scope.prefMovies = [];
 	var ids = {
 		movie_id: $routeParams.id,
 		user_id: $localStorage.userID
@@ -640,6 +641,21 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 
 	// check if the user has previously liked the movie
 	$scope.$on("likeUpdate", function(event, likedMovies) {
+		$scope.prefMovies = likedMovies;
+
+		//console.log($scope.relatedMovieStore);
+		//console.log($scope.prefMovies);
+		for(i = 0; i < $scope.relatedMovieStore.length - 1; i++) {
+			var movie = $scope.relatedMovieStore[i];
+			//console.log(movie.id);
+			for(j = 0; j < $scope.prefMovies.length - 1; j++) {
+				if($scope.prefMovies[j].movie_id == movie.id) {
+					//console.log('asg');
+					movie.liked = true;
+				}
+			}
+		}
+
 		for (i = 0; i < likedMovies.length; i++) {
 			if (likedMovies[i].movie_id == ids.movie_id) {
 				$scope.likeText = "Liked";
@@ -710,59 +726,59 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 
 	$scope.$on("movieUpdate", function(event, obj_movie) {
 		$scope.movie = obj_movie;
-		for (i = 0; i < obj_movie[3].similarMovies.length; i++) {
-			obj_movie[3].similarMovies[i].poster_path = "https://image.tmdb.org/t/p/w500" + obj_movie[3].similarMovies[i].poster_path;
+		for (i = 0; i < obj_movie.similarMovies.length; i++) {
+			obj_movie.similarMovies[i].poster_path = "https://image.tmdb.org/t/p/w500" + obj_movie.similarMovies[i].poster_path;
 		}
-		$scope.relatedMovieStore = obj_movie[3].similarMovies;
-		console.log($scope.relatedMovieStore);
+		$scope.relatedMovieStore = obj_movie.similarMovies;
+		//console.log($scope.relatedMovieStore);
 		updateSets($scope.numberOfMovies);
-		console.log(obj_movie);
-		$scope.overview = obj_movie[0].details.overview;
-		$scope.title = obj_movie[0].details.title;
-		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie[0].details.poster_path;
-		$scope.date = obj_movie[0].details.release_date;
+		//console.log(obj_movie);
+		$scope.overview = obj_movie.details.overview;
+		$scope.title = obj_movie.details.title;
+		$scope.poster = "https://image.tmdb.org/t/p/w500" + obj_movie.details.poster_path;
+		$scope.date = obj_movie.details.release_date;
 
-		for (i = 0; i < obj_movie[0].details.genres.length; i++) {
-			if ((i+1) == obj_movie[0].details.genres.length) {
-				obj_genres += obj_movie[0].details.genres[i].name;
+		for (i = 0; i < obj_movie.details.genres.length; i++) {
+			if ((i+1) == obj_movie.details.genres.length) {
+				obj_genres += obj_movie.details.genres[i].name;
 			}
 			else {
-    			obj_genres += obj_movie[0].details.genres[i].name + ", ";
+    			obj_genres += obj_movie.details.genres[i].name + ", ";
 			}
 		}
 
 		$scope.genres = obj_genres;
-		$scope.rating = obj_movie[0].details.vote_average;
-		movie_rating = obj_movie[0].details.vote_average*10;
+		$scope.rating = obj_movie.details.vote_average;
+		movie_rating = obj_movie.details.vote_average*10;
 		movie_rating = movie_rating + "%";
 		$("#rateYo").rateYo("rating", movie_rating);
-		runtime = obj_movie[0].details.runtime + " min";
+		runtime = obj_movie.details.runtime + " min";
 		$scope.duration = runtime;
 
-		if (obj_movie[1].cast.length >= 10) {
+		if (obj_movie.cast.length >= 10) {
 			for (i = 0; i < 10; i++) {
 				if (i == 9) {
-					obj_cast += obj_movie[1].cast[i].name + " ...";
+					obj_cast += obj_movie.cast[i].name + " ...";
 				}
 				else {
-	    			obj_cast += obj_movie[1].cast[i].name + ", ";
+	    			obj_cast += obj_movie.cast[i].name + ", ";
 				}
 			}
 		}
 		else {
-			for (i = 0; i < obj_movie[1].cast.length; i++) {
-				if ((i+1) == obj_movie[1].cast.length) {
-					obj_cast += obj_movie[1].cast[i].name;
+			for (i = 0; i < obj_movie.cast.length; i++) {
+				if ((i+1) == obj_movie.cast.length) {
+					obj_cast += obj_movie.cast[i].name;
 				}
 				else {
-	    			obj_cast += obj_movie[1].cast[i].name + ", ";
+	    			obj_cast += obj_movie.cast[i].name + ", ";
 				}
 			}
 		}
 
 		$scope.cast = obj_cast;
 
-		var directors = $filter('filter')(obj_movie[2].crew, {job:"Director", department:"Directing"})
+		var directors = $filter('filter')(obj_movie.crew, {job:"Director", department:"Directing"})
 
 		for (i = 0; i < directors.length; i++) {
 			if ((i+1) == directors.length) {
@@ -775,30 +791,31 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 
 		$scope.director = obj_dir;
 
-		if (obj_movie[4].providers.length !== 0) {
-			for (i = 0; i < obj_movie[4].providers.length; i++) {
-				if (obj_movie[4].providers[i].provider_id == 68) {
+		if (obj_movie.providers.length !== 0) {
+			for (i = 0; i < obj_movie.providers.length; i++) {
+				if (obj_movie.providers[i].provider_id == 68) {
 					$scope.microsoft.button = true;
-					$scope.microsoft.url = obj_movie[4].providers[i].urls.standard_web;
+					$scope.microsoft.url = obj_movie.providers[i].urls.standard_web;
 				}
-				if (obj_movie[4].providers[i].provider_id == 2) {
+				if (obj_movie.providers[i].provider_id == 2) {
 					$scope.itunes.button = true;
-					$scope.itunes.url = obj_movie[4].providers[i].urls.standard_web;
+					$scope.itunes.url = obj_movie.providers[i].urls.standard_web;
 				}
-				if (obj_movie[4].providers[i].provider_id == 3) {
+				if (obj_movie.providers[i].provider_id == 3) {
 					$scope.google.button = true;
-					$scope.google.url = obj_movie[4].providers[i].urls.standard_web;
+					$scope.google.url = obj_movie.providers[i].urls.standard_web;
 				}
-				if (obj_movie[4].providers[i].provider_id == 18) {
+				if (obj_movie.providers[i].provider_id == 18) {
 					$scope.playstation.button = true;
-					$scope.playstation.url = obj_movie[4].providers[i].urls.standard_web;
+					$scope.playstation.url = obj_movie.providers[i].urls.standard_web;
 				}
-				if (obj_movie[4].providers[i].provider_id == 8) {
+				if (obj_movie.providers[i].provider_id == 8) {
 					$scope.netflix.button = true;
-					$scope.netflix.url = obj_movie[4].providers[i].urls.standard_web;
+					$scope.netflix.url = obj_movie.providers[i].urls.standard_web;
 				}
 			}
 		}
+
 		$scope.doneload = true;
 
 	});
