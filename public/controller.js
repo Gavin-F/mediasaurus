@@ -452,7 +452,7 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 			$location.url("/dashboard"); // finish and redirect
 		}
 		else { // otherwise show new list of movies
-			scramble();
+			$scope.scramble();
 		}
 	}
 
