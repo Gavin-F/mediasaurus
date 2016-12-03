@@ -12,12 +12,12 @@ angular.module("index.search", ["ngRoute"]).controller("search", function($scope
 			var color;
 			for(i = 0; i < size; i++) {
 				if((i-offset)%2==0){
-					color = "#002145";
-					text = "#E9E9E9"
+					color = "#336699";
+					text = "#202020"
 				}
 				else{
 					color = "transparent";
-					text = "black";
+					text = "#E9E9E9";
 				}
 				var searchItem = {
 					id: req[i].id,

@@ -2635,6 +2635,7 @@ input[type="search"] {
 }
 .form-group {
   margin-bottom: 15px;
+  display: inline-block;
 }
 .radio,
 .checkbox {
@@ -3537,7 +3538,7 @@ tbody.collapse.in {
   z-index: 1000;
   display: none;
   float: left;
-  min-width: 120px;
+  min-width: 130px;
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
@@ -6830,13 +6831,13 @@ button.close {
   -webkit-box-shadow: none;
   box-shadow: none;
   color: white;
-  background-color: #002145;
+  background-color: #336699;
 }
 /*******************************************/
 .dropdown-menu > li > a {
   font-size: 12px;
   color: white;
-  background-color: #002145;
+  background-color: #336699;
 }
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus{

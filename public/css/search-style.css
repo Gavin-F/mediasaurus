@@ -30,7 +30,7 @@
 }
 
 .edit-icon{
-	color: #002145;
+	color: #336699;
 }
 .edit-icon: hover,
 .edit-icon: focus{
@@ -65,11 +65,11 @@
 }
 
 .MovieSearchTitleText{
-	color: black;
+	color: white;
 }
 .MovieSearchTitleText hover,
 .MovieSearchTitleText focus{
-	color: white;
+	color: #E9E9E9;
 }
 .MovieSearchContainer{
 	height: 230px;

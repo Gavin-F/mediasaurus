@@ -68,10 +68,20 @@ index.config(function($routeProvider) {
 ///////////////////////////////////////////////////////
 // INDEX CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("index-controller", function($scope,$route, $localStorage, $http, $location, $window) {
-	// $scope.isActive = function (viewLocation) {
-	// 	return viewLocation === $location.path();
-	// };
+index.controller("index-controller", function($scope,$route,$location,$timeout, $localStorage, $sessionStorage) {
+	$scope.search = function() {
+		var searchObject = {
+			query: $scope.searchString
+		};
+		$sessionStorage.sString=$scope.searchString;
+		$scope.$emit("searchEvent", searchObject);
+	}
+	$scope.$on("searchUpdate", function(event, searchArray) {
+		$sessionStorage.searchResult = searchArray;
+		$sessionStorage.sString = $scope.searchString;
+		$location.url("/search");
+		location.reload();
+	});
 	$scope.isActive2 = function() {
 	    if(($location.path()=='/account')||($location.path()=='/password')){
 	    	return 1;
@@ -101,15 +111,15 @@ index.controller("index-controller", function($scope,$route, $localStorage, $htt
 		delete $localStorage.setupDone;
 		$location.url("/");
 	}
-
+	$scope.gotoMovie = function(id){
+		$location.url("/movies/" + id);
+	}
 	$scope.goHome = function(){
 		$location.url("/");
 	}
-
 	$scope.goDashboard = function(){
 		$location.url("/dashboard");
 	}
-
 	$scope.goAccountSettings = function(){
 		$location.url("/account");
 	}
@@ -131,7 +141,7 @@ index.controller("index-controller", function($scope,$route, $localStorage, $htt
 ///////////////////////////////////////////////////////
 // HOME CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("home-controller", function($scope, $location, $localStorage) {
+index.controller("home-controller", function($scope,$location, $http, $localStorage,$sessionStorage) {
 
 	if($localStorage.userID !== undefined) {
 		$location.url("/dashboard");
@@ -172,18 +182,6 @@ index.controller("dashboard-controller", function($scope,$location, $http, $time
 	if($localStorage.userID !== undefined) {
 		$scope.recShow = true;
 	}
-
-	$scope.search = function() {
-		var searchObject = {
-			query: $scope.searchString
-		};
-		$sessionStorage.sString=$scope.searchString;
-		$scope.$emit("searchEvent", searchObject);
-	}
-	$scope.$on("searchUpdate", function(event, searchArray) {
-		$sessionStorage.searchResult = searchArray;
-		$location.url("/search");
-	});
 
 	$scope.reset = function() {
 		delete $localStorage.userID;
@@ -291,20 +289,6 @@ index.controller("search-controller", function($scope,$route,$location,$timeout,
 	$scope.searchString = $sessionStorage.sString;
 	$scope.searchResult = $sessionStorage.searchResult;
 
-	$scope.search = function() {
-		var searchObject = {
-			query: $scope.searchString
-		};
-		$sessionStorage.sString=$scope.searchString;
-		$scope.$emit("searchEvent", searchObject);
-	}
-	$scope.$on("searchUpdate", function(event, searchArray) {
-		$scope.searchResult = searchArray;
-		$sessionStorage.searchResult = searchArray;
-		$sessionStorage.sString = $scope.searchString;
-		$location.url("/search");
-
-	});
 	$scope.searchReturn = function(){
 		if($sessionStorage.searchResult.length === 0){
 			return 1;
