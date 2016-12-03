@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var MovieProfile = mongoose.model('MovieProfile');
 var LocalStrategy = require('passport-local').Strategy;
-var authHelper = require('./helpers/authHelper');
+var authHelper = require('./authHelper');
 
 module.exports = function(passport){
 

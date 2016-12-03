@@ -7,9 +7,9 @@ var express = require('express');
 var router = express.Router();
 var Post = mongoose.model('Post');
 
-var tmdb = require('../api/tmdb_api');
-var algorithms = require('../helpers/movieRecAlgorithms');
-var justwatch = require('../api/justwatch_api');
+var tmdb = require('../helpers/tmdb/tmdb_api');
+var algorithms = require('../helpers/movieRecAlgorithmsV3');
+var justwatch = require('../helpers/just_watch/justwatch_api');
 
 //Used for routes that must be authenticated.
 function isAuthenticated (req, res, next) {
@@ -29,7 +29,7 @@ function isAuthenticated (req, res, next) {
     return res.redirect('/#login');
 };
 
-router.route('/movies/preferences/:id')
+router.route('/movies/preferences/:uid')
 
 	/*
 	 * Responds with a list of the user's movie likes/dislikes.
@@ -40,11 +40,11 @@ router.route('/movies/preferences/:id')
 	 *		list of user's movie likes/dislikes
 	 */
 	.get(function(req, res) {
-		User.findById(req.params.id)
+		User.findById(req.params.uid)
 		.populate('movieProfile')
 		.exec(function(err, user){
 			if(err) res.status(400).send({error: err});
-			return res.status(200).send(user.movieProfile.preferences);
+			return res.status(200).send({recommendations: user.movieProfile.recommendations, preferences: user.movieProfile.preferences});
 		});
 	})
 
@@ -60,7 +60,7 @@ router.route('/movies/preferences/:id')
 	.post(function(req, res){
 		if(req.body.movie_id === null)
 			return res.status(400).send({error: {message: 'nothing to set'}});
-		User.findById(req.params.id)
+		User.findById(req.params.uid)
 		.populate('movieProfile')
 		.exec(function(err,user){
 			if(err) {
@@ -68,15 +68,15 @@ router.route('/movies/preferences/:id')
 			}
 			var prefItem = {movie_id: req.body.movie_id, liked: req.body.liked};
 			user.movieProfile.preferences.unshift(prefItem);
-			algorithms.updateRecommendedMovies(user.movieProfile, req.body.movie_id, res);
+			
+			return algorithms.updateRecommendedMovies(user.movieProfile, req.body.movie_id, res);
 		}); 
-		
 	})
 	
 	.put(function(req, res) {
 		if(req.body.movie_ids === null)
 			return res.send(400).send({error:{message: 'nothing in ids'}});
-		User.findById(req.params.id)
+		User.findById(req.params.uid)
 		.populate('movieProfile')
 		.exec(function(err,user){
 			if(err) return res.status(400).send({error:err});
@@ -86,8 +86,7 @@ router.route('/movies/preferences/:id')
 				user.movieProfile.preferences.unshift(prefItem);
 			}
 			
-			algorithms.massUpdateRecommendedMovies(user.movieProfile, req.body.movie_ids, res);
-			
+			return algorithms.massUpdateRecommendedMovies(user.movieProfile, req.body.movie_ids, res);
 		});
 		
 	})
@@ -117,19 +116,22 @@ router.route('/movies/preferences/:id')
 
 			user.movieProfile.save(function(err){
 				if(err) return res.status(304).send({error:err});
-				return res.status(200).send(user.movieProfile);
+				return res.status(200).send({recommendations: movieProfile.recommendations, preferences: movieProfile.preferences});
 			});	
 		});
-	});
+	})
 	
-
-router.route('/movies/recommendations/:id')
-	.get(function(req, res){
-		User.findById(req.params.id)
+	.delete(function(req,res){
+		User.findById(req.params.uid)
 		.populate('movieProfile')
-		.exec(function(err,user){
-			if(err) return res.status(400).send({error:err});
-			return res.status(200).send(user.movieProfile.recommendations);
+		.exec(function(err, user){
+			user.movieProfile.recommendations = [];
+			user.movieProfile.preferences = [];
+		
+			user.movieProfile.save(function(err){
+				if(err) return res.status(304).send({error:err});
+				return res.status(200).send(user.movieProfile);
+			});
 		});
 	});
 
@@ -227,9 +229,9 @@ router.route('/movies/providers/:movie_title')
 		});
 	});
 	
-router.route('/users/:id')
+router.route('/users/:uid')
 	.get(function(req, res){
-		User.findById(req.params.id, function(err, user){
+		User.findById(req.params.uid, function(err, user){
 		if(err) return res.status(400).send({error:err});
 			var userInfo = {
 				username: user.username,
@@ -241,9 +243,9 @@ router.route('/users/:id')
 		});
 	});
 	
-router.route('/users/:id/setups')
+router.route('/users/:uid/setups')
 	.get(function(req,res){
-		User.findById(req.params.id)
+		User.findById(req.params.uid)
 		.exec(function(err,user){
 			if(err) return res.status(400).send({error:err});
 			return res.status(304).send({movieSetup: user.movieSetup});
@@ -251,7 +253,7 @@ router.route('/users/:id/setups')
 	})
 	
 	.patch(function(req, res){
-		User.findById(req.params.id)
+		User.findById(req.params.uid)
 		.exec(function(err,user){
 			if(err) return res.status(400).send({error:err});
 			user.movieSetup = req.body.movieSetup;

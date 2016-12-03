@@ -1,7 +1,7 @@
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var xhr = new XMLHttpRequest();
 
-var genreList = require(('../models/genres.json'));
+var genreList = require(('../../models/genres.json'));
 
 
 // API key goes here

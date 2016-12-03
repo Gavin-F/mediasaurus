@@ -1,0 +1,22 @@
+[
+    {
+        "id": 2,
+        "provider": "itunes"
+    },
+	{
+        "id": 3,
+        "provider": "google"
+    },
+	{
+        "id": 8,
+        "provider": "netflix"
+    },
+    {
+        "id": 18,
+        "name": "playstation"
+    },
+    {
+        "id": 68,
+        "name": "microsoft"
+    }
+]
