@@ -1,7 +1,10 @@
+// Middleware
+var LocalStrategy = require('passport-local').Strategy;
+
 var mongoose = require('mongoose');   
 var User = mongoose.model('User');
 var MovieProfile = mongoose.model('MovieProfile');
-var LocalStrategy = require('passport-local').Strategy;
+
 var authHelper = require('./authHelper');
 
 module.exports = function(passport){
@@ -9,13 +12,13 @@ module.exports = function(passport){
     // Passport needs to be able to serialize and deserialize users to support persistent login sessions
     passport.serializeUser(function(user, done) {
         console.log('serializing user:',user.username);
-		console.log(user);
+		//console.log(user);
         done(null, user._id);
     });
 
     passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            console.log('deserializing user:',user.username);
+		User.findById(id, function(err, user) {
+            //console.log('deserializing user:',user.username);
             done(err, user);
         });
     });
@@ -32,17 +35,17 @@ module.exports = function(passport){
                         return done(err);
                     // Username does not exist, log the error and redirect back
                     if (!user){
-                        console.log('User Not Found with username '+username);
+                        //console.log('User Not Found with username '+username);
                         return done(null, false);                 
                     }
                     // User exists but wrong password, log the error 
                     if (!authHelper.isValidPassword(user, password)){
-                        console.log('Invalid Password');
+                        //console.log('Invalid Password');
                         return done(null, false); // redirect back to login page
                     }
                     // User and password both match, return user from done method
                     // which will be treated like success
-					console.log('Successful login');
+					//console.log('Successful login');
 					return done(null, user);
                 }
             );
@@ -58,19 +61,19 @@ module.exports = function(passport){
             User.findOne({ 'username' :  username }, function(err, user) {
                 // In case of any error, return using the done method
                 if (err){
-                    console.log('Error in SignUp: '+err);
+                    //console.log('Error in SignUp: '+err);
                     return done(err);
                 }
                 // already exists
                 if (user) {
-                    console.log('User already exists with username: '+username);
+                    //console.log('User already exists with username: '+username);
                     return done(null, false);
                 } 
 				else {
                    User.findOne({'email' : req.body.email}, function(errE, userE){
 					   if(errE) return done(errE);
 					   if(userE){
-						   console.log('User already exists with this email: ' + req.body.email);
+						   //console.log('User already exists with this email: ' + req.body.email);
 						   return done(null, false);
 					   }
 						// if there is no user, create the user
@@ -91,33 +94,25 @@ module.exports = function(passport){
 						
 						// save movie profile for this user
 						movieProfile.save(function(err){
-						if(err) {
-							console.log('Error generating new MovieProfile' + err);
-							throw err;
-						}
+							if(err) {
+								//console.log('Error generating new MovieProfile' + err);
+								throw err;
+							}
 						});
 
 						// save the user
 						newUser.save(function(err) {
-                        if (err){
-                            console.log('Error in Saving user: '+err);  
-                            throw err;  
-                        }
-                        console.log(newUser.username + ' Registration succesful ' + newUser.id);    
-                        return done(null, newUser);
+							if (err){
+								// console.log('Error in Saving user: '+err);  
+								throw err;  
+							}
+							//console.log(newUser.username + ' Registration succesful ' + newUser.id);    
+							return done(null, newUser);
 						});
 				   });
                 }
             });
         })
     );
-	/*
-    var isValidPassword = function(user, password){
-        return bCrypt.compareSync(password, user.password);
-    };
-    // Generates hash using bCrypt
-    var createHash = function(password){
-        return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-    };
-	*/
+	
 };

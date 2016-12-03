@@ -43,7 +43,7 @@ router.route('/movies/preferences/:uid')
 	 * Responds with a list of the user's movie likes/dislikes.
 	 *
 	 * params:
-	 *		uid: string - user ID that is given at login/signup
+	 *		uid: String - user ID that is given at login/signup
 	 * response:
 	 *		400: error payload
 	 *		200: list of user's movie likes/dislikes 
@@ -62,9 +62,9 @@ router.route('/movies/preferences/:uid')
 	 * Also adjusts recommendations.
 	 *
 	 * params:
-	 *		uid: string - user ID that is given at login/signup
+	 *		uid: String - user ID that is given at login/signup
 	 * body:
-	 *		movie_id: string - ID of movie to add
+	 *		movie_id: String - ID of movie to add
 	 *		liked: boolean - true if liked said movie
 	 * response:
 	 *		304, 400: error payload
@@ -81,7 +81,6 @@ router.route('/movies/preferences/:uid')
 			}
 			var prefItem = {movie_id: req.body.movie_id, liked: req.body.liked};
 			user.movieProfile.preferences.unshift(prefItem);
-			console.log(req.body.movie_id);
 			algorithms.updateRecommendedMovies(user.movieProfile, req.body.movie_id, true, res);
 		}); 
 	})
@@ -91,9 +90,9 @@ router.route('/movies/preferences/:uid')
 	 * Also adjusts recommendations.
 	 *
 	 * params:
-	 *		uid: string - user ID that is given at login/signup
+	 *		uid: String - user ID that is given at login/signup
 	 * body:
-	 *		movie_ids: [string] - IDs of movies to like
+	 *		movie_ids: [String] - IDs of movies to like
 	 * response:
 	 *		304, 400: error payload
 	 *		200: null
@@ -121,9 +120,9 @@ router.route('/movies/preferences/:uid')
 	 * Also adjusts recommendations.
 	 *
 	 * params:
-	 *		uid: string - user ID that is given at login/signup
+	 *		uid: String - user ID that is given at login/signup
 	 * body:
-	 *		movie_id: string - ID of movie to remove
+	 *		movie_id: String - ID of movie to remove
 	 * response:
 	 *		304, 400: error payload
 	 *		200: null
@@ -159,7 +158,7 @@ router.route('/movies/preferences/:uid')
 	 * Wipes all user movie preferences and recommendations.
 	 *
 	 * params:
-	 *		uid: string - user ID that is given at login/signup
+	 *		uid: String - user ID that is given at login/signup
 	 * response:
 	 *		304, 400: error payload
 	 *		200: null
@@ -228,40 +227,44 @@ router.route('/movies/genres')
 	});
 	
 router.route('/movies/:movie_id')
+	
+	/*
+	 * Gets movie details by ID.
+	 *
+	 * params:
+	 *		movie_id: Number - movie ID to get details of
+	 * response:
+	 *		400: error payload
+	 *		200: {details, cast, crew, similarMovies, providers}
+	 */
 	.get(function(req, res){
-		var results = [];
 		tmdb.getMovieDetails(req.params.movie_id, function(details){
 			var jsonDetails = JSON.parse(details);
-			if(jsonDetails.status_code) return res.status(400).send(null);
+			if(jsonDetails.status_code) return res.status(400).send();
 			
-			results.push({details: jsonDetails});
 			tmdb.getMovieCredits(req.params.movie_id, function(credits){
 				var jsonCredits = JSON.parse(credits);
-				results.push({cast: jsonCredits.cast});
-				results.push({crew: jsonCredits.crew});
-				
-				console.log('cast good to go');
 				
 				tmdb.getSimilarMovies(req, function(similarMovies){
-					results.push({similarMovies: JSON.parse(similarMovies).results});
-					
-					console.log('similar movies good to go');
 					
 					justwatch.searchForProviders(jsonDetails.title, function(providers) {;
-					for(var i = providers.length - 1; i >= 0; i--)
-						if(providers[i].provider_id !== 2 &&
-							providers[i].provider_id !== 3 && 
-							providers[i].provider_id !== 8 &&
-							providers[i].provider_id !== 18 &&
-							providers[i].provider_id !== 68 ||
-							providers[i].monetization_type === 'rent' ||
-							providers[i].presentation_type === 'hd') providers.splice(i, 1);
-					
-					results.push({providers: providers});
-					
-					console.log('providers good to go');
-					
-					return res.status(200).send(results);
+						// filter provider results
+						for(var i = providers.length - 1; i >= 0; i--)
+							if(providers[i].provider_id !== 2 &&
+								providers[i].provider_id !== 3 && 
+								providers[i].provider_id !== 8 &&
+								providers[i].provider_id !== 18 &&
+								providers[i].provider_id !== 68 ||
+								providers[i].monetization_type === 'rent' ||
+								providers[i].presentation_type === 'hd') providers.splice(i, 1);
+							
+							return res.status(200).send({
+								details: jsonDetails, 
+								cast: jsonCredits.cast, 
+								crew: jsonCredits.crew, 
+								similarMovies: JSON.parse(similarMovies).results,
+								providers: providers
+							});
 					});
 				});
 			});
@@ -271,13 +274,14 @@ router.route('/movies/:movie_id')
 
 router.route('/movies/search/:page')
 	/*
-	 * Return 20 search results from TMDB
+	 * Get up to 20 search results from TMDB
 	 *
-	 * Request:
-	 *		query: string; query to send to TMDB api
-	 *
-	 * Response:
-	 *
+	 * params:
+	 *		page: Number - page of results to get
+	 * body:
+	 *		query: String; query to send to TMDB api
+	 * response:
+	 *		200: list of up to 20 results
 	 */
 	.post(function(req, res){
 		tmdb.searchMovies(req, function(results){
@@ -285,25 +289,16 @@ router.route('/movies/search/:page')
 		});
 	});
 	
-router.route('/movies/providers/:movie_title')
-	.get(function(req,res){
-		justwatch.searchForProviders(req.params.movie_title, function(providers) {;
-			console.log(providers);
-			console.log(providers.length);
-			for(var i = providers.length - 1; i >= 0; i--)
-				if(providers[i].provider_id !== 2 &&
-					providers[i].provider_id !== 3 && 
-					providers[i].provider_id !== 8 &&
-					providers[i].provider_id !== 18 &&
-					providers[i].provider_id !== 68 ||
-					providers[i].monetization_type === 'rent' ||
-					providers[i].presentation_type === 'hd') providers.splice(i, 1);
-			
-			return res.status(200).send(providers);
-		});
-	});
-	
 router.route('/users/:uid')
+	/*
+	 * Get non-sensitive user information by ID
+	 *
+	 * params:
+	 *		uid: String - user ID that is given at login/signup 
+	 * response:
+	 *		400: error payload
+	 * 	200: user information
+	 */
 	.get(function(req, res){
 		User.findById(req.params.uid, function(err, user){
 		if(err) return res.status(400).send({error:err});
@@ -318,6 +313,15 @@ router.route('/users/:uid')
 	});
 	
 router.route('/users/:uid/setups')
+	/*
+	 * Get setup statuses of user media profiles
+	 *
+	 * params:
+	 *		uid: String - user ID that is given at login/signup 
+	 * response:
+	 *		304, 400: error payload
+	 * 	200: user setup statuses
+	 */
 	.get(function(req,res){
 		User.findById(req.params.uid)
 		.exec(function(err,user){
@@ -326,6 +330,17 @@ router.route('/users/:uid/setups')
 		});
 	})
 	
+	/*
+	 * Patch setup statuses of user media profiles
+	 *
+	 * params:
+	 *		uid: String - user ID that is given at login/signup
+	 * body:
+	 *		[mediaType]Setup: Boolean - new setup status of [mediaType]
+	 * response:
+	 *		304, 400: error payload
+	 * 	200: null
+	 */
 	.patch(function(req, res){
 		User.findById(req.params.uid)
 		.exec(function(err,user){
@@ -334,7 +349,7 @@ router.route('/users/:uid/setups')
 			user.save(function(err){
 				if(err) 
 					return res.status(304).send({error:{message:'problem adjusting flag(s), make sure \'xSetup\' is a boolean'}});
-				return res.status(200).send(null);
+				return res.status(200).send();
 			});
 		});
 	})
