@@ -599,13 +599,13 @@ index.controller("email-controller", function($scope,$location,$localStorage) {
 		var user = {
 			userID: $localStorage.userID,
 			password: $scope.password,
-			newpassword: $scope.newpassword,
+			newpassword: null,
 			email: $scope.email,
 			firstName: $localStorage.firstName,
 			lastName: $localStorage.lastName
 		};
 		// send to parent controller
-		$scope.$emit("signupEvent", user);
+		$scope.$emit("emailEvent", user);
 	}
 
 	// if sign up was successful, update id and send to new page
