@@ -69,9 +69,24 @@ index.config(function($routeProvider) {
 ///////////////////////////////////////////////////////
 index.controller("index-controller", function($scope,$route, $localStorage, $http, $location, $window) {
 
-	// $scope.isActive = function (viewLocation) {
-	// 	return viewLocation === $location.path();
-	// };
+index.controller("index-controller", function($http, $scope, $route, $location, $timeout, $localStorage, $sessionStorage) {
+	$scope.search = function() {
+		var searchObject = {
+			query: $scope.searchString
+		};
+		$sessionStorage.sString=$scope.searchString;
+		$scope.$emit("searchEvent", searchObject);
+	}
+	$scope.$on("searchUpdate", function(event, searchArray) {
+		$sessionStorage.searchResult = searchArray;
+		$sessionStorage.sString = $scope.searchString;
+		if($location.url() !== "/search")
+			$location.url("/search");
+		else {
+			$route.reload();
+		}
+	});
+
 	$scope.isActive2 = function() {
 	    if(($location.path()=='/account')||($location.path()=='/password')){
 	    	return 1;
@@ -320,7 +335,7 @@ index.controller("dashboard-controller", function($scope, $location, $http, $tim
 ///////////////////////////////////////////////////////
 // SEARCH CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("search-controller", function($scope,$route,$location,$timeout, $localStorage, $sessionStorage) {
+index.controller("search-controller", function($scope, $route,$location,$timeout, $localStorage, $sessionStorage) {
 	$scope.searchResult = [];
 	$scope.searchString = $sessionStorage.sString;
 	$scope.searchResult = $sessionStorage.searchResult;

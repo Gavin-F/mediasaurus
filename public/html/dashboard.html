@@ -25,14 +25,14 @@
 		<div ng-controller="dashboard-controller">
 			<h1 ng-show="recShow">Your Recommendations</h1>
 
-			<div class="movie-table">
+			<div class="movie-table" ng-show="recShow">
 				<div class="movie-body">
 					<div class="button-div" ng-show="recGet && recMovieStore.length != 0">
 						<a ng-click="scrollLeft('rec')">
 							<img src="../images/left-arrow.png"/>
 						</a>
 					</div>
-					<div class="loader dash" ng-show="recMovieStore.length == 0"></div>
+					<div class="loader dash" ng-show="recGet && recMovieStore.length == 0"></div>
 					<h2 ng-show="!recGet"><br/><br/>No preferences set up! <br/><br/> Go like a movie or set up your preferences in your profile!</h2>
 					<div class="movie" ng-repeat="movie in recMovieDisplay">
 						<a ng-click="gotoMovie(movie.id)">

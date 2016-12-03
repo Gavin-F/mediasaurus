@@ -40,6 +40,7 @@ h1, h2 {
 
 .movie-body {
 	display: table-row-group;
+    text-align: center;
 }
 
 .movie-row {
