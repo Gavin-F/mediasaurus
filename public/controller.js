@@ -597,9 +597,12 @@ index.controller("email-controller", function($scope,$location,$localStorage) {
 	$scope.submit = function() {
 		// get form info
 		var user = {
+			userID: $localStorage.userID,
 			password: $scope.password,
+			newpassword: $scope.newpassword,
 			email: $scope.email,
-			newpassword: $scope.newpassword
+			firstName: $localStorage.firstName,
+			lastName: $localStorage.lastName
 		};
 		// send to parent controller
 		$scope.$emit("signupEvent", user);
