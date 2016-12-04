@@ -2,28 +2,20 @@
 <head>
 	<link rel="stylesheet" href="../css/superhero-style.css">
 	<link rel="stylesheet" href="/css/search-style.css">
-	<link rel="stylesheet" href="/css/index-style.css">
-	<link rel="stylesheet" href="../css/tooltips-style.css">
-	<link rel="stylesheet" href="../css/dashboard-style.css">
 
 
 </head>
 
 <body>
-	<div class="container" ng-controller="index-controller">
+	<div class="container" ng-controller="search">
 		<div ng-controller="search-controller ">
-			<div class="container MovieSearchContainer" ng-repeat="sResult in searchResult" ng-style="{'background':(sResult.bColor)}" >
-				<div class="movieSearchPosterPosition" ng-click="gotoMovie(sResult.id)" >
-					<br><br>
-					<a><img src="{{sResult.poster}}" class="tooltip-custom moviePosterSearch" data-tooltip-content=".tooltipInfo"/></a>
+			<div class="container" ng-repeat="sResult in searchResult" ng-style="{'background':(sResult.bColor)}" >
+				<div class="left_parent">
+					<a><img class="moviePosterSearch" ng-click="gotoMovie(sResult.id)"  src="{{sResult.poster}}"/></a>
 				</div>
-				<div class=" containter movieSearchTitle">
-					<a  ng-click="gotoMovie(sResult.id)" ng-style="{'color':(sResult.tColor)}"><h4>{{sResult.title}}</h4></a>
-					<div class="movieSearchDescription">
-						<p class="description" ng-style="{'color':(sResult.tColor)}">
-							{{sResult.overview}}
-						</p>
-					</div>
+				<div class="left_child">
+					<a  ng-click="gotoMovie(sResult.id)" ng-style="{'color':(sResult.tColor)}"><h3>{{sResult.title}}</h3></a>
+					<p ng-style="{'color':(sResult.tColor)}">{{sResult.overview}}</p>
 				</div>
 			</div>
 		</div>

@@ -1,21 +1,61 @@
-	<html ng-app="index">
-<head>
-	<link rel="stylesheet" href="../css/superhero-style.css">
-	<link rel="stylesheet" href="/css/account-style.css">
-	<link rel="stylesheet" href="/css/resetPassword-style.css">
+ <html ng-app="name">
+	<head>
+		<link rel="stylesheet" href="../css/superhero-style.css">
+		<link rel="stylesheet" href="../css/resetName-style.css">
+	</head>
 
-</head>
+	<body>
+		<div class="container" ng-controller="name">
+			<div class="name-box" ng-controller="name-controller">
+				<h1>Change Name</h1>
 
-<body>
-	<div class="container" >
-		<h3>Change Name</h3>
-		<span class="col-md-2">First Name</span>
-		<input class="col-md-2" type="text" ng-model="firstName"><br><br>
-		<span class="col-md-2">Last Name</span>
-		<input class="col-md-2" type="text" ng-model="lastName"><br><br>
-		<button class="waves-effect waves-light btn pull-right">Save</button>
-		<button class="waves-effect waves-light btn pull-right" ng-click="goAccountSettings()">Cancel</button>
-	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-</body>
+				<div class="divider"></div>
+
+				<form class="form-register" method="post" name="register" novalidate>
+
+
+					<div class="inputdiv">
+						<input type="text" id="firstName" class="form-control" name="firstName" placeholder="first name"
+						ng-model="firstName" required />
+					</div>
+
+					<div class="divider"></div>
+					
+					<div class="inputdiv">
+						<input type="text" id="lastName" class="form-control" name="lastName" placeholder="last name"
+						ng-model="lastName"  required />
+					</div>
+
+					<div class="divider"></div>
+
+					<div class="inputdiv" ng-class="{'has-error': register.password.$error.minlength && register.password.$dirty, 'has-success': !register.password.$error.minlength && register.password.$dirty}">
+						<input type="password" id="password" class="form-control" name="password" placeholder="new password"
+						ng-model="password" ng-focus="pwFocus=true" ng-blur="pwFocus=false" ng-minlength='6' required />
+					</div>
+
+					<p class="alert alert-danger" ng-show="(form-register.password.$error.minlength || form.password.$invalid) && !pwFocus">Your password must be at least 6 characters.</p>
+
+					<div class="divider"></div>
+
+					<div class="inputdiv" ng-class="{'has-error': confirmpassword != password && register.confirmpassword.$dirty, 'has-success': confirmpassword == password && register.confirmpassword.$dirty}">
+						<input type="password" id="confirmpassword" class="form-control" name="confirmpassword" placeholder="confirm password"
+						ng-model="confirmpassword" ng-focus="cpwFocus=true" ng-blur="cpwFocus=false" pw-check required />
+					</div>
+
+					<p class="alert alert-danger" ng-show="confirmpassword != password && register.confirmpassword.$dirty && !cpwFocus">Your passwords must match.</p>
+
+					<div class="divider"></div>
+
+					<button class="btn" ng-click="goAccountSettings()">Cancel</button>
+					<button ng-disabled="confirmpassword != password || !register.confirmpassword.$dirty" class="btn" ng-click="submit()">Save</button>
+
+					<div style="margin-top:20px"></div>
+
+					
+				</form>
+
+			</div>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+	</body>
 </html>

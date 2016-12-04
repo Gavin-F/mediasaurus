@@ -10,7 +10,8 @@ var index = angular.module("index",
 	"index.search",
 	"index.account",
 	"index.email",
-	"index.password"
+	"index.password",
+	"index.name"
 	]);
 
 index.config(function($routeProvider) {
@@ -87,7 +88,6 @@ index.controller("index-controller", function($http, $scope, $route, $location, 
 			$route.reload();
 		}
 	});
-
 	$scope.isActive2 = function() {
 	    if(($location.path()=='/account')||($location.path()=='/password')){
 	    	return 1;
@@ -617,7 +617,7 @@ index.controller("password-controller", function($scope,$location,$localStorage,
 ///////////////////////////////////////////////////////
 // Reset email CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("email-controller", function($scope,$location,$localStorage) {
+index.controller("email-controller", function($scope,$location,$localStorage,$sessionStorage) {
 	if($localStorage.userID === undefined) {
 		$location.url("/");
 	}
@@ -627,7 +627,7 @@ index.controller("email-controller", function($scope,$location,$localStorage) {
 			userID: $localStorage.userID,
 			password: $scope.password,
 			newpassword: null,
-			email: $scope.email,
+			email: $sessionStorage.email,
 			firstName: $localStorage.firstName,
 			lastName: $localStorage.lastName
 		};
@@ -651,11 +651,30 @@ index.controller("email-controller", function($scope,$location,$localStorage) {
 ///////////////////////////////////////////////////////
 // Reset Name CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("name-controller", function($scope,$location,$localStorage) {
+index.controller("name-controller", function($scope,$location,$localStorage,$sessionStorage) {
 
 	if($localStorage.userID === undefined) {
 		$location.url("/");
 	}
+	$scope.nameError;
+	$scope.submit = function() {
+		var user = {
+			userID: $localStorage.userID,
+			password: $scope.password,
+			newpassword: null,
+			email: $sessionStorage.email,
+			firstName: $scope.firstName,
+			lastName: $scope.lastName
+		};
+		$scope.$emit("nameEvent", user);
+	}
+	$scope.$on("nameUpdate", function(event) {
+		$location.url("/account");
+	});
+	$scope.$on("nameError", function(event, error) {
+		$scope.nameError = error;
+		alert($scope.nameError);
+	});
 	$scope.goDashboard = function(){
 		$location.url("/dashboard");
 	}
@@ -864,19 +883,19 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 	});
 
 	$scope.gotoNetflix = function() {
-		window.location.href = $scope.netflix.url;
+		window.open($scope.netflix.url);
 	}
 	$scope.gotoMicrosoft = function() {
-		window.location.href = $scope.microsoft.url;
+		window.open($scope.microsoft.url);
 	}
 	$scope.gotoGoogle = function() {
-		window.location.href = $scope.google.url;
+		window.open($scope.google.url);
 	}
 	$scope.gotoItunes = function() {
-		window.location.href = $scope.itunes.url;
+		window.open($scope.itunes.url);
 	}
 	$scope.gotoPlaystation = function() {
-		window.location.href = $scope.playstation.url;
+		window.open($scope.playstation.url);
 	}
 
 	$scope.$on("movieError", function(event, error) {
@@ -982,6 +1001,7 @@ index.controller("account-controller", function($scope,$location,$localStorage,$
 	};
 	$scope.$emit("accountEvent", user);
 	$scope.$on("accountUpdate", function(event, userInfo) {
+		console.log(userInfo);
 		$scope.username = userInfo.username;
 		$scope.email = userInfo.email;
 		$sessionStorage.email = userInfo.email;
