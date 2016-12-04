@@ -9,7 +9,8 @@ var index = angular.module("index",
 	"index.dashboard",
 	"index.search",
 	"index.account",
-	"index.email"
+	"index.email",
+	"index.password"
 	]);
 
 index.config(function($routeProvider) {
@@ -120,9 +121,11 @@ index.controller("index-controller", function($http, $scope, $route, $location, 
 		$location.url("/movies/" + id);
 	}
 	$scope.goHome = function(){
+		$scope.searchString = ""
 		$location.url("/");
 	}
 	$scope.goDashboard = function(){
+		$scope.searchString = ""
 		$location.url("/dashboard");
 	}
 	$scope.goAccountSettings = function(){
@@ -329,7 +332,7 @@ index.controller("dashboard-controller", function($scope, $location, $http, $tim
 ///////////////////////////////////////////////////////
 index.controller("search-controller", function($scope, $route,$location,$timeout, $localStorage, $sessionStorage) {
 	$scope.searchResult = [];
-	$scope.searchString = $sessionStorage.sString;
+	//$scope.searchString = $sessionStorage.sString;
 	$scope.searchResult = $sessionStorage.searchResult;
 
 	$scope.searchReturn = function(){
@@ -465,7 +468,9 @@ index.controller("accsetup-controller", function($scope, $location, $http, $loca
 
 	// skip out of preference selection
 	$scope.skip = function() {
+		$('body').removeClass('modal-open');
 		$location.url("/dashboard");
+
 	}
 
 	// receieve array of movies from genre array
@@ -577,11 +582,30 @@ index.controller("login-controller", function($scope, $location, $http, $localSt
 ///////////////////////////////////////////////////////
 // Reset Password CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("password-controller", function($scope,$location,$localStorage) {
+index.controller("password-controller", function($scope,$location,$localStorage,$sessionStorage) {
 
 	if($localStorage.userID === undefined) {
 		$location.url("/");
 	}
+	$scope.passwordError;
+	$scope.submit = function() {
+		var user = {
+			userID: $localStorage.userID,
+			password: $scope.oldPassword,
+			newpassword: $scope.password,
+			email: $sessionStorage.email,
+			firstName: $localStorage.firstName,
+			lastName: $localStorage.lastName
+		};
+		$scope.$emit("passwordEvent", user);
+	}
+	$scope.$on("passwordUpdate", function(event) {
+		$location.url("/account");
+	});
+	$scope.$on("passwordError", function(event, error) {
+		$scope.passwordError = error;
+		alert($scope.emailError);
+	});
 	$scope.goDashboard = function(){
 		$location.url("/dashboard");
 	}
@@ -594,14 +618,11 @@ index.controller("password-controller", function($scope,$location,$localStorage)
 // Reset email CONTROLLER
 ///////////////////////////////////////////////////////
 index.controller("email-controller", function($scope,$location,$localStorage) {
-
 	if($localStorage.userID === undefined) {
 		$location.url("/");
 	}
-	$scope.emailError = false;
-
+	$scope.emailError;
 	$scope.submit = function() {
-		// get form info
 		var user = {
 			userID: $localStorage.userID,
 			password: $scope.password,
@@ -610,24 +631,15 @@ index.controller("email-controller", function($scope,$location,$localStorage) {
 			firstName: $localStorage.firstName,
 			lastName: $localStorage.lastName
 		};
-		// send to parent controller
 		$scope.$emit("emailEvent", user);
 	}
-
-	// if sign up was successful, update id and send to new page
 	$scope.$on("emailUpdate", function(event) {
 		$location.url("/account");
 	});
-
-	// if sign up failed, update page
 	$scope.$on("emailError", function(event, error) {
 		$scope.emailError = error;
+		alert($scope.emailError);
 	});
-
-
-
-
-
 	$scope.goDashboard = function(){
 		$location.url("/dashboard");
 	}
@@ -950,7 +962,7 @@ index.controller("movie-controller", function($scope,$location,$routeParams,$htt
 ///////////////////////////////////////////////////////
 // Account CONTROLLER
 ///////////////////////////////////////////////////////
-index.controller("account-controller", function($scope,$location,$localStorage) {
+index.controller("account-controller", function($scope,$location,$localStorage,$sessionStorage) {
 	$scope.goResetPassword = function(){
 		$location.url("/password");
 	}
@@ -972,5 +984,6 @@ index.controller("account-controller", function($scope,$location,$localStorage) 
 	$scope.$on("accountUpdate", function(event, userInfo) {
 		$scope.username = userInfo.username;
 		$scope.email = userInfo.email;
+		$sessionStorage.email = userInfo.email;
 	});
 });

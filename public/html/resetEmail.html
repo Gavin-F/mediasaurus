@@ -42,7 +42,7 @@
 					<div class="divider"></div>
 
 					<button class="btn" ng-click="goAccountSettings()">Cancel</button>
-					<button ng-disabled="register.$invalid || confirmpassword != password || !register.confirmpassword.$dirty" class="btn" ng-click="submit()">Save</button>
+					<button ng-disabled="register.$invalid || confirmpassword != password || !register.confirmpassword.$dirty" class="btn" ng-keyup="$event.keyCode == 13 ? submit() : null" ng-click="submit()">Save</button>
 
 					<div style="margin-top:20px"></div>
 
