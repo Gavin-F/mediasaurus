@@ -27,8 +27,8 @@ a{
 }*/
 
 .right{
-	 float: left;
-    margin-left: 200px;
+	 float: right;
+    margin-right: 30px;
 }
 
 .horizonal-line{
@@ -41,4 +41,12 @@ a{
 .edit-icon: hover,
 .edit-icon: focus{
 	color: white;
+}
+
+.parent{
+	width: 120px;
+	float: left;
+}
+.child{
+	margin: 120px;
 }
