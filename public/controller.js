@@ -89,13 +89,10 @@ index.controller("index-controller", function($http, $scope, $route, $location, 
 		}
 	});
 	$scope.reset = function() {
-		$http.get("/auth/logout").success(function(req,res){
-			console.log(req);
-			console.log(res);
-		});
-		// delete $localStorage.userID;
-		// delete $localStorage.setupDone;
-		// $location.url("/");
+		$http.get("/auth/logout").success(function(req,res){});
+		delete $localStorage.userID;
+		delete $localStorage.setupDone;
+		$location.url("/");
 	}
 	$scope.isActive2 = function() {
 	    if(($location.path()=='/account')||($location.path()=='/password')){
