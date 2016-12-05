@@ -98,3 +98,8 @@ a {
   display: block;
   margin: 0 auto;
 }
+
+.navbar-custom{
+    display: inline-block; 
+    white-space:nowrap;
+}

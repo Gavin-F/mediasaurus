@@ -29,7 +29,7 @@
 					<div class="divider"></div>
 
 					<div class="inputdiv" ng-class="{'has-error': register.password.$error.minlength && register.password.$dirty, 'has-success': !register.password.$error.minlength && register.password.$dirty}">
-						<input type="password" id="password" class="form-control" name="password" placeholder="new password"
+						<input type="password" id="password" class="form-control" name="password" placeholder="password"
 						ng-model="password" ng-focus="pwFocus=true" ng-blur="pwFocus=false" ng-minlength='6' required />
 					</div>
 

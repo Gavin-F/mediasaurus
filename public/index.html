@@ -39,16 +39,16 @@
 
 	<nav class="navbar navbar-default navbar-static-top" ng-controller="search" ng-cloak>
 		<div class="container" ng-controller="index-controller" ng-cloak>
-			<ul class="nav navbar-nav">
+			<ul class="nav navbar-nav navbar-custom">
 				<li>
 					<a ng-click="goHome()" style="padding-top: 2px; ">
 						<img src="/images/newlogo.png" style="height:36px; ">
 					</a>
 				</li>
 			</ul>
-			<input class="custom-search" type="text" name="searchString" placeholder="Search Mediasaurus"
+			<input class="custom-search" type="search" name="searchString" placeholder="Search Mediasaurus"
 				ng-model="searchString" ng-src="{{searchString}}" ng-keyup="$event.keyCode == 13 ? search() : null" />
-			<ol class="nav navbar-nav navbar-right custom-button">
+			<ul class="nav navbar-nav navbar-right custom-button navbar-custom">
 				<li class="custom-inline"><a ng-click="goDashboard()">Dashboard</a></li>
 				<li class="dropdown custom-inline" >
 					<a class="glyphicon glyphicon-cog" data-toggle="dropdown"></a>
@@ -60,7 +60,7 @@
 						<li><a ng-show="isActive3()" align="right" ng-click="reset()">Logout</a></li>
 					</ul>
 				</li>
-			</ol>
+			</ul>
 		</div>
 	</nav>
 

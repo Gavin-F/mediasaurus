@@ -8,7 +8,9 @@ angular.module("index.account", ["ngRoute"]).controller("account", function($sco
 		$http.get("/api/users/"+user.id).success(function(req) { 
 			var userInfo = {
 			username: req.username,
-			email: req.email
+			email: req.email,
+			firstName: req.firstName,
+			lastName: req.lastName
 			}
 			$scope.$broadcast("accountUpdate", userInfo); 
 		});

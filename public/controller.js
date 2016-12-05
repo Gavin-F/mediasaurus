@@ -88,6 +88,15 @@ index.controller("index-controller", function($http, $scope, $route, $location, 
 			$route.reload();
 		}
 	});
+	$scope.reset = function() {
+		$http.get("/auth/logout").success(function(req,res){
+			console.log(req);
+			console.log(res);
+		});
+		// delete $localStorage.userID;
+		// delete $localStorage.setupDone;
+		// $location.url("/");
+	}
 	$scope.isActive2 = function() {
 	    if(($location.path()=='/account')||($location.path()=='/password')){
 	    	return 1;
@@ -112,11 +121,6 @@ index.controller("index-controller", function($http, $scope, $route, $location, 
 			return 1;
 		}
 	};
-	$scope.reset = function() {
-		delete $localStorage.userID;
-		delete $localStorage.setupDone;
-		$location.url("/");
-	}
 	$scope.gotoMovie = function(id){
 		$location.url("/movies/" + id);
 	}
@@ -1001,9 +1005,12 @@ index.controller("account-controller", function($scope,$location,$localStorage,$
 	};
 	$scope.$emit("accountEvent", user);
 	$scope.$on("accountUpdate", function(event, userInfo) {
-		console.log(userInfo);
 		$scope.username = userInfo.username;
 		$scope.email = userInfo.email;
 		$sessionStorage.email = userInfo.email;
+		$scope.firstName = userInfo.firstName;
+		$sessionStorage.firstName = userInfo.firstName;
+		$scope.lastName = userInfo.lastName;
+		$sessionStorage.lastName = userInfo.lastName;
 	});
 });
