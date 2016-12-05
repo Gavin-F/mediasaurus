@@ -46,7 +46,7 @@
 					</a>
 				</li>
 			</ul>
-			<input class="custom-search" type="search" name="searchString" placeholder="Search Mediasaurus"
+			<input class="custom-search" type="text" name="searchString" placeholder="Search Mediasaurus"
 				ng-model="searchString" ng-src="{{searchString}}" ng-keyup="$event.keyCode == 13 ? search() : null" />
 			<ul class="nav navbar-nav navbar-right custom-button navbar-custom">
 				<li class="custom-inline"><a ng-click="goDashboard()">Dashboard</a></li>
