@@ -31,7 +31,7 @@ module.exports = function(passport){
     //log out
     router.get('/logout', function(req, res) {
         req.logout();
-        res.redirect('/');
+		return res.status(200).send();
     });
 	
 	//change user info
