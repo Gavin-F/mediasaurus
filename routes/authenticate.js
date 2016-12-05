@@ -31,7 +31,7 @@ module.exports = function(passport){
     //log out
     router.get('/logout', function(req, res) {
         req.logout();
-        res.redirect('/');
+		return res.status(200).send();
     });
 	
 	//change user info
@@ -60,7 +60,7 @@ module.exports = function(passport){
 
 					user.save(function(err){
 						if(err) return res.status(304).send({error: {message:'problem saving user info'}});
-						return res.send(200);
+						return res.status(200).send();
 					})
 				});
 			});
