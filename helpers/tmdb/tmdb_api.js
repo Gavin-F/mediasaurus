@@ -7,8 +7,6 @@ var genreList = require(('../../models/genres.json'));
 // API key goes here
 APIKEY = "8f9caf52038412780f3c4037b2b114ca";
 
-// https://api.themoviedb.org/3/genre/movie/list?api_key=8f9caf52038412780f3c4037b2b114ca&language=en-US
-
 // CONSTANT Declaration
 var API_BASE = "https://api.themoviedb.org/3/";
 var API_DISCOVER1 = "discover/movie?api_key=";
@@ -182,82 +180,84 @@ module.exports = {
     *   @param {Number} genre_id
     *   @param {function(JSONString)} callback
     */
-	discoverPopularByGenreSync: function(genre_id, callback) {
-		consAPI_URL = API_BASE + 'discover/movie?api_key=' + APIKEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&with_genres=' + genre_id;
-		return this.httpGetSync(consAPI_URL);
-	},
+    discoverPopularByGenreSync: function(genre_id, callback) {
+        consAPI_URL = API_BASE + 'discover/movie?api_key=' + APIKEY + '&language=en-US&sort_by=popularity.desc&include_adult=false&with_genres=' + genre_id;
+        return this.httpGetSync(consAPI_URL);
+    },
     /*
     *   searchMovies passes a JSONString of movies from the search query to the callback
     *   @param {String} req: query
     *   @param {function(JSONString)} callback
     */
     searchMovies: function (req, callback) {
-		consAPI_URL = API_BASE + API_SEARCH + "&query=" + req.body.query + '&page=' + req.params.page;
-		this.httpGetAsync(consAPI_URL, callback);
+        consAPI_URL = API_BASE + API_SEARCH + "&query=" + req.body.query + '&page=' + req.params.page;
+        this.httpGetAsync(consAPI_URL, callback);
     },
     /*
     *   getMOvieDetails passes a JSONString that contains the movie details from the movieID to the callback
     *   @param {Number} id: MovieID
     *   @param {function(JSONString)} callback
     */
-	 getMovieDetails: function(id, callback) {
-		consAPI_URL = API_BASE + 'movie/' + id + '?api_key=' + APIKEY;
-		this.httpGetAsync(consAPI_URL, callback);
-	 },
+     getMovieDetails: function(id, callback) {
+        consAPI_URL = API_BASE + 'movie/' + id + '?api_key=' + APIKEY;
+        this.httpGetAsync(consAPI_URL, callback);
+     },
      /*
      *  getMovieCredits passes a JSONString containing the credits of the movies from the movieID to the callback
      *  @param {Number} id: MovieID
      *  @param {function(JSONString)} callback
      */
-	 getMovieCredits: function(id, callback) {
-		consAPI_URL = API_BASE + 'movie/' + id + '/credits?api_key=' + APIKEY;
-		this.httpGetAsync(consAPI_URL, callback);
-	 },
+     getMovieCredits: function(id, callback) {
+        consAPI_URL = API_BASE + 'movie/' + id + '/credits?api_key=' + APIKEY;
+        this.httpGetAsync(consAPI_URL, callback);
+     },
      /*
      *  getMovieRecommendations passes a JSONString containing the recomendations from the movieID to the callback
      *  @param {Number} id: MovieID
      *  @param {function(JSONString)} callback
      */
-	 getMovieRecommendations: function(id, callback){
-		consAPI_URL = API_BASE + 'movie/' + id + '/recommendations?api_key=' + APIKEY;
-		this.httpGetAsync(consAPI_URL, callback);
-	 },
+     getMovieRecommendations: function(id, callback){
+        consAPI_URL = API_BASE + 'movie/' + id + '/recommendations?api_key=' + APIKEY;
+        this.httpGetAsync(consAPI_URL, callback);
+     },
      /*
      *  getMovieRecommendationsSync returns a JSONString that contains the movie reccomendations
      *  @param {Number} id: MovieID
      *  @return {String} JSONString of Movie reccomendations
      */
-	 getMovieRecommendationsSync: function(id){
-		consAPI_URL = API_BASE + 'movie/' + id + '/recommendations?api_key=' + APIKEY;
-		return this.httpGetSync(consAPI_URL); 
-	 },
+     getMovieRecommendationsSync: function(id){
+        consAPI_URL = API_BASE + 'movie/' + id + '/recommendations?api_key=' + APIKEY;
+        return this.httpGetSync(consAPI_URL); 
+     },
      /*
-     *
-     *
+     *  getSimilarMovies passes a JSONString that is an JSONArray that contains movies that are similar to the movieID to the callback
+     *  @oaram {Number} req: MovieID
      *  @param {function(JSONString)} callback
      */
-	 getSimilarMovies: function(req, callback){
-		consAPI_URL = API_BASE + 'movie/' + req.params.movie_id + '/similar?api_key=' + APIKEY + '&page=' + req.params.page;
-		this.httpGetAsync(consAPI_URL, callback);
-	 },
+     getSimilarMovies: function(req, callback){
+        consAPI_URL = API_BASE + 'movie/' + req.params.movie_id + '/similar?api_key=' + APIKEY + '&page=' + req.params.page;
+        this.httpGetAsync(consAPI_URL, callback);
+     },
      /*
-     *
-     *
+     *  getPopularMovies passes a JSONString that contains the currently popular movies, indexed by the page (in decending order) to the callback
+     *  @param {Number} page
      *  @param {function(JSONString)} callback
      */
-	 getPopularMovies: function(page, callback) {
-		consAPI_URL = API_BASE + 'movie/popular?api_key=' + APIKEY + '&page=' + page;
-		this.httpGetAsync(consAPI_URL, callback);
-	 },
+     getPopularMovies: function(page, callback) {
+        consAPI_URL = API_BASE + 'movie/popular?api_key=' + APIKEY + '&page=' + page;
+        this.httpGetAsync(consAPI_URL, callback);
+     },
      /*
-     *
-     *
+     *  getNowPlayingMovies passes a JSONString that contains the currently playing movies, indexed by the page (in decending popularity) to the callback
+     *  @param {Number} page
      *  @param {function(JSONString)} callback
      */
-	 getNowPlayingMovies: function(page, callback) {
-		consAPI_URL = API_BASE + 'movie/now_playing?api_key=' + APIKEY + '&page=' + page;
-		this.httpGetAsync(consAPI_URL, callback);
-	 },
+     getNowPlayingMovies: function(page, callback) {
+        consAPI_URL = API_BASE + 'movie/now_playing?api_key=' + APIKEY + '&page=' + page;
+        this.httpGetAsync(consAPI_URL, callback);
+     },
+
+
     // Function inspiration taken from StackOverflow
     // http://stackoverflow.com/questions/247483/http-get-request-in-javascript
 
@@ -282,12 +282,3 @@ module.exports = {
         return xmlHttp.responseText;
     }
 };
-
-
-// <<TEST BANK>>
-
-// dis;coverMovieswithGenre("action", printThis);
-
-// discoverMovies("2017", null, null, null, null, printThis);
-
-// <<END TEST BANK>>
