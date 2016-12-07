@@ -20,6 +20,14 @@ module.exports = function(passport){
         failureRedirect: '/auth/failure'
     }));
 
+    //log in via Facebook
+    router.post('/login/facebook', passport.authenticate('facebook'));
+
+    router.post('/login/facebook/return', passport.authenticate('facebook'), {failureRedirect: '/login'}),
+        function(req, res) {
+            res.redirect('/');
+        }
+
     //sign up
     router.post('/signup', passport.authenticate('signup', {
         successRedirect: '/auth/success',

@@ -7,7 +7,9 @@ var userSchema = new Schema({
     password: String, //hash created from password
 	email: String,
     //created_at: {type: Date, default: Date.now}
-	movieProfile: {type: Schema.ObjectId, ref: 'MovieProfile'}
+	movieProfile: {type: Schema.ObjectId, ref: 'MovieProfile'},
+  fBookToken: String,
+  gPlusToken: String
 
     // suggestedMovies: {
     //   type: [{movie: String}],

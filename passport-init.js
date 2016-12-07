@@ -81,6 +81,8 @@ module.exports = function(passport){
 						newUser.username = username;
 						newUser.password = createHash(password);
 						newUser.email = req.body.email;
+                        newUser.fBookToken = "";
+                        newUser.gPlusToken = "";
 						newUser.movieProfile = movieProfile;
 					
 						movieProfile.save(function(err){
