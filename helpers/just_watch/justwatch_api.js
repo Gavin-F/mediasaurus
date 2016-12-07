@@ -7,9 +7,9 @@ var DEBUGGING_MODE = false; // true for verbose callback failures
 
 module.exports = {
 
-    // searchForProviders consumes a string (query) and a function(pointer) (callback)
-    // passes an Array to the function(pointer) that is an array of JSONObjects
-    // example output is in exampleOutput.txt
+    /* searchForProviders consumes a string (query) and a function(pointer) (callback)
+    *  passes an Array to the function(pointer) that is an array of JSONObjects
+    */ example output is in exampleOutput.txt
     searchForProviders: function (query, callback) {
         var api_url = 'https://api.justwatch.com/titles/en_CA/popular';
 
