@@ -17,7 +17,7 @@
 
 					<div class="inputdiv" ng-class="{'has-error': register.username.$invalid && register.username.$dirty, 'has-success': !register.username.$invalid}">
 						<input id="username" class="form-control" name="username" class="form-control" type="text" placeholder="username"
-						ng-model="username" ng-focus="userFocus=true" ng-blur="userFocus=false" ng-pattern="/^[a-zA-Z0-9]+$/" maxlength="16" ng-minlength='4' required />
+						ng-model="username" ng-focus="userFocus=true" ng-blur="userFocus=false" ng-pattern="/^[a-zA-Z0-9]+$/" maxlength="16" ng-minlength='4' required autofocus/>
 					</div>
 
 					<div>
