@@ -46,10 +46,10 @@ module.exports = {
         this.httpGetAsync(consAPI_URL, callback);
     },
 
-    /* 
+    /*
     *   getKeywordID returns the keywordID associated to the keyword
     *   @param {String} keyword
-    *   @return {Integer} keyWordID 
+    *   @return {Integer} keyWordID
     */
     getKeywordID: function (keyword) {
         consAPI_URL = API_BASE + "search/keyword?api_key=" + APIKEY + "&query=" + keyword;
@@ -227,7 +227,7 @@ module.exports = {
      */
      getMovieRecommendationsSync: function(id){
         consAPI_URL = API_BASE + 'movie/' + id + '/recommendations?api_key=' + APIKEY;
-        return this.httpGetSync(consAPI_URL); 
+        return this.httpGetSync(consAPI_URL);
      },
      /*
      *  getSimilarMovies passes a JSONString that is an JSONArray that contains movies that are similar to the movieID to the callback
@@ -235,7 +235,7 @@ module.exports = {
      *  @param {function(JSONString)} callback
      */
      getSimilarMovies: function(req, callback){
-        consAPI_URL = API_BASE + 'movie/' + req.params.movie_id + '/similar?api_key=' + APIKEY + '&page=' + req.params.page;
+        consAPI_URL = API_BASE + 'movie/' + req.params.movie_id + '/similar?api_key=' + APIKEY;
         this.httpGetAsync(consAPI_URL, callback);
      },
      /*
